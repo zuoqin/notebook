@@ -24,7 +24,13 @@ var api = require('./app/routes/api')(app,express);
 app.use('/api', api);
 
 
-app.get('*', function(req,res){
+app.get('/test', function(req,res){
+	res.sendFile(__dirname + '/public/test/index.html');
+})
+
+
+
+app.get('/mm', function(req,res){
 	res.sendFile(__dirname + '/public/views/index.html');
 })
 
