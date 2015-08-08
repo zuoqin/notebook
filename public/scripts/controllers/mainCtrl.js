@@ -4,9 +4,9 @@ angular.module('mainCtrl',[])
 
         
     	vm.model = {
-        	message: "This is my app!!!"
+        	message: "This is my app111!!!"
     	};
-    	
+
 		vm.loggedIn = Auth.isLoggedIn();
 
 		$rootScope.$on('$routeChangeStart', function(){

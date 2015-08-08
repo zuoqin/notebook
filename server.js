@@ -30,7 +30,7 @@ app.get('/test', function(req,res){
 
 
 
-app.get('/mm', function(req,res){
+app.get('*', function(req,res){
 	res.sendFile(__dirname + '/public/views/index.html');
 })
 

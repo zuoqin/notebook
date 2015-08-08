@@ -1,0 +1,29 @@
+﻿<div class="container" data-ng-controller="viewController">
+
+        <div class="col-sm-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h1 ng-bind-html="item.title" class="panel-title"/>
+
+                        <a class="panel-title">{{item.title}}</a>
+                </div>
+                <div class="panel-body">
+
+                    <p>
+                        on {{item.modified}}
+                    </p>
+                    <!--
+                    <button class="btn btn-link" data-ng-click="delete($index)">Delete</button>
+                    <a data-ng-href="/items/edit/{{item.ItemId}}" class="btn btn-default">Edit</a>
+                    -->
+                    <p ng-bind-html="item.content">{{item.content}}</p>
+
+
+                    <input type="button" data-ng-click="edit()" value="Edit" class="btn btn-default btn-primary" />
+
+                </div>
+            </div>
+        </div>
+
+
+</div>

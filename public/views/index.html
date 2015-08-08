@@ -4,17 +4,66 @@
 	<base href='/'>
 	<title>Journal Manager</title>
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../css/site.css" />
+
+
+	<script type="text/javascript" src="../scripts/lodash.underscore.min.js"></script>
+
+	<script type="text/javascript" src="../scripts/offline.min.js"></script>
 
 	<script type="text/javascript" src="../scripts/angular.min.js"></script>
 	<script type="text/javascript" src="../scripts/angular-route.min.js"></script>
-	<script type="text/javascript" src="../scripts/controllers/mainCtrl.js"></script>
+	<script type="text/javascript" src="../scripts/angular-resource.min.js"></script>
+	<script type="text/javascript" src="../scripts/angular-mocks.js" type="text/javascript"></script>
+	<script type="text/javascript" src="../scripts/angular-cookies.min.js"></script>
 	<script type="text/javascript" src="../scripts/services/authService.js"></script>
+	<script type="text/javascript" src="../scripts/services/userService.js"></script>
+	<script type="text/javascript" src="../scripts/services/storyService.js"></script>
+	<script type="text/javascript" src="../scripts/services/persistenceStrategies.js"></script>
+	<script type="text/javascript" src="../scripts/services/persistenceService.js"></script>
+	<script type="text/javascript" src="../scripts/services/localDBService.js"></script>
+	<!--
+	<script type="text/javascript" src="../scripts/services/localDBService.js"></script>
+	<script type="text/javascript" src="../scripts/services/syncService.js"></script>
+	-->
+
+	<script type="text/javascript" src="../scripts/controllers/mainCtrl.js"></script>
+	<script type="text/javascript" src="../scripts/controllers/userCtrl.js"></script>
+	<script type="text/javascript" src="../scripts/controllers/storyCtrl.js"></script>
+	<script type="text/javascript" src="../scripts/controllers/editCtrl.js"></script>
+	
+	<script type="text/javascript" src="../scripts/controllers/viewCtrl.js"></script>
+
 	<script type="text/javascript" src="../scripts/app.routes.js"></script>
 	<script type="text/javascript" src="../scripts/app.js"></script>
 
 </head>
-<body>
-  <div ng-app="MyApp" ng-controller='MainController as main'>
+<body ng-app="MyApp" ng-controller='MainController as main'>
+<header>
+	<div class="navbar navbar-default">
+		<div class="container">
+			<div>
+				<a href="/" class="navbar-brand"><span class="glyphicon glyphicon-book"> </span>User Story</a>
+			</div>
+
+
+			<ul class="nav navbar-nav">
+				<li><a href="/users"></a></li>
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li ng-if="!main.loggedIn"><a href="/login">Login</a></li>
+				<li ng-if="!main.loggedIn"><a href="/signup">Signup</a></li>
+				<li ng-if="main.loggedIn"><a href="#">Hello {{main.user.username}}</a></li>
+				<li ng-if="main.loggedIn"><a href="#" ng-click="main.doLogout()">Logout</a></li>
+			</ul>
+		</div>
+
+
+	</div>	
+
+</header>
+  <div >
   	<!-- <h1>{{main.model.message}}</h1> -->
     <ng-view></ng-view>
   </div>

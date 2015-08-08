@@ -1,0 +1,196 @@
+﻿body {
+    padding-top: 10px;
+    padding-bottom: 20px;
+    padding-top: 0px;
+}
+.panel  {
+    margin-bottom: 10px;
+}
+
+.pull-right {
+    padding-right: 0px;
+}
+.btnupload {
+    background: url("uploadbtn.jpg") no-repeat;
+    width: 90px;
+    height: 32px;
+}
+.btndownload {
+    background: url("downloadbtn.jpg") no-repeat;
+    width: 89px;
+    height: 32px;
+}
+.btnlogout {
+    background: url("logoutbtn.jpg") no-repeat;
+    width: 90px;
+    height: 32px;
+}
+.btnlogin {
+    background: url("loginbtn.jpg") no-repeat;
+    width: 90px;
+    height: 32px;
+}
+
+@media (min-width: 1200px) {
+    .container {
+        width: 100%;
+    }
+    .ngscope {
+        padding: 0px;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        width: 100%;
+    }
+    .ngscope {
+        padding: 0px;
+    }
+}
+   .col-sm-12 {
+       padding: 0px;
+   }
+}
+.pa
+.bd {background-image:url('images/index_bg.png');
+    width: 1000px;
+    height: 1000px;
+     background-repeat:no-repeat}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-top: 30px;
+}
+ 
+/* Set width on the form input elements since they're 100% wide by default */
+input {
+    max-width: 300px;
+    max-height: 500px;
+}
+select,
+textarea {
+    max-width: 1080px;
+    max-height: 500px;
+}
+input.form-control-search {
+    width: 150px;
+    height: 34px;
+}
+
+textarea.form-control-small {
+    height: 100px;
+    width: 100%;
+}
+form.form-horizontal {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+textarea.form-control-medium {
+    height: 355px;
+    width: 100%;
+} 
+textarea.form-control {
+    height: 1080px;
+}
+.navbar {
+    background-color: #fff;
+    padding-top: 15px;
+    padding-bottom: 6px;
+    padding-right: 15px;
+    -webkit-box-shadow: 0 0 5px 2px #ccc;
+    box-shadow: 0 0 5px 2px #ccc;
+}
+ 
+    .navbar .logo {
+        margin-right: 15px;
+    }
+ 
+.push-top-down-sm {
+    margin-top: 1.5em;
+}
+ 
+.home-list-item {
+    margin-top: 0em;
+    margin-bottom: 0em;
+    padding-bottom: 0em;
+    border-bottom: 1px solid #eee;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+ 
+.offline-ui {
+    z-index: 100000;
+}
+ 
+#sync-container {
+    position: fixed;
+    bottom: 25px;
+    width: 350px;
+    left: 15px;
+    z-index: 10000;
+}
+
+
+#tfheader{
+		background-color:#c3dfef;
+	}
+
+#tfnewsearch{
+		float:right;
+		padding:20px;
+	}
+
+.tftextinput2{
+		margin: 0;
+		padding: 5px 15px;
+		font-family: Arial, Helvetica, sans-serif;
+		font-size:14px;
+		color:#666;
+		border:1px solid #0076a3; border-right:0px;
+		border-top-left-radius: 5px 5px;
+		border-bottom-left-radius: 5px 5px;
+	}
+
+.tfbutton2 {
+		margin: 0;
+		padding: 5px 7px;
+		font-family: Arial, Helvetica, sans-serif;
+		font-size:14px;
+		font-weight:bold;
+		outline: none;
+		cursor: pointer;
+		text-align: center;
+		text-decoration: none;
+		color: #ffffff;
+		border: solid 1px #0076a3; border-right:0px;
+		background: #0095cd;
+		background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));
+		background: -moz-linear-gradient(top,  #00adee,  #0078a5);
+		border-top-right-radius: 5px 5px;
+		border-bottom-right-radius: 5px 5px;
+	}
+
+.tfbutton2:hover {
+		text-decoration: none;
+		background: #007ead;
+		background: -webkit-gradient(linear, left top, left bottom, from(#0095cc), to(#00678e));
+		background: -moz-linear-gradient(top,  #0095cc,  #00678e);
+	}
+
+/* Fixes submit button height problem in Firefox */
+.tfbutton2::-moz-focus-inner {
+	  border: 0;
+	}
+
+.tfclear{
+		clear:both;
+	}
+
+
+
+
+ body {
+}

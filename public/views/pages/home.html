@@ -1,2 +1,88 @@
-Hello Home
-{{main.model.message}}
+<div class="jumbotron text-center" ng-if="!main.loggedIn">
+	<div>
+		<p>Login to the system</p>
+		<a href="/login" class="btn btn-primary">Login</a>
+	</div>
+</div>
+
+
+ <div class="pull-right"> <!-- data-ng-show="isLoggedIn" data-ng-controller="itemsController">-->
+        
+        
+
+    <nav>
+
+        <ul class="nav navbar-nav">
+            <li><input type="text" id="tfq"   class="tftextinput2" name="q" size="21" maxlength="120" value="Search" ng-model="filtertext"><input type="submit"  value=" > " ng-click="search()" class="tfbutton2"></li>
+            <li><button class="btndownload"  ng-click="download()"></button></li>
+        </ul>
+    </nav>
+</div> <!--class="pull-right"-->
+
+
+<div class="row" ng-if="main.loggedIn">
+	<div class="col-md-10">
+		
+	</div>
+	<div class="col-md-10" ng-controller="StoryController as story">
+		<!--
+		<div class="row">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Edit item</div>
+				<div class="panel-body">
+					<form ng-submit="story.createStory()">
+						<input class="form-control input-lg" type="text" name="story" ng-model="story.storyData.title">
+						<input class="form-control input-lg" type="text" name="story" ng-model="story.storyData.introduction">
+						<input class="form-control input-lg" type="text" name="story" ng-model="story.storyData.content" placeholder="...." required>
+
+					</form>
+				</div>
+			</div>
+		</div>
+		-->
+
+        <div class="row home-list-item" data-ng-repeat="story in story.stories">
+            <!--
+            <div class="col-sm-8">
+                <div class="lead">{{item.Title}}</div>
+                <div class="lead">{{item.Introduction}}</div>
+                <div class="lead">{{item.Contents}}</div>
+                <button class="btn btn-link" data-ng-click="delete($index)">Delete</button>
+                <a data-ng-href="/items/edit/{{item.ItemId}}" class="btn btn-default">Edit</a>
+            </div>
+            -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                <!--
+                <h3 class="panel-title">
+                -->
+                    <a data-ng-href="/view/{{story._id}}" class="panel-title">{{story.title}}</a>
+                    
+                <!--
+                </h3>
+                -->
+                </div>
+                <div class="panel-body">
+                    <p ng-bind-html="item.Introduction">{{story.introduction}}</p>
+                    <p>
+                        on {{story.modified.toLocaleString()}}
+                    </p>
+                    <button class="btn btn-link" data-ng-click="delete($index)">Delete</button>
+                    <a data-ng-href="/edit/{{story._id}}" class="btn btn-default">Edit</a>
+                </div>
+            </div>
+
+
+        </div> <!--class="row home-list-item" -->
+        <!--
+		<div class="panel panel-sucess">
+			<div class="panel-body" ng-repeat="story in story.stories">
+				<p>
+					{{story.content}}
+				</p>
+				
+			</div>
+		</div>
+		-->		
+	</div>
+</div>
