@@ -14,7 +14,7 @@ angular.module('appRoutes', ['ngRoute'])
 		})
 
 		.when('/signup', {
-			templateUrl: '/views/pages/signup1111.html'
+			templateUrl: '/views/pages/signup.html'
 		})
 
 		.when('/view/:id', {
@@ -27,6 +27,9 @@ angular.module('appRoutes', ['ngRoute'])
 			controller: 'editController'
 		})
 
-
+		.when('/new', {
+			templateUrl: '/views/pages/edit.html',
+			controller: 'editController'
+		})
 	$locationProvider.html5Mode(true);
 })

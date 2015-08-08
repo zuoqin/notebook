@@ -14,7 +14,7 @@ function ($scope, $rootScope, $location, persistenceService, Offline) {
     var parts = $location.absUrl().split('/');
     var id = parts[parts.length - 1];
     var uuidLength = 24;
-    if (id.length != uuidLength) {
+    if (id.length < uuidLength) {
         id = null;
     }
     if (id != null) {
@@ -28,7 +28,7 @@ function ($scope, $rootScope, $location, persistenceService, Offline) {
     }
 
     $scope.cancel = function() {
-        window.location = '/items';
+        window.location = '/';
     };
 
     var hasAnItemToSave = function() {

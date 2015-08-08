@@ -1,7 +1,7 @@
 ﻿'use strict';
-angular.module('PersistenceStrategies', [])
+angular.module('PersistenceStrategies', ['storyService'])
 
-.factory('remotePersistenceStrategy', function($http, $q){
+.factory('remotePersistenceStrategy', function(Story, $http, $q){
     var svc = {
         save: function(item) {
             var deferred = $q.defer();
@@ -12,6 +12,11 @@ angular.module('PersistenceStrategies', [])
             //         }
             //         )
             //     .error(deferred.reject);
+            Story.update(item).then( function(){
+                deferred.resolve();
+                }
+                
+                );
             return deferred.promise;
         },
         getAll: function() {
@@ -109,7 +114,7 @@ var svc = {
         svc.getById(id).then(function (_Event) {
             var item = _Event;
             if (item != undefined && item !== true) {
-                deferred.resolve(item.ItemId === id);
+                deferred.resolve(item._id === id);
             } else {
                 deferred.resolve(false);
             }

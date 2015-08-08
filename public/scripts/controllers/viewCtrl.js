@@ -15,7 +15,7 @@ angular.module('viewCtrl', [])//, 'persistenceService'])
             var parts = $location.absUrl().split('/');
             var id = parts[parts.length - 1];
             var uuidLength = 24;
-            if (id.length !== uuidLength) {
+            if (id.length <= uuidLength) {
                 id = null;
             }
 

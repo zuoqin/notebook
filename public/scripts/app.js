@@ -1,6 +1,6 @@
 angular.module('MyApp', [ 'ngResource', 'ngCookies', 'mainCtrl', 'authService', 'appRoutes',
 	'userCtrl', 'userService', 'storyService', 'storyCtrl', 'viewCtrl', 'persistenceService',
-	'PersistenceStrategies', 'localDBService', 'editCtrl'])
+	'PersistenceStrategies', 'localDBService', 'editCtrl', 'syncService', 'syncCtrl'])
 
 .config(['$provide', '$httpProvider', 
 
@@ -14,9 +14,9 @@ function($provide, $httpProvider){
     $provide.constant('localStorage', window.localStorage);
     $provide.constant('Offline', window.Offline);
     $provide.value('nullItem', {
-        id: '',
-        insertDate: new Date(-8640000000000000),
-        modifiedDate: new Date(-8640000000000000)
+        _id: '',
+        created: new Date(-8640000000000000),
+        modified: new Date(-8640000000000000)
     });
     $provide.value('dbModel', {
         name: 'journalitems',

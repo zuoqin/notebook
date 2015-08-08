@@ -6,25 +6,15 @@
 </div>
 
 
- <div class="pull-right"> <!-- data-ng-show="isLoggedIn" data-ng-controller="itemsController">-->
-        
-        
 
-    <nav>
 
-        <ul class="nav navbar-nav">
-            <li><input type="text" id="tfq"   class="tftextinput2" name="q" size="21" maxlength="120" value="Search" ng-model="filtertext"><input type="submit"  value=" > " ng-click="search()" class="tfbutton2"></li>
-            <li><button class="btndownload"  ng-click="download()"></button></li>
-        </ul>
-    </nav>
-</div> <!--class="pull-right"-->
+
 
 
 <div class="row" ng-if="main.loggedIn">
-	<div class="col-md-10">
-		
-	</div>
-	<div class="col-md-10" ng-controller="StoryController as story">
+
+
+	<div class="col-md-12" ng-controller="StoryController as story">
 		<!--
 		<div class="row">
 			<div class="panel panel-primary">
@@ -41,7 +31,7 @@
 		</div>
 		-->
 
-        <div class="row home-list-item" data-ng-repeat="story in story.stories">
+        <div class="row home-list-item" data-ng-repeat="story in stories">
             <!--
             <div class="col-sm-8">
                 <div class="lead">{{item.Title}}</div>

@@ -5,7 +5,8 @@
 	<title>Journal Manager</title>
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="../css/site.css" />
-
+	<script type="text/javascript"> src="../scripts/uuid.js"</script>
+	<script type="text/javascript" src="../scripts/math.uuid.js"></script>
 
 	<script type="text/javascript" src="../scripts/lodash.underscore.min.js"></script>
 
@@ -19,6 +20,7 @@
 	<script type="text/javascript" src="../scripts/services/authService.js"></script>
 	<script type="text/javascript" src="../scripts/services/userService.js"></script>
 	<script type="text/javascript" src="../scripts/services/storyService.js"></script>
+	<script type="text/javascript" src="../scripts/services/syncService.js"></script>
 	<script type="text/javascript" src="../scripts/services/persistenceStrategies.js"></script>
 	<script type="text/javascript" src="../scripts/services/persistenceService.js"></script>
 	<script type="text/javascript" src="../scripts/services/localDBService.js"></script>
@@ -31,7 +33,7 @@
 	<script type="text/javascript" src="../scripts/controllers/userCtrl.js"></script>
 	<script type="text/javascript" src="../scripts/controllers/storyCtrl.js"></script>
 	<script type="text/javascript" src="../scripts/controllers/editCtrl.js"></script>
-	
+	<script type="text/javascript" src="../scripts/controllers/syncCtrl.js"></script>
 	<script type="text/javascript" src="../scripts/controllers/viewCtrl.js"></script>
 
 	<script type="text/javascript" src="../scripts/app.routes.js"></script>
@@ -39,8 +41,51 @@
 
 </head>
 <body ng-app="MyApp" ng-controller='MainController as main'>
+
 <header>
+
+	<div class="container" data-ng-show="isLoggedIn"
+         data-ng-controller="syncController">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/"><img src="/images/logo-sm.png" class="logo" alt="Journal Items" title="Journal Items" /></a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <!--
+                <li><a href="/items">Items List</a></li>-->
+                <li><a href="/new">New Item</a></li>
+                <!--
+                <li><a href="/topics">Topics List</a></li>-->
+            </ul>
+	       	<div class="pull-right" data-ng-controller="syncController">
+			    <nav>
+			        <ul class="nav navbar-nav">
+			            
+			            <li><input type="text" id="tfq"   class="tftextinput2" name="q" size="21" maxlength="120" value="Search" ng-model="filtertext"><input type="submit"  value=" > " ng-click="search()" class="tfbutton2"></li>
+			            <li><button class="btndownload"  ng-click="download()"></button></li>
+			            <li><button class="btnupload"  data-ng-show="showItems" ng-disabled="!showList" ng-click="sync()"></button></li>
+			        </ul>
+			    </nav>
+			</div> <!--lass="pull-right" -->
+
+
+
+        </div>
+
+
+
+    </div> <!--class="container"-->
+
+
+
+	<!--
 	<div class="navbar navbar-default">
+		
 		<div class="container">
 			<div>
 				<a href="/" class="navbar-brand"><span class="glyphicon glyphicon-book"> </span>User Story</a>
@@ -58,11 +103,12 @@
 				<li ng-if="main.loggedIn"><a href="#" ng-click="main.doLogout()">Logout</a></li>
 			</ul>
 		</div>
-
+		
 
 	</div>	
-
+	-->
 </header>
+
   <div >
   	<!-- <h1>{{main.model.message}}</h1> -->
     <ng-view></ng-view>

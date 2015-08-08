@@ -107,6 +107,55 @@ module.exports = function(app,express){
 	});
 
 	api.route('/')
+		.put(function(req, res){
+			console.log("Inside put ");
+			//Story.find({_id: req.decoded._id}, function(err, stories){
+			//	if (err) {
+			//		res.send(err);
+			//		return;
+			//	};
+			//	res.json(stories);
+			console.log(req.body._id);
+			console.log(req.body.title);
+			console.log(req.body.introduction);
+			console.log(req.body.content);
+			Story.update({_id:req.body._id},
+				{
+					title: req.body.title,
+					introduction:req.body.introduction,
+				 	content: req.body.content
+				},
+				{ upsert: true }, function(err, data){
+					if (err) {
+						console.log(err);
+						res.send(err);
+						return;
+					};
+
+					console.log(data);
+					res.json(data);
+				}
+			)
+
+			// var story = new Story({
+			// 	_id: req.decoded._id,
+			// 	title: req.body.title,
+			// 	introduction: req.body.introduction,
+			// 	content: req.body.content
+			// });
+
+			// story.save(function(err, data){
+			// 	if (err) {
+			// 		console.log(err);
+			// 		res.send(err);
+			// 		return;
+			// 	};
+			// 	console.log(data);
+			// 	res.json(data);
+			// })
+
+		})
+
 		.post(function(req,res){
 			var story = new Story({
 				creator: req.decoded._id,
@@ -127,7 +176,8 @@ module.exports = function(app,express){
 		})
 	
 		.get(function(req,res){
-			Story.find({creator: req.decoded._id}, function(err, stories){
+
+			Story.find({}, function(err, stories){
 				if (err) {
 					res.send(err);
 					return;

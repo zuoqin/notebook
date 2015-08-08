@@ -105,7 +105,9 @@
 
             if (data.modified === undefined)
                 data.modified = date;
-
+            if (!data[keyName]) {
+                data[keyName] = Math.uuid();
+            }
             request = store.add(data);
             request.onsuccess = function() {
                 deferred.resolve(data);

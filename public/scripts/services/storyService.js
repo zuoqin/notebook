@@ -10,6 +10,8 @@ angular.module('storyService', [])
 	storyFactory.allStory = function(){
 		return $http.get('/api');
 	}
-
+	storyFactory.update = function(storyData){
+		return $http.put('/api', storyData);
+	};
 	return storyFactory;
 })
