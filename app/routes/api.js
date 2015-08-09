@@ -115,15 +115,21 @@ module.exports = function(app,express){
 			//		return;
 			//	};
 			//	res.json(stories);
-			console.log(req.body._id);
-			console.log(req.body.title);
-			console.log(req.body.introduction);
-			console.log(req.body.content);
+			//console.log(req.body._id);
+			//console.log(req.body.title);
+			//console.log(req.body.introduction);
+			//console.log(req.body.content);
+			if (req.body._id.length > 24) {
+				req.body._id = '';
+			};
 			Story.update({_id:req.body._id},
 				{
 					title: req.body.title,
 					introduction:req.body.introduction,
-				 	content: req.body.content
+				 	content: req.body.content,
+				 	modified: req.body.modified,
+				 	created: req.body.created,
+				 	creator: req.decoded._id
 				},
 				{ upsert: true }, function(err, data){
 					if (err) {
@@ -165,13 +171,13 @@ module.exports = function(app,express){
 
 			});
 
-			story.save(function(err){
+			story.save(function(err, data){
 				if (err) {
 					res.send(err);
 					return;
 				};
 
-				res.json({message: "New story created"});
+				res.json(data);
 			})
 		})
 	

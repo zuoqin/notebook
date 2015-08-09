@@ -42,8 +42,21 @@ angular.module('syncService', ['storyService'])
                 localDBService.getAll(dbModel.objectStoreName).then(function (items) {
                     items.forEach(function(item) {
                         remotePersistenceStrategy.save(item).then(function (result) {
-                            //if (result) {
-                            //    localDBService.clear(dbModel.objectStoreName).then(function(res) {
+                            if (item._id !== undefined && item._id !== null) {
+                                if (item._id.length > 24) {
+                                    localDBService.delete(dbModel.objectStoreName, item._id).then(
+                                        function(result){
+                                            var newItem = item;
+                                            newItem._id = result._id;
+                                            newItem.creator = result.creator;
+                                            localDBService.insert(dbModel.objectStoreName, newItem, "_id").then(
+                                            function(result){
+
+                                            })        
+                                        })
+                                    
+                                };
+                            }
                             stored.push(1);
                             if (stored.length == items.length) {
                                 deferred.resolve(true);
@@ -73,20 +86,20 @@ angular.module('syncService', ['storyService'])
                                 function() {
                                     persistenceService.setAction(1);
                                     items.sort(function(a, b) {
-                                        return new Date(b.modifiedDate) - new Date(a.modifiedDate);
+                                        return new Date(b.modified) - new Date(a.modified);
                                     });
                                     items.forEach(function (item) {
                                         //if (persistenceService.getAction() === 0) {
                                         persistenceService.action.save(item).then(
                                             function() {
                                                 $rootScope.items.push({
-                                                    ItemId: item.ItemId,
-                                                    Title: $sce.trustAsHtml(item.Title),
-                                                    Introduction: $sce.trustAsHtml(item.Introduction),
-                                                    modifiedDate: new Date(item.modifiedDate),
-                                                    TopicId: item.TopicId,
-                                                    UserId: item.UserId,
-                                                    Contents: $sce.trustAsHtml(item.Contents)
+                                                    _id: item.id,
+                                                    title: $sce.trustAsHtml(item.title),
+                                                    introduction: $sce.trustAsHtml(item.introduction),
+                                                    modified: new Date(item.modified),
+                                                    //TopicId: item.TopicId,
+                                                    creator: item.creator,
+                                                    content: $sce.trustAsHtml(item.content)
                                                 });
 
                                             });
@@ -97,17 +110,17 @@ angular.module('syncService', ['storyService'])
                             
                         } else {
                             items.sort(function (a, b) {
-                                return new Date(b.modifiedDate) - new Date(a.modifiedDate);
+                                return new Date(b.modified) - new Date(a.modified);
                             });
                             items.forEach(function (item) {
                                 $rootScope.items.push({
-                                    ItemId: item.ItemId,
-                                    Title: $sce.trustAsHtml(item.Title),
-                                    Introduction: $sce.trustAsHtml(item.Introduction),
-                                    modifiedDate: new Date(item.modifiedDate),
-                                    TopicId: item.TopicId,
-                                    UserId: item.UserId,
-                                    Contents: $sce.trustAsHtml(item.Contents)
+                                    _id: item._id,
+                                    title: $sce.trustAsHtml(item.title),
+                                    introduction: $sce.trustAsHtml(item.introduction),
+                                    modified: new Date(item.modified),
+                                    //TopicId: item.TopicId,
+                                    creator: item.UserId,
+                                    content: $sce.trustAsHtml(item.content)
                                 });
                                 //if (persistenceService.getAction() === 0) {
                                 //persistenceService.action.save(item);

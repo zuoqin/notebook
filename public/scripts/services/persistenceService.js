@@ -8,7 +8,9 @@ angular.module('persistenceService', [])
     self.persistenceType = 'local';
     
     self.action = localPersistenceStrategy;
-    
+    self.deleteItem = function(id){
+        return localPersistenceStrategy.delete(id);
+    }
     self.ClearLocalDB = function () {
             var deferred = $q.defer();
             localPersistenceStrategy.clearAll().then(
@@ -54,7 +56,7 @@ angular.module('persistenceService', [])
                 remoteItem = rItem;
                 self.getLocalItem(id).then(function(lItem) {
                     localItem = lItem;
-                    if (localItem.modifiedDate > (new Date(remoteItem.modifiedDate))) {
+                    if (localItem.modified > (new Date(remoteItem.modified))) {
                         deferred.resolve(localItem);
                     } else {
                         deferred.resolve(remoteItem);

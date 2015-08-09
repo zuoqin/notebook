@@ -28,7 +28,7 @@ angular.module('storyCtrl', ['storyService'])
  //            //}
  //        })
 	// });
-
+	
 	vm.createStory = function(){
 		vm.message = '';
 		Story.create(vm.storyData).success(function(data){
@@ -38,6 +38,18 @@ angular.module('storyCtrl', ['storyService'])
 		});
 
 	};
+
+	vm.deleteStory = function(index){
+	    var id = $rootScope.stories[index]._id;
+	    persistenceService.action.delete(id).then(
+	        function(result) {
+	            $rootScope.stories.splice(index, 1);
+	        },
+	        function(error) {
+	            $scope.error = error;
+	        });		
+		//persistenceService.deleteItem(item);
+	}
 
 
     var getData = function () {
@@ -52,7 +64,7 @@ angular.module('storyCtrl', ['storyService'])
                             function() {
                                 persistenceService.setAction(1);
                                 items.sort(function(a, b) {
-                                    return new Date(b.modifiedDate) - new Date(a.modifiedDate);
+                                    return new Date(b.modified) - new Date(a.modified);
                                 });
                                 items.forEach(function (item) {
                                     //if (persistenceService.getAction() === 0) {

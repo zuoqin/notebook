@@ -12,11 +12,19 @@ angular.module('PersistenceStrategies', ['storyService'])
             //         }
             //         )
             //     .error(deferred.reject);
-            Story.update(item).then( function(){
-                deferred.resolve();
+            if (item._id !== undefined && item._id !== null) {
+                if (item._id.length > 24) {
+                    Story.create(item).success(function(data){
+                        deferred.resolve(data);
+                    });
                 }
-                
-                );
+                else{
+                    Story.update(item).then( function(){
+                        deferred.resolve();
+                    });                    
+                }
+            };
+
             return deferred.promise;
         },
         getAll: function() {
@@ -123,8 +131,11 @@ var svc = {
     },
     'delete': function (id) {
         var deferred = $q.defer();
-        localDBService.delete(svc.dbModel.objectStoreName, id)
-                .then(deferred.resolve, deferred.reject);
+        localDBService.delete(svc.dbModel.objectStoreName, id).then(
+            function(result){
+                    deferred.resolve(result)
+                },
+                     deferred.reject);
         return deferred.promise;
     }
 };

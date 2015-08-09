@@ -14,7 +14,7 @@
 <div class="row" ng-if="main.loggedIn">
 
 
-	<div class="col-md-12" ng-controller="StoryController as story">
+	<div class="col-md-12" ng-controller="StoryController as controller">
 		<!--
 		<div class="row">
 			<div class="panel panel-primary">
@@ -53,11 +53,11 @@
                 -->
                 </div>
                 <div class="panel-body">
-                    <p ng-bind-html="item.Introduction">{{story.introduction}}</p>
+                    <p ng-bind-html="story.introduction">{{story.introduction}}</p>
                     <p>
                         on {{story.modified.toLocaleString()}}
                     </p>
-                    <button class="btn btn-link" data-ng-click="delete($index)">Delete</button>
+                    <button class="btn btn-link" data-ng-click="controller.deleteStory($index)">Delete</button>
                     <a data-ng-href="/edit/{{story._id}}" class="btn btn-default">Edit</a>
                 </div>
             </div>
