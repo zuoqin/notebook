@@ -167,8 +167,9 @@ module.exports = function(app,express){
 				creator: req.decoded._id,
 				title: req.body.title,
 				introduction: req.body.introduction,
-				content: req.body.content
-
+				content: req.body.content,
+			 	modified: req.body.modified,
+			 	created: req.body.created
 			});
 
 			story.save(function(err, data){

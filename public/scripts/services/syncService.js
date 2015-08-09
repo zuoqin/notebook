@@ -44,11 +44,12 @@ angular.module('syncService', ['storyService'])
                         remotePersistenceStrategy.save(item).then(function (result) {
                             if (item._id !== undefined && item._id !== null) {
                                 if (item._id.length > 24) {
+                                    var newItem = result;
                                     localDBService.delete(dbModel.objectStoreName, item._id).then(
                                         function(result){
-                                            var newItem = item;
-                                            newItem._id = result._id;
-                                            newItem.creator = result.creator;
+                                            //var newItem = item;
+                                            //newItem._id = result._id;
+                                            //newItem.creator = result.creator;
                                             localDBService.insert(dbModel.objectStoreName, newItem, "_id").then(
                                             function(result){
 
