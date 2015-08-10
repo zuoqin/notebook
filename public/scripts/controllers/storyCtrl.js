@@ -111,7 +111,7 @@ angular.module('storyCtrl', ['storyService'])
 
                     deferred.resolve(true);
                     $rootScope.showList = true;
-                    
+                    $rootScope.showItems = true;
                     $scope.showEmptyListMessage = (items.length === 0);
 
 

@@ -121,7 +121,32 @@ module.exports = function(app,express){
 			//console.log(req.body.content);
 			if (req.body._id.length > 24) {
 				req.body._id = '';
-			};
+				console.log("new item will be insert");
+			}else{
+				Story.find({_id:req.body._id}, function(err, stories){
+					if (err) {
+						res.send(err);
+						return;
+					};
+					
+					if (stories !== undefined && stories !== null) {
+						if (stories.length > 0) {
+							if (stories[0].modified > req.body.modified) {
+								res.json(stories[0]);
+								console.log("newer item was found");
+								return;
+							}else{
+								console.log("older item was found");
+							}						
+						};
+					};
+				});
+
+			}
+
+
+
+
 			Story.update({_id:req.body._id},
 				{
 					title: req.body.title,

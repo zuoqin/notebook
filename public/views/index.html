@@ -44,8 +44,7 @@
 
 <header>
 
-	<div class="container" data-ng-show="isLoggedIn"
-         data-ng-controller="syncController">
+	<div class="container" data-ng-show="isLoggedIn">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="icon-bar"></span>
@@ -67,14 +66,29 @@
 			        <ul class="nav navbar-nav">
 			            
 			            <li><input type="text" id="tfq"   class="tftextinput2" name="q" size="21" maxlength="120" value="Search" ng-model="filtertext"><input type="submit"  value=" > " ng-click="search()" class="tfbutton2"></li>
-			            <li><button class="btndownload"  ng-click="download()"></button></li>
+			            <li><button class="btndownload" ng-disabled="!showList" data-ng-show="showItems" ng-click="download()"></button></li>
 			            <li><button class="btnupload"  data-ng-show="showItems" ng-disabled="!showList" ng-click="sync()"></button></li>
+			            <li><button class="btnlogout" data-ng-show="isLoggedIn" ng-click="main.doLogout()"></button></li>
 			        </ul>
 			    </nav>
 			</div> <!--lass="pull-right" -->
+			<!--
+		    <div class="pull-right" data-ng-hide="isLoggedIn">
+		        <nav>
+		            <ul class="nav navbar-nav">
+		                <li><button class="btnlogin" data-ng-hide="isLoggedIn" ng-click="main.doLogin()"></button></li>
+		            </ul>
+		        </nav>
+		    </div>
 
-
-
+			<div class="pull-right" data-ng-show="isLoggedIn">
+			    <nav>
+			        <ul class="nav navbar-nav">
+			            <li><button class="btnlogout" data-ng-show="isLoggedIn" ng-click="main.doLogout()"></button></li>
+			        </ul>
+			    </nav>
+			</div>
+			-->
         </div>
 
 

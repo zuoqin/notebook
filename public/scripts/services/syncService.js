@@ -2,7 +2,7 @@
 
 angular.module('syncService', ['storyService'])
 
-.factory('syncService', function(Story, Offline, localDBService, dbModel, $q, remotePersistenceStrategy){
+.factory('syncService', function(Story, Offline, localDBService, dbModel, $q, remotePersistenceStrategy, $window){
     var svc = {
         check: function() {
             var deferred = $q.defer();
@@ -40,33 +40,38 @@ angular.module('syncService', ['storyService'])
             var deferred = $q.defer();
             localDBService.open(dbModel).then(function() {
                 localDBService.getAll(dbModel.objectStoreName).then(function (items) {
+                    var lastDownload = new Date($window.localStorage.getItem('lastdownload'));
                     items.forEach(function(item) {
-                        remotePersistenceStrategy.save(item).then(function (result) {
-                            if (item._id !== undefined && item._id !== null) {
-                                if (item._id.length > 24) {
-                                    var newItem = result;
-                                    localDBService.delete(dbModel.objectStoreName, item._id).then(
-                                        function(result){
-                                            //var newItem = item;
-                                            //newItem._id = result._id;
-                                            //newItem.creator = result.creator;
-                                            localDBService.insert(dbModel.objectStoreName, newItem, "_id").then(
+                        if (item.modified > lastDownload) {
+                            remotePersistenceStrategy.save(item).then(function (result) {
+                                if (item._id !== undefined && item._id !== null) {
+                                    if (item._id.length > 24) {
+                                        var newItem = result;
+                                        localDBService.delete(dbModel.objectStoreName, item._id).then(
                                             function(result){
+                                                //var newItem = item;
+                                                //newItem._id = result._id;
+                                                //newItem.creator = result.creator;
+                                                localDBService.insert(dbModel.objectStoreName, newItem, "_id").then(
+                                                function(result){
 
-                                            })        
-                                        })
-                                    
-                                };
-                            }
-                            stored.push(1);
-                            if (stored.length == items.length) {
-                                deferred.resolve(true);
-                            }
-                            //    }, deferred.reject);
-                            //} else {
-                            //    deferred.reject('Unable to clear object store');
-                            //    }
-                        }, deferred.reject);
+                                                })        
+                                            })
+                                        
+                                    };
+                                }
+                                //    }, deferred.reject);
+                                //} else {
+                                //    deferred.reject('Unable to clear object store');
+                                //    }
+                            }, deferred.reject);
+
+                        };
+                        stored.push(1);
+                        if (stored.length == items.length) {
+                            deferred.resolve(true);
+                        }
+
                     });
                     
                 }, deferred.reject);

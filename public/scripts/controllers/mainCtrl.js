@@ -20,7 +20,9 @@ angular.module('mainCtrl',[])
 
 		vm.doLogout = function(){
 			Auth.logout();
-			$location.path('/logout');
+			$rootScope.showItems = false;
+			$rootScope.isLoggedIn = false;
+			$location.path('/login');
 		};
 
 		vm.doLogin = function(){
@@ -37,6 +39,8 @@ angular.module('mainCtrl',[])
 
 					if(data.success)
 					{
+						$rootScope.showItems = false;
+						$rootScope.isLoggedIn = true;						
 						$location.path('/');
 					}
 					else

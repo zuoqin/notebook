@@ -85,8 +85,23 @@ var svc = {
             } else {
                 svc.exists(id).then(function(doesExist) {
                     if (doesExist) {
-                        localDBService.update(svc.dbModel.objectStoreName, item, id)
-                            .then(deferred.resolve, deferred.reject);
+
+
+                        localDBService.open(svc.dbModel).then(function() {
+                            localDBService.getById(svc.dbModel.objectStoreName, id)
+                                .then(function (res) {
+                                    if (res) {
+                                        if (res.modified < item.modified) {
+                                            localDBService.update(svc.dbModel.objectStoreName, item, id)
+                                                .then(deferred.resolve, deferred.reject);
+
+                                        }else{
+                                            deferred.resolve(true);
+                                        }
+                                    }
+                                        
+                                    }, deferred.reject);
+                        }, deferred.reject);
                     } else {
                         localDBService.insert(svc.dbModel.objectStoreName, item, '_id')
                             .then(deferred.resolve, deferred.reject);
