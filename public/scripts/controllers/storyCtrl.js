@@ -113,7 +113,9 @@ angular.module('storyCtrl', ['storyService'])
                     $rootScope.showList = true;
                     $rootScope.showItems = true;
                     $scope.showEmptyListMessage = (items.length === 0);
-
+                    $rootScope.stories.sort(function(a, b) {
+                        return new Date(b.modified) - new Date(a.modified);
+                    });
 
                 },
                 function (error) {
