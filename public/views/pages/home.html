@@ -12,7 +12,11 @@
 <div data-ng-hide="showList">
     <img src="/images/loader.gif" alt="loading..." title="loading..." />
 </div>
-
+<div data-ng-hide="showList">
+	<div class="alert alert-{{alert.type}} animated main-alert" ng-class="{'flipInY':alert.show, 'flipOutY':!alert.show, 'alert-hidden':!alert.hasBeenShown}"><strong>{{alert.title}}</strong>
+		{{alert.message}}
+	</div>
+</div>
 <div class="row" ng-if="main.loggedIn">
 
 

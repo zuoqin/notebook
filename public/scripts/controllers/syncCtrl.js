@@ -95,6 +95,7 @@ function(Story, $rootScope, $scope, $timeout, syncService, Auth, persistenceServ
     }
     $scope.download = function () {
         $rootScope.showList = false;
+        $rootScope.stories =[];
         Story.allStory().success(function(data)
         {
             $rootScope.stories =[];
@@ -104,26 +105,44 @@ function(Story, $rootScope, $scope, $timeout, syncService, Auth, persistenceServ
             $window.localStorage.setItem('lastdownload', curDate);
             //persistenceService.ClearLocalDB().then(function() {
 
-            stories.forEach(function (item) {
-                persistenceService.action.save(item).then(function() {
-                    $rootScope.stories.push({
-                        _id: item._id,
-                        title: $sce.trustAsHtml(item.title),
-                        introduction: $sce.trustAsHtml(item.introduction),
-                        modified: new Date(item.modified),
-                        created: new Date(item.created),
-                        //topic: item.topic,
-                        creator: item.creator,
-                        content: $sce.trustAsHtml(item.content)
+            
+            var type = "warning";
+            var message = "Downloaded items";
+            var title = "Download";
+            $rootScope.alert = {
+                hasBeenShown: true,
+                show:true,
+                type:type,
+                message:message,
+                title:title
+            };
+
+
+            setTimeout(function () {
+                $rootScope.$apply(function () {
+                    stories.forEach(function (item) {
+                        persistenceService.action.save(item).then(function() {
+                            $rootScope.stories.push({
+                                _id: item._id,
+                                title: $sce.trustAsHtml(item.title),
+                                introduction: $sce.trustAsHtml(item.introduction),
+                                modified: new Date(item.modified),
+                                created: new Date(item.created),
+                                //topic: item.topic,
+                                creator: item.creator,
+                                content: $sce.trustAsHtml(item.content)
+                            });
+
+                        });
                     });
-
+                    $rootScope.stories.sort(function(a, b) {
+                        return new Date(b.modified) - new Date(a.modified);
+                    });
+                    $rootScope.alert.show = false;
+                    
+                    $rootScope.showList = true;
                 });
-            });
-            $rootScope.stories.sort(function(a, b) {
-                return new Date(b.modified) - new Date(a.modified);
-            });
-            $rootScope.showList = true;
-
+            }, 1000);
         });
     }
 
