@@ -1,5 +1,5 @@
 ﻿CACHE MANIFEST
-# 1.1
+# 1.2
 
 CACHE:
 /
@@ -31,7 +31,7 @@ CACHE:
 /scripts/angular-route.min.js
 /scripts/lodash.underscore.min.js
 /Scripts/uuid.js
-/Scripts/math.uuid.js
+/scripts/math.uuid.js
 /scripts/offline.min.js
 
 

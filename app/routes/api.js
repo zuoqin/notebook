@@ -85,7 +85,7 @@ module.exports = function(app,express){
 
 
 	api.use(function(req,res,next){
-		console.log("Somebody just call app");
+		//console.log("Somebody just call app");
 
 		var token = req.body.token || req.param('token') || req.headers['x-access-token'];
 
@@ -108,7 +108,7 @@ module.exports = function(app,express){
 
 	api.route('/')
 		.put(function(req, res){
-			console.log("Inside put ");
+			//console.log("Inside put ");
 			//Story.find({_id: req.decoded._id}, function(err, stories){
 			//	if (err) {
 			//		res.send(err);
@@ -133,12 +133,12 @@ module.exports = function(app,express){
 				},
 				{ upsert: true }, function(err, data){
 					if (err) {
-						console.log(err);
+						//console.log(err);
 						res.send(err);
 						return;
 					};
 
-					console.log(data);
+					//console.log(data);
 					res.json(data);
 				}
 			)
