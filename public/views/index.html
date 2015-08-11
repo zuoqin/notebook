@@ -67,7 +67,7 @@
 				    <nav>
 				        <ul class="nav navbar-nav">
 				            
-				            <li><input type="text" id="tfq"   class="tftextinput2" name="q" size="21" maxlength="120" value="Search" ng-model="filtertext"><input type="submit"  value=" > " ng-click="search()" class="tfbutton2"></li>
+				            <li><input data-ng-show="showItems"  type="text" id="tfq"   class="tftextinput2" name="q" size="21" maxlength="120" value="Search" ng-model="filtertext"><input data-ng-show="showItems" type="submit"  value=" > " ng-click="search()" class="tfbutton2"></li>
 				            <li><button class="btndownload" ng-disabled="!showList" data-ng-show="showItems" ng-click="download()"></button></li>
 				            <li><button class="btnupload"  data-ng-show="showItems" ng-disabled="!showList" ng-click="sync()"></button></li>
 				            <li><button class="btnlogout" data-ng-show="isLoggedIn" ng-click="main.doLogout()"></button></li>

@@ -16,13 +16,15 @@
         <div class="col-sm-12">
             <form class="form-horizontal" role="form">
                 <div>
-                    <div style="float: left; width: 50%;">
+                    <div style="float: left; width: 100%;">
                         <div class="form-group">
                         <!--
                         <label for="Contents" class="col-sm-2 control-label">Title</label>
                             -->
-                            <div class="col-sm-11">
-                                <label for="content">Title</label>
+                            <div class="col-sm-12">
+                                <label for="title">Title</label>
+                            </div>
+                            <div class="col-sm-12">
                                 <textarea data-ng-model="item.title"
                                           name="title"
                                           id="title"
@@ -37,8 +39,10 @@
                         <!--
                         <label for="Contents" class="col-sm-2 control-label">Short Description</label>
                             -->
-                            <div class="col-sm-11">
-                                <label for="content">Short Description</label>
+                            <div class="col-sm-12">
+                                <label for="introduction">Short Description</label>
+                            </div>
+                            <div class="col-sm-12">
                                 <textarea data-ng-model="item.introduction"
                                           name="introduction"
                                           id="introduction"
@@ -46,14 +50,16 @@
                                           placeholder="Short Description"></textarea>
                             </div>
                         </div>
-                    </div>
-                    <div style="float: left; width: 50%;">
+
+
                         <div class="form-group">
                         <!--
                         <label for="Contents" class="col-sm-2 control-label">Contents</label>
                             -->
                             <div class="col-sm-12">
                                 <label for="content">Contents</label>
+                            </div>
+                            <div class="col-sm-12">
                                 <textarea data-ng-model="item.content"
                                           name="content"
                                           id="content"
@@ -61,8 +67,12 @@
                                           placeholder="Contents"></textarea>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
+                    <!--
+                    <div style="float: left; width: 50%;">
+                    </div>
+					-->
                 </div>
 
 

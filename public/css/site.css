@@ -191,7 +191,9 @@ textarea.form-control {
 		clear:both;
 	}
 
-
+.alert-success{
+    margin-top: 100px;
+}
 .main-alert{
     max-width: 400px;
     margin: 0 auto;

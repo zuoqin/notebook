@@ -126,7 +126,7 @@ angular.module('storyCtrl', ['storyService'])
     };
 
     var lazyGetData = _.debounce(getData, 1000);
-
+    $rootScope.stories = [];
 	//if ($rootScope.showItems === true) {
 	    lazyGetData();
 	//}
