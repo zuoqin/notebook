@@ -1,82 +1,92 @@
-angular.module('authService', [])
+(function () {
+    'use strict';
+    var app = angular.module('MyApp');
+    
+    app.factory('Auth',
+    ['$http', '$q', 'AuthToken',
+        function($http, $q, AuthToken){
+			var authFactory = {};
+			authFactory.login = function(username, password){
+				return $http.post('/api/login', {
+					username: username,
+					password: password
+				})
+				.success(function(data){
+					AuthToken.setToken(data.token);
+					return data;
+				})
+			}
 
-.factory('Auth', function($http, $q, AuthToken){
-	var authFactory = {};
-	authFactory.login = function(username, password){
-		return $http.post('/api/login', {
-			username: username,
-			password: password
-		})
-		.success(function(data){
-			AuthToken.setToken(data.token);
-			return data;
-		})
-	}
+
+			authFactory.logout = function(){
+				AuthToken.setToken();
+			}
+
+			authFactory.isLoggedIn = function(){
+				if (AuthToken.getToken()) {
+					return true;
+				} else{
+					return false;
+				}
+			};
+
+			authFactory.getUser = function(){
+				if (AuthToken.getToken()) {
+					return $http.get('/api/me')
+				} else{
+					return $q.reject({message: "User has no token"});
+				}
+			};
+
+			return authFactory;
+        }
+    ]);
 
 
-	authFactory.logout = function(){
-		AuthToken.setToken();
-	}
-
-	authFactory.isLoggedIn = function(){
-		if (AuthToken.getToken()) {
-			return true;
-		} else{
-			return false;
+    app.factory('AuthToken',
+    ['$window', function($window){
+		var authTokenFactory = {};
+		authTokenFactory.getToken = function(){
+			return $window.localStorage.getItem('token');
 		}
-	};
 
-	authFactory.getUser = function(){
-		if (AuthToken.getToken()) {
-			return $http.get('/api/me')
-		} else{
-			return $q.reject({message: "User has no token"});
+		authTokenFactory.setToken = function(token){
+			if (token) {
+				$window.localStorage.setItem('token', token);
+			} else{
+				$window.localStorage.removeItem('token');
+			}
 		}
-	};
 
-	return authFactory;
-})
-
+		return authTokenFactory;
+    }]);
 
 
+    app.factory('AuthInterceptor',
+    ['$q', '$location', 'AuthToken',
+        function($q, $location, AuthToken){
+			var interceptorFactory = {};
 
-.factory('AuthToken', function($window){
-	var authTokenFactory = {};
-	authTokenFactory.getToken = function(){
-		return $window.localStorage.getItem('token');
-	}
+			interceptorFactory.request = function(config){
+				var token = AuthToken.getToken();
 
-	authTokenFactory.setToken = function(token){
-		if (token) {
-			$window.localStorage.setItem('token', token);
-		} else{
-			$window.localStorage.removeItem('token');
-		}
-	}
+				if (token) {
+					config.headers['x-access-token'] = token;
+				};
 
-	return authTokenFactory;
-})
+				return config;
+			};
 
+			interceptorFactory.responseError = function(response){
+				if (response.status == 403) {
+					$location.path('login');
+				};
+				return $q.reject(response);
+			};
 
-.factory('AuthInterceptor', function($q, $location, AuthToken){
-	var interceptorFactory = {};
+			return interceptorFactory;
+        }
+    ]);
 
-	interceptorFactory.request = function(config){
-		var token = AuthToken.getToken();
-
-		if (token) {
-			config.headers['x-access-token'] = token;
-		};
-
-		return config;
-	};
-
-	interceptorFactory.responseError = function(response){
-		if (response.status == 403) {
-			$location.path('login');
-		};
-		return $q.reject(response);
-	};
-
-	return interceptorFactory;
-});
+	
+}());

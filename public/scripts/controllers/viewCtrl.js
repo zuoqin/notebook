@@ -1,9 +1,11 @@
-﻿
-'use strict';
-angular.module('viewCtrl', [])//, 'persistenceService'])
-
-.controller('viewController', function ($scope, $sce, $location, persistenceService, $routeParams
-            ) {
+﻿(function() {
+    'use strict';
+    var app = angular.module('MyApp');
+    app.controller('viewController',
+    [
+        '$scope', '$sce', '$location', 'persistenceService', '$routeParams',
+        function ($scope, $sce, $location, persistenceService, $routeParams)
+        {
             $scope.showSuccessMessage = false;
             $scope.showFillOutFormMessage = false;
             $scope.isOnline = true;
@@ -40,6 +42,6 @@ angular.module('viewCtrl', [])//, 'persistenceService'])
                         $scope.error = error;
                     });
             }
-    });
+       }]);
 
-
+}());

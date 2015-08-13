@@ -1,5 +1,10 @@
-angular.module('mainCtrl',[])
-	.controller('MainController', function($rootScope, $location, Auth){
+(function() {
+	'use strict';
+	var app = angular.module('MyApp');
+	app.controller('MainController',
+    [
+        '$rootScope', '$location','Auth',
+        function($rootScope, $location, Auth){
 		var vm = this;
 
         
@@ -49,4 +54,6 @@ angular.module('mainCtrl',[])
 					};
 				});
 		}
-	})
+	}]);
+
+}());

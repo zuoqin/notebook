@@ -1,17 +1,25 @@
-angular.module('storyService', [])
+(function () {
+    'use strict';
+    var app = angular.module('MyApp');
 
-.factory('Story', function($http){
-	var storyFactory={};
+    app.factory('Story',
+	[
+        '$http',
+        function($http){
+		var svc = {
 
-	storyFactory.create = function(storyData){
-		return $http.post('/api', storyData);
-	};
+			create: function(storyData){
+				return $http.post('/api', storyData);
+			},
 
-	storyFactory.allStory = function(){
-		return $http.get('/api');
-	}
-	storyFactory.update = function(storyData){
-		return $http.put('/api', storyData);
-	};
-	return storyFactory;
-})
+			allStory:  function(){
+				return $http.get('/api');
+			},
+			update: function(storyData){
+				return $http.put('/api', storyData);
+			},
+		};
+		return svc;
+     	}
+   ]);
+}());
