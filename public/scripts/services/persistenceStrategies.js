@@ -3,7 +3,7 @@
     var app = angular.module('MyApp');
 
     app.factory('remotePersistenceStrategy',
-    ['$http', '$q',
+    ['Story', '$http', '$q',
         function(Story, $http, $q){
         var svc = {
             save: function(item) {

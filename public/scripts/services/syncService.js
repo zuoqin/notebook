@@ -44,7 +44,7 @@
                         localDBService.getAll(dbModel.objectStoreName).then(function (items) {
                             var lastDownload = new Date($window.localStorage.getItem('lastdownload'));
                             items.forEach(function(item) {
-                                if (item.modified > lastDownload) {
+                                if (new Date(item.modified) > lastDownload) {
                                     remotePersistenceStrategy.save(item).then(function (result) {
                                         if (item._id !== undefined && item._id !== null) {
                                             if (item._id.length > 24) {
