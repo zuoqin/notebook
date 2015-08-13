@@ -209,7 +209,7 @@ module.exports = function(app,express){
 	
 		.get(function(req,res){
 
-			Story.find({}, function(err, stories){
+			Story.find({creator:req.decoded._id}, function(err, stories){
 				if (err) {
 					res.send(err);
 					return;
