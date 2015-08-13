@@ -98,7 +98,8 @@
                                         localDBService.getById(svc.dbModel.objectStoreName, id)
                                             .then(function (res) {
                                                 if (res) {
-                                                    if (res.modified < item.modified) {
+                                                    
+                                                    if (new Date(res.modified) < item.modified) {
                                                         localDBService.update(svc.dbModel.objectStoreName, item, id)
                                                             .then(deferred.resolve, deferred.reject);
 
