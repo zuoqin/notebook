@@ -1,13 +1,22 @@
-angular.module('userService', [])
+(function () {
+    'use strict';
+    var app = angular.module('MyApp');
 
-.factory('User', function($http){
-	var userFactory = {};
+    app.factory('User',
+    ['$http',
+    function($http){
+		var svc = {
+		create: function(userdata){
+			return $http.post('/api/signup', userdata);
+		},
 
-	userFactory.create = function(userdata){
-		return $http.post('/api/signup', userdata);
+		all: function(){
+			return $http.get('/api/users');	
+		}
 	};
+    return svc;
+    }
+    ]);
 
-	userFactory.all = function(){
-		return $http.get('/api/users');	
-	};
-})
+
+}());

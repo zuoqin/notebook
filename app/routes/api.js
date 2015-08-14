@@ -208,8 +208,11 @@ module.exports = function(app,express){
 		})
 	
 		.get(function(req,res){
+			var ObjectId = require('mongoose').Types.ObjectId; 
+			var query = { creator: new ObjectId(req.decoded._id) };
 
-			Story.find({creator:req.decoded._id}, function(err, stories){
+			console.log(query);
+			Story.find(query, function(err, stories){
 				if (err) {
 					res.send(err);
 					return;
