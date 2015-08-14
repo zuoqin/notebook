@@ -13,7 +13,8 @@ CACHE:
 /views/pages/signup.html
 /views/index.html
 
-/css/bootstrap.min.css
+/css/bootstrap-theme.css
+/css/bootstrap.css
 /css/animate.css
 /css/site.css
 /css/downloadbtn.jpg
@@ -24,7 +25,7 @@ CACHE:
 /css/offline-language-english.css
 
 
-
+/scripts/bootstrap.js
 /scripts/angular.min.js
 /scripts/angular-cookies.min.js
 /scripts/angular-mocks.js
