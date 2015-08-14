@@ -73,7 +73,7 @@ input {
 select,
 textarea {
     /*max-width: 1080px;*/
-    max-height: 500px;
+    max-height: 200px;
 }
 input.form-control-search {
     width: 150px;
@@ -120,8 +120,11 @@ textarea.form-control {
     padding-left: 15px;
     padding-right: 15px;
 }
-.main-wrapper{
+.editwrapper{
     margin-top: 75px;
+}
+.main-wrapper{
+    margin-top: 0px;
 }
 .offline-ui {
     z-index: 100000;
@@ -203,6 +206,10 @@ textarea.form-control {
     visibility: hidden;
 }
 
+.alert-info{
+    /*padding-top: 1px;
+    margin: 0px;*/
+}
 
  body {
 }

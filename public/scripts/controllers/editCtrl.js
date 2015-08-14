@@ -41,8 +41,8 @@
                 };
 
                 var returnValue =
-                    hasValue($scope.item.introduction)
-                        && hasValue($scope.item.content);
+                    hasValue($scope.item.title);
+                        //&& hasValue($scope.item.content);
                 return returnValue;
             };
 

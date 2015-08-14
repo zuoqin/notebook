@@ -4,13 +4,18 @@
         <strong>Success!</strong> item saved.
     </div>
 
-    <div class="alert alert-info" data-ng-show="showFillOutFormMessage">
-        <strong>Note:</strong> You need to fill out the form before attempting to save a new item.
+    <div class="editwrapper" data-ng-show="showFillOutFormMessage">
+        <div class="alert alert-info">
+            <strong>Note:</strong> You need to fill out form title before attempting to save a new item.
+        </div>
     </div>
 
 
 
+
         
+    <div class="editwrapper" data-ng-hide="showFillOutFormMessage">
+    </div>
 
     <div class="row main-wrapper" data-ng-hide="showSuccessMessage">
         <div class="col-sm-12">
