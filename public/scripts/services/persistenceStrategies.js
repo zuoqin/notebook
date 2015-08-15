@@ -99,7 +99,7 @@
                                             .then(function (res) {
                                                 if (res) {
                                                     
-                                                    if (new Date(res.modified) < item.modified) {
+                                                    if (new Date(res.modified) < new Date(item.modified)) {
                                                         localDBService.update(svc.dbModel.objectStoreName, item, id)
                                                             .then(deferred.resolve, deferred.reject);
 
