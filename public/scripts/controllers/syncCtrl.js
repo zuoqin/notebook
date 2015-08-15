@@ -146,14 +146,18 @@
                                         content: $sce.trustAsHtml(item.content)
                                     });
 
+                                    if ($rootScope.stories.length === data.length) {
+                                        $rootScope.stories.sort(function(a, b) {
+                                            return new Date(b.modified) - new Date(a.modified);
+                                        });
+                                        $rootScope.alert.show = false;
+                                        
+                                        $rootScope.showList = true;
+
+                                    };
+
                                 });
                             });
-                            $rootScope.stories.sort(function(a, b) {
-                                return new Date(b.modified) - new Date(a.modified);
-                            });
-                            $rootScope.alert.show = false;
-                            
-                            $rootScope.showList = true;
                         });
                     }, 1000);
                 });
