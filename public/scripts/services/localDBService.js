@@ -138,16 +138,26 @@
                 var origData = e.target.result;
                 if (origData != undefined) {
                     data.insertDate = origData.insertDate;
-                    if (origData.modified === null || origData.modified === undefined) {
+                    if (data.modified === null || data.modified === undefined) {
                         data.modified = new Date();    
-                    } else{
-                        data.modified = origData.modified;
-                    }
-                    
-                    updateRequest = store.put(data);
-                    updateRequest.onsuccess = function(e) {
-                        deferred.resolve(data, e);
                     };
+                    if ( origData.modified !== null && origData.modified !== undefined) {
+                        if (data.modified < origData.modified) {
+                             deferred.resolve(origData, e);
+                             return;
+                        }
+                    };
+                    if (data.modified >= origData.modified) {
+                        updateRequest = store.put(data);
+                        updateRequest.onsuccess = function(e) {
+                            deferred.resolve(data, e);
+                        };                        
+                    }
+                    else
+                    {
+                        deferred.resolve(data, e);
+                    }
+
                 }
             };
             return deferred.promise;
