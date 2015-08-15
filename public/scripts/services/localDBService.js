@@ -142,12 +142,12 @@
                         data.modified = new Date();    
                     };
                     if ( origData.modified !== null && origData.modified !== undefined) {
-                        if (data.modified < origData.modified) {
+                        if (new Date(data.modified) < new Date(origData.modified)) {
                              deferred.resolve(origData, e);
                              return;
                         }
                     };
-                    if (data.modified >= origData.modified) {
+                    if (new Date(data.modified) >= new Date(origData.modified)) {
                         updateRequest = store.put(data);
                         updateRequest.onsuccess = function(e) {
                             deferred.resolve(data, e);
