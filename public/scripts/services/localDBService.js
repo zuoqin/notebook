@@ -138,7 +138,12 @@
                 var origData = e.target.result;
                 if (origData != undefined) {
                     data.insertDate = origData.insertDate;
-                    data.modified = new Date();
+                    if (origData.modified === null || origData.modified === undefined) {
+                        data.modified = new Date();    
+                    } else{
+                        data.modified = origData.modified;
+                    }
+                    
                     updateRequest = store.put(data);
                     updateRequest.onsuccess = function(e) {
                         deferred.resolve(data, e);
