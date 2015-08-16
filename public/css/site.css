@@ -14,21 +14,28 @@
     background: url("uploadbtn.jpg") no-repeat;
     width: 90px;
     height: 32px;
+    margin-left: 5px;
 }
 .btndownload {
     background: url("downloadbtn.jpg") no-repeat;
     width: 89px;
     height: 32px;
+    margin-left: 5px;
 }
 .btnlogout {
     background: url("logoutbtn.jpg") no-repeat;
     width: 90px;
     height: 32px;
+    margin-left: 5px;
 }
 .btnlogin {
     background: url("loginbtn.jpg") no-repeat;
     width: 90px;
     height: 32px;
+}
+
+.dropdown-toggle{
+    margin-top: 4px;
 }
 
 @media (min-width: 1200px) {
@@ -39,6 +46,7 @@
         padding: 0px;
     }
 }
+
 
 @media (min-width: 768px) {
     .container {
@@ -129,7 +137,9 @@ textarea.form-control {
 .offline-ui {
     z-index: 100000;
 }
- 
+.navbar-fixed-top{
+    padding-top: 5px;
+}
 #sync-container {
     position: fixed;
     bottom: 25px;

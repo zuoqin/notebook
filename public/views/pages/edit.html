@@ -73,6 +73,15 @@
                             </div>
                         </div>
 
+
+
+
+<div  data-ng-repeat="image in item.images">
+    <input id="{{image.id}}" type="file" onchange="angular.element(this).scope().encodeImageFileAsURL(this)"  ng-model="image"/>
+    <div id="{{image.pic}}" data-ng-model="image.data "></div>
+</div>
+
+
                     </div>
                     <!--
                     <div style="float: left; width: 50%;">

@@ -14,7 +14,7 @@ CACHE:
 /views/index.html
 
 /css/bootstrap-theme.css
-/css/bootstrap.css
+/css/bootstrap.min.css
 /css/animate.css
 /css/site.css
 /css/downloadbtn.jpg
@@ -24,8 +24,9 @@ CACHE:
 /css/offline-theme-chrome.css
 /css/offline-language-english.css
 
-
-/scripts/bootstrap.js
+/scripts/jquery.js
+/scripts/jquery.min.js
+/scripts/bootstrap.min.js
 /scripts/angular.min.js
 /scripts/angular-cookies.min.js
 /scripts/angular-mocks.js
@@ -38,7 +39,7 @@ CACHE:
 
 
 /scripts/app.js
-/scripts/app.routes.js
+# /scripts/app.routes.js
 /scripts/services/localDBService.js
 /scripts/services/persistenceService.js
 /scripts/services/persistenceStrategies.js

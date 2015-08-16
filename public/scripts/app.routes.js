@@ -22,14 +22,14 @@ angular.module('appRoutes', ['ngRoute'])
 			controller: 'viewController'
 		})
 
-		.when('/edit/:id', {
-			templateUrl: '/views/pages/edit.html',
+		/*.when('/edit/:id', {
+			templateUrl: '/views/pages/edit.html'/*,
 			controller: 'editController'
-		})
+		})*/
 
-		.when('/new', {
-			templateUrl: '/views/pages/edit.html',
-			controller: 'editController'
+		.when('/edit2/:id', {
+			templateUrl: '/views/pages/edit.html'/*,
+			controller: 'editController'*/
 		})
 	$locationProvider.html5Mode(true);
 })

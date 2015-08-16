@@ -62,7 +62,7 @@ angular.module('MyApp', [ 'ngResource', 'ngCookies', 'ngRoute'])
             controller: 'editController'
         })
 
-        .when('/new', {
+        .when('/new/:topic', {
             templateUrl: '/views/pages/edit.html',
             controller: 'editController'
         })

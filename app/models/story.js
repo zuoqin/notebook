@@ -8,7 +8,11 @@ var StorySchema = new Schema({
 	introduction: String,
 	content: String,
 	modified: {type: Date, default: Date.now}, 
-	created: {type: Date, default: Date.now}
+	created: {type: Date, default: Date.now},
+	topic: String,
+	//images: { type : Array , "default" : [] }
+	images: [{ data: Buffer, contentType: String, id: String, pic: String }]
+	//img: 
 });
 
 module.exports = mongoose.model('Story', StorySchema);

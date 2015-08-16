@@ -25,9 +25,12 @@
 				vm.userData = {};
 
 				vm.message = response.data.message;
-				$window.localStrorage.setItem('token', response.data.token);
+				if ($window !== undefined && $window.localStrorage !== undefined) {
+					$window.localStrorage.setItem('token', response.data.token);	
+				};
+				
 
-				$location.path('/');
+				$location.path('/login');
 			});
 		};
     }]);
