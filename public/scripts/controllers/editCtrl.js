@@ -23,11 +23,12 @@
                     function(item) {
                         $scope.item = item;
                         if ($scope.item.images !== undefined && $scope.item.images.length > 0) {
-                            var newImage = document.createElement('img');
-                            newImage.src = $scope.item.img.data;
+                            //var newImage = document.createElement('img');
+                            //newImage.src = $scope.item.images[0].data;
 
-                            document.getElementById("imgTest").innerHTML = newImage.outerHTML;                            
-                        }else{
+                            //document.getElementById($scope.item.images[0].pic).innerHTML = newImage.outerHTML;                            
+                        }
+                        else{
                             var images = new Array({ data: null, contentType: null, id:"inputFileToLoad", pic:"imgTest"});
                             $scope.item.images = images;
                         }
@@ -37,8 +38,9 @@
                     function(error) {
                         $scope.error = error;
                     });
-            } else{
-                var images = new Array({ data: null, contentType: null, id:"inputFileToLoad", pic:"imgTest"});
+            }
+            else{
+                var images = new Array();// data: null, contentType: null, id:"inputFileToLoad", pic:"imgTest"});
                 $scope.item.images = images;                
             }
 
@@ -62,7 +64,7 @@
 
             $scope.encodeImageFileAsURL = function(){
 
-                var filesSelected = document.getElementById(this.image.id).files;
+                var filesSelected = document.getElementById("upload_input").files;
                 if (filesSelected.length > 0)
                 {
                     var fileToLoad = filesSelected[0];
@@ -75,14 +77,21 @@
                         var newImage = document.createElement('img');
                         newImage.src = srcData;
 
-                        document.getElementById(this.image.pic).innerHTML = newImage.outerHTML;
+                        //document.getElementById($scope.item.images[0].pic).innerHTML = newImage.outerHTML;
                         //alert("Converted Base64 version is "+document.getElementById("imgTest").innerHTML);
                         //console.log("Converted Base64 version is "+document.getElementById("imgTest").innerHTML);
-                        if ($scope.item.img === undefined) {
-                            $scope.item.img = { data: null, contentType: null };
-                        };
-                        $scope.item.img.data = srcData;
-                        $scope.item.img.contentType = 'image/png';   
+                        if ($scope.item.images === undefined || $scope.item.images.length === 0) {
+                            $scope.item.images = [{ data: srcData, contentType: 'image/png' }];
+                        }
+                        else
+                        {
+                            $scope.item.images.unshift({data:srcData, contentType:'image/png'});    
+                        }
+
+                        
+
+                        //$scope.item.images[0].data = srcData;
+                        //$scope.item.images[0].contentType = 'image/png';   
                     }
                     fileReader.readAsDataURL(fileToLoad);
                 }

@@ -58,8 +58,8 @@ angular.module('MyApp', [ 'ngResource', 'ngCookies', 'ngRoute'])
         })
 
         .when('/edit/:id', {
-            templateUrl: '/views/pages/edit.html',
-            controller: 'editController'
+            templateUrl: '/views/pages/edit.html'/*,
+            controller: 'editController'*/
         })
 
         .when('/new/:topic', {

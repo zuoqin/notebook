@@ -13,6 +13,10 @@ CACHE:
 /views/pages/signup.html
 /views/index.html
 
+fonts/glyphicons-halflings-regular.woff2
+fonts/glyphicons-halflings-regular.ttf
+fonts/glyphicons-halflings-regular.woff
+
 /css/bootstrap-theme.css
 /css/bootstrap.min.css
 /css/animate.css
@@ -60,7 +64,7 @@ CACHE:
 /images/loader.gif
 /images/logo-sm.png
 #/images/homes/no-image-large.png
-#/images/main-lg.jpg
+# /images/main-lg.jpg
 
 NETWORK:
 /api
