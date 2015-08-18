@@ -84,22 +84,20 @@
                         var newImage = document.createElement('img');
                         newImage.src = srcData;
 
-                        //document.getElementById($scope.item.images[0].pic).innerHTML = newImage.outerHTML;
-                        //alert("Converted Base64 version is "+document.getElementById("imgTest").innerHTML);
-                        //console.log("Converted Base64 version is "+document.getElementById("imgTest").innerHTML);
+                        var images = $scope.item.images;
                         if ($scope.item.images === undefined || $scope.item.images.length === 0) {
-                            $scope.item.images = [{ data: srcData, contentType: 'image/png' }];
+                            images = [{ data: srcData, contentType: 'image/png' }];
                         }
                         else
                         {
-                            $scope.item.images.unshift({data:srcData, contentType:'image/png'});    
+                            images.unshift({data:srcData, contentType:'image/png'});    
                         }
 
-                        
-
-                        //$scope.item.images[0].data = srcData;
-                        //$scope.item.images[0].contentType = 'image/png';   
-                    }
+                        setTimeout(function () {
+                            $scope.$apply(function () {
+                                $scope.item.images = images;
+                            });
+                        }, 100);                    }
                     fileReader.readAsDataURL(fileToLoad);
                 }
             };
