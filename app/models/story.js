@@ -11,7 +11,7 @@ var StorySchema = new Schema({
 	created: {type: Date, default: Date.now},
 	topic: String,
 	//images: { type : Array , "default" : [] }
-	images: [{ data: Buffer, contentType: String, id: String, pic: String }]
+	images: [{ data: String, contentType: String, id: String, pic: String }]
 	//img: 
 });
 

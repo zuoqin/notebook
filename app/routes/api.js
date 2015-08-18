@@ -154,7 +154,8 @@ module.exports = function(app,express){
 				 	content: req.body.content,
 				 	modified: req.body.modified,
 				 	created: req.body.created,
-				 	creator: req.decoded._id
+				 	creator: req.decoded._id,
+				 	images: req.body.images
 				},
 				{ upsert: true }, function(err, data){
 					if (err) {
@@ -194,7 +195,8 @@ module.exports = function(app,express){
 				introduction: req.body.introduction,
 				content: req.body.content,
 			 	modified: req.body.modified,
-			 	created: req.body.created
+			 	created: req.body.created,
+			 	images: req.body.images
 			});
 
 			story.save(function(err, data){
@@ -211,13 +213,15 @@ module.exports = function(app,express){
 			var ObjectId = require('mongoose').Types.ObjectId; 
 			var query = { creator: new ObjectId(req.decoded._id) };
 
-			console.log(query);
+			
 			Story.find(query, function(err, stories){
 				if (err) {
 					res.send(err);
 					return;
 				};
 				res.json(stories);
+				console.log("Total found stories:");
+				console.log(stories.length);
 			});
 		});
 

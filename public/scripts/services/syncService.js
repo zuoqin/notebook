@@ -23,18 +23,18 @@
                 monitorUp: function() {
 
                     var deferred = $q.defer();
-                    Offline.on('confirmed-up', function() {
-                        svc.check().then(function(result) {
-                            deferred.resolve(result);
-                        }, deferred.reject);
-                    });
+                    // Offline.on('confirmed-up', function() {
+                    //     svc.check().then(function(result) {
+                    //         deferred.resolve(result);
+                    //     }, deferred.reject);
+                    // });
                     return deferred.promise;
                 },
                 monitorDown: function() {
                     var deferred = $q.defer();
-                    Offline.on('confirmed-down', function() {
-                        deferred.resolve(false);
-                    });
+                    // Offline.on('confirmed-down', function() {
+                    //     deferred.resolve(false);
+                    // });
                     return deferred.promise;
                 },
                 sync: function () {

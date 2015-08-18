@@ -132,16 +132,16 @@
 
             }
 
-            Offline.on('confirmed-down', function () {
-                $scope.$apply(function () {
-                    $scope.isOnline = false;
-                });
-            });
-            Offline.on('confirmed-up', function () {
-                $scope.$apply(function() {
-                    $scope.isOnline = true;
-                });
-            })
+            // Offline.on('confirmed-down', function () {
+            //     $scope.$apply(function () {
+            //         $scope.isOnline = false;
+            //     });
+            // });
+            // Offline.on('confirmed-up', function () {
+            //     $scope.$apply(function() {
+            //         $scope.isOnline = true;
+            //     });
+            // })
     }]);
 
 }());
