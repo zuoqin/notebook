@@ -15,8 +15,11 @@
             var parts = $location.absUrl().split('/');
             var id = parts[parts.length - 1];
             var uuidLength = 24;
+            var topic = "";
             if (id.length < uuidLength) {
+                topic = id;
                 id = null;
+
             }
             if (id != null) {
                 persistenceService.getById(id).then(
@@ -29,7 +32,7 @@
                             //document.getElementById($scope.item.images[0].pic).innerHTML = newImage.outerHTML;                            
                         }
                         else{
-                            var images = new Array({ data: null, contentType: null, id:"inputFileToLoad", pic:"imgTest"});
+                            var images = new Array();
                             $scope.item.images = images;
                         }
 
@@ -40,8 +43,9 @@
                     });
             }
             else{
-                var images = new Array();// data: null, contentType: null, id:"inputFileToLoad", pic:"imgTest"});
+                var images = new Array();
                 $scope.item.images = images;                
+                $scope.item.topic = topic;
             }
 
             $scope.cancel = function() {
@@ -61,7 +65,10 @@
                         //&& hasValue($scope.item.content);
                 return returnValue;
             };
-
+            $scope.deleteImage = function(index)
+            {
+                $scope.item.images.splice(index, 1);
+            }
             $scope.encodeImageFileAsURL = function(){
 
                 var filesSelected = document.getElementById("upload_input").files;
