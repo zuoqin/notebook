@@ -81,8 +81,13 @@
                     fileReader.onload = function(fileLoadedEvent) {
                         var srcData = fileLoadedEvent.target.result; // <--- data: base64
                         
-                        var newImage = document.createElement('img');
-                        newImage.src = srcData;
+                        if (srcData.indexOf("data:image") === -1)
+                        {
+                            var pic1 = srcData.indexOf(";base64")
+                            srcData = "data:image/png" + srcData.substring(pic1);
+                        };
+                        // var newImage = document.createElement('img');
+                        // newImage.src = srcData;
 
                         var images = $scope.item.images;
                         if ($scope.item.images === undefined || $scope.item.images.length === 0) {
