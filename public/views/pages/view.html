@@ -5,13 +5,11 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h1 ng-bind-html="item.title" class="panel-title"/>
-
-                        <a class="panel-title">{{item.title}}</a>
                 </div>
                 <div class="panel-body">
 
                     <p>
-                        on {{item.modified}}
+                        on {{item.modified.toLocaleString()}}
                     </p>
                     <!--
                     <button class="btn btn-link" data-ng-click="delete($index)">Delete</button>
@@ -20,9 +18,14 @@
                     <p ng-bind-html="item.content">{{item.content}}</p>
 
                     <a data-ng-href="/edit/{{item._id}}" class="btn btn-default">Edit</a>
-                    <!--
-                    <input type="button" data-ng-click="edit()" value="Edit" class="btn btn-default btn-primary" />
-                    -->
+                    <p></p>
+                    <div class="container" ng-repeat="image in item.images">
+                        <div class="row">    
+                            <div class="col-md-12">
+                                <img class="editimagelist" ng-src="{{image.data}}">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

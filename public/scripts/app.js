@@ -53,13 +53,13 @@ angular.module('MyApp', [ 'ngResource', 'ngCookies', 'ngRoute'])
         })
 
         .when('/view/:id', {
-            templateUrl: '/views/pages/view.html',
-            controller: 'viewController'
+            templateUrl: '/views/pages/view.html'//,
+            //controller: 'viewController'
         })
 
         .when('/edit/:id', {
-            templateUrl: '/views/pages/edit.html'/*,
-            controller: 'editController'*/
+            templateUrl: '/views/pages/edit.html'//,
+            //controller: 'editController'
         })
 
         .when('/new/:topic', {

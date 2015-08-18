@@ -148,6 +148,9 @@ textarea.form-control {
     z-index: 10000;
 }
 
+.col-md-1{
+    vertical-align: middle;
+}
 
 #tfheader{
         background-color:#c3dfef;
@@ -220,6 +223,11 @@ textarea.form-control {
     /*padding-top: 1px;
     margin: 0px;*/
 }
+
+.editimagelist{
+    max-width:100%;
+}
+
 
  div.upload {
     width: 25px;
