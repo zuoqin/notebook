@@ -27,8 +27,9 @@ fonts/glyphicons-halflings-regular.woff
 /css/uploadbtn.jpg
 /css/offline-theme-chrome.css
 /css/offline-language-english.css
+/css/jquery.smartmenus.bootstrap.css
 
-/scripts/jquery.js
+/scripts/jquery-2.1.4.js
 /scripts/jquery.min.js
 /scripts/bootstrap.min.js
 /scripts/angular.min.js
@@ -43,7 +44,7 @@ fonts/glyphicons-halflings-regular.woff
 
 
 /scripts/app.js
-# /scripts/app.routes.js
+/scripts/jquery.smartmenus.js
 /scripts/services/localDBService.js
 /scripts/services/persistenceService.js
 /scripts/services/persistenceStrategies.js
@@ -59,7 +60,7 @@ fonts/glyphicons-halflings-regular.woff
 /scripts/controllers/editCtrl.js
 /scripts/controllers/viewCtrl.js
 /scripts/controllers/userCtrl.js
-# /scripts/app/controllers/loginCtrl.js
+/scripts/jquery.smartmenus.bootstrap.js 
 
 /images/loader.gif
 /images/logo-sm.png

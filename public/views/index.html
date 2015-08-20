@@ -7,9 +7,16 @@
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-theme.css">
 	<link rel="stylesheet" type="text/css" href="/css/site.css" />
 	<link rel="stylesheet" type="text/css" href="/css/animate.css" />
-	
+	<link href="/css/jquery.smartmenus.bootstrap.css" rel="stylesheet">
+	<!--
 	<script src="/scripts/jquery.min.js"></script>
-	<script src="/scripts/bootstrap.min.js"</script>
+	-->
+  	<script src="/scripts/jquery-2.1.4.js"></script>
+  	<script src="/scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/scripts/jquery.smartmenus.js"></script>
+
+    <!-- SmartMenus jQuery Bootstrap Addon -->
+    <script type="text/javascript" src="/scripts/jquery.smartmenus.bootstrap.js"></script>	
 	<script type="text/javascript" src="../scripts/uuid.js"      </script>
 	<script type="text/javascript" src="../scripts/math.uuid.js"> </script>
 
@@ -56,7 +63,85 @@
 
 <header>
 
-	<div class="container" data-ng-show="isLoggedIn">
+	
+    <div class="container" data-ng-show="isLoggedIn">
+
+
+
+
+      <!-- Static navbar -->
+      <div class="navbar navbar-default" role="navigation" data-ng-controller="syncController">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+         
+        </div>
+        <div class="navbar-collapse collapse">
+
+        	<ul class="nav navbar-nav">
+        		<li><a ng-click="getData()">Items <span class="caret"></span></a>
+          		</li>
+          	</ul>
+        	<ul class="nav navbar-nav">
+            	<li><a href="#">New <span class="caret"></span></a>
+            		<ul class="dropdown-menu">
+                		<li><a href="/new/Programming">Programming</a></li>
+                		<li><a href="/new/Life">Life</a></li>
+                		<li><a href="/new/Research">Research</a></li>
+                	</ul>
+            	</li>
+            	<li data-ng-show="showItems"><a href="#">Filter<span class="caret"></span></a>
+ 					<ul class="dropdown-menu">
+                		<li><a href="#">By Date<span class="caret"></span></a>
+                			<ul class="dropdown-menu">
+	                        	<li><a href="#">Today</a></li>
+	                        	<li><a href="#">Last two days</a></li>
+	                        	<li><a href="#">This week</a></li>
+	                        	<li><a href="#">Last two weeks</a></li>
+	                        	<li><a href="#">Last month</a></li>
+	                    	</ul>
+	                	</li>
+	            	</ul>
+             	</li>
+          	</ul>
+
+
+			<div class="pull-right">
+			    <nav>
+			        <ul class="nav navbar-nav">
+			            
+			            <li><input data-ng-show="showItems"  type="text" id="tfq"   class="tftextinput2" name="q" size="21" maxlength="120" value="Search" ng-model="filtertext" placeholder="Search"><input data-ng-show="showItems" type="submit"  value=" > " ng-click="search()" class="tfbutton2"></li>
+			            <li><button class="btndownload" ng-disabled="!showList" data-ng-show="showItems" ng-click="download()"></button></li>
+			            <li><button class="btnupload"  data-ng-show="showItems" ng-disabled="!showList" ng-click="sync()"></button></li>
+			            <li><button class="btnlogout" data-ng-show="isLoggedIn" ng-click="main.doLogout()"></button></li>
+			        </ul>
+			    </nav>
+			</div> <!--lass="pull-right" -->
+
+
+
+        </div><!--/.nav-collapse -->
+      </div>
+
+
+
+
+
+
+    </div> <!-- /container -->
+
+
+
+
+
+
+
+      <!--
 		<div class="navbar navbar-fixed-top">
 	        <div class="navbar-header">
 
@@ -90,13 +175,13 @@
 				            <li><button class="btnlogout" data-ng-show="isLoggedIn" ng-click="main.doLogout()"></button></li>
 				        </ul>
 				    </nav>
-				</div> <!--lass="pull-right" -->
+				</div> 
 
 				</div>
 
 
 
-				<!--
+
 			    <div class="pull-right" data-ng-hide="isLoggedIn">
 			        <nav>
 			            <ul class="nav navbar-nav">
@@ -112,13 +197,13 @@
 				        </ul>
 				    </nav>
 				</div>
-				-->
+
 			</div>
         </div>
+        -->
 
 
-
-    </div> <!--class="container"-->
+     <!--class="container"-->
 
 
 
@@ -152,5 +237,7 @@
   	<!-- <h1>{{main.model.message}}</h1> -->
     <ng-view></ng-view>
   </div>
+
+
 </body>
 </html>

@@ -10,7 +10,7 @@
             $scope.showFillOutFormMessage = false;
             $scope.isOnline = true;
             $scope.item = {};
-            //var id = $location.search().id; 
+            $scope.showItems = false;
 
 
             

@@ -63,7 +63,10 @@
             );
 
 
-
+            $scope.getData = function(){
+                $scope.filtertext = "";
+                $scope.search();
+            }
 
             $scope.search = function () {
                 var items = [];//$rootScope.stories;
