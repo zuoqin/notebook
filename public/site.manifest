@@ -40,7 +40,9 @@ fonts/glyphicons-halflings-regular.woff
 /scripts/lodash.underscore.min.js
 /Scripts/uuid.js
 /scripts/math.uuid.js
-# /scripts/offline.min.js
+/scripts/offline.min.js
+# /scripts/offline-simulate-ui.min.js
+
 
 
 /scripts/app.js

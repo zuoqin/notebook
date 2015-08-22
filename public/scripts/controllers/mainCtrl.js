@@ -51,6 +51,23 @@
 					else
 					{
 						vm.error = data.message;
+						$rootScope.showList = false;
+	                    var type = "warning";
+	                    var message = "Downloaded items";
+	                    var title = "Login";
+	                    $rootScope.alert = {
+	                        hasBeenShown: true,
+	                        show:true,
+	                        type:type,
+	                        message:data.message,
+	                        title:title
+	                    };
+
+	                    setTimeout(function () {
+	                        $rootScope.$apply(function () {
+	                            $rootScope.showList = true;
+	                        });
+	                    }, 2000);	                    					
 					};
 				});
 		}

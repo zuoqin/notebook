@@ -1,3 +1,8 @@
+window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || Window.msIndexedDB
+window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction
+window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange
+
+
 angular.module('MyApp', [ 'ngResource', 'ngCookies', 'ngRoute'])
 
 .config(['$provide', '$httpProvider', '$routeProvider', '$locationProvider',
