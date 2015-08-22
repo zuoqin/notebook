@@ -41,6 +41,10 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
+var cors = require('cors')
+
+//var app = express()
+app.use(cors())
 
 
 var api = require('./app/routes/api')(app,express);
