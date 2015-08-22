@@ -20,19 +20,59 @@
                     }, deferred.rejec);
                     return deferred.promise;
                 },
-                monitorUp: function() {
 
+                monitorUp: function() {
+                    Offline.options = {
+
+                        // Should we check the connection status immediatly on page load.
+                        checkOnLoad: false,
+
+                        // Should we monitor AJAX requests to help decide if we have a connection.
+                        interceptRequests: true,
+
+                        // Should we automatically retest periodically when the connection is down (set to false to disable).
+                        reconnect: {
+                        // How many seconds should we wait before rechecking.
+                        initialDelay: 3,
+
+                        // How long should we wait between retries.
+                        //delay: (1.5 * last delay, capped at 1 hour)
+                        },
+                        checks: {image: {url: '/favicon1' + Math.uuid()}, active: 'image'}
+                    };
                     var deferred = $q.defer();
                     Offline.on('confirmed-up', function() {
                     //     svc.check().then(function(result) {
+                            Offline.options = {checks: {xhr: {url: '/favicon/' + Math.uuid()}, active: 'image'}}
+                     //        Offline.check();
                              deferred.resolve(true);
                     //     }, deferred.reject);
                      });
                     return deferred.promise;
                 },
                 monitorDown: function() {
+                    Offline.options = {
+
+                      // Should we check the connection status immediatly on page load.
+                      checkOnLoad: false,
+
+                      // Should we monitor AJAX requests to help decide if we have a connection.
+                      interceptRequests: true,
+
+                      // Should we automatically retest periodically when the connection is down (set to false to disable).
+                      reconnect: {
+                        // How many seconds should we wait before rechecking.
+                        initialDelay: 3,
+
+                        // How long should we wait between retries.
+                        //delay: (1.5 * last delay, capped at 1 hour)
+                        },
+                        checks: {image: {url: '/favicon1'}}
+                    };                    
                     var deferred = $q.defer();
                     Offline.on('confirmed-down', function() {
+                         Offline.options = {checks: {xhr: {url: '/favicon/' + Math.uuid()}}}
+                         //Offline.check();
                          deferred.resolve(false);
                     });
                     return deferred.promise;

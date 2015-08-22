@@ -4,32 +4,85 @@
     var app = angular.module('MyApp');
     app.controller('syncController',
     [
-        'Story','$rootScope', '$scope', '$timeout', 'syncService', 'Auth', 'persistenceService', '$q', '$sce', '$window',
-        function(Story, $rootScope, $scope, $timeout, syncService, Auth, persistenceService, $q, $sce, $window
+        'Story', '$location', '$rootScope', '$scope', '$timeout', 'syncService', 'Auth', 'persistenceService', '$q', '$sce', '$window',
+        function(Story, $location, $rootScope, $scope, $timeout, syncService, Auth, persistenceService, $q, $sce, $window
             )
         {
             var vm = this;
-            vm.getData = function(){
-                var deferred = $q.defer();
+
+            vm.getData = function () {
+                $location.path('/');
                 $rootScope.stories = [];
-                persistenceService.action.getAll().then(
-                    function (items) {
-                        items.forEach(function (item) {
-                            $rootScope.stories.push({
-                                _id: item._id,
-                                title: $sce.trustAsHtml(item.title),
-                                introduction: $sce.trustAsHtml(item.introduction),
-                                modified: new Date(item.modified),
-                                //TopicId: item.TopicId,
-                                creator: item.creator,
-                                content: $sce.trustAsHtml(item.Content)
+                vm.showList = false;
+                var deferred = $q.defer();
+                //if( authenticationService.GetCredentials() != null && authenticationService.GetCredentials().length > 0) {
+                    persistenceService.action.getAll().then(
+                        function (items) {
+                            if (persistenceService.getAction() === 0) {
+                                persistenceService.ClearLocalDB().then(
+                                    function() {
+                                        persistenceService.setAction(1);
+                                        items.sort(function(a, b) {
+                                            return new Date(b.modified) - new Date(a.modified);
+                                        });
+                                        items.forEach(function (item) {
+                                            //if (persistenceService.getAction() === 0) {
+                                            persistenceService.action.save(item).then(
+                                                function() {
+                                                    $rootScope.stories.push({
+                                                        _id: item._id,
+                                                        title: $sce.trustAsHtml(item.title),
+                                                        introduction: $sce.trustAsHtml(item.introduction),
+                                                        modified: new Date(item.modified),
+                                                        //TopicId: item.TopicId,
+                                                        creator: item.creator,
+                                                        content: $sce.trustAsHtml(item.Content)
+                                                    });
+
+                                                });
+                                            //}
+                                        });
+                                    }
+                                    );
+                                
+                            } else {
+                                items.sort(function (a, b) {
+                                    return new Date(b.modified) - new Date(a.modified);
+                                });
+                                items.forEach(function (item) {
+                                    $rootScope.stories.push({
+                                        _id: item._id,
+                                        title: $sce.trustAsHtml(item.title),
+                                        introduction: $sce.trustAsHtml(item.introduction),
+                                        modified: new Date(item.modified),
+                                        //TopicId: item.TopicId,
+                                        craetor: item.UserId,
+                                        content: $sce.trustAsHtml(item.content)
+                                    });
+                                    //if (persistenceService.getAction() === 0) {
+                                    //persistenceService.action.save(item);
+
+                                    //}
+                                });
+                                
+                                
+                            }
+
+                            deferred.resolve(true);
+                            $rootScope.showList = true;
+                            $rootScope.showItems = true;
+                            $scope.showEmptyListMessage = (items.length === 0);
+                            $rootScope.stories.sort(function(a, b) {
+                                return new Date(b.modified) - new Date(a.modified);
                             });
+
+                        },
+                        function (error) {
+                            $scope.error = error;
                         });
-                        deferred.resolve(true);
-                    });
-                 return deferred.promise;
-            };
-        
+                //};
+                return deferred.promise;
+            };        
 
             if (Auth.isLoggedIn()) 
             {
@@ -66,6 +119,7 @@
             $scope.getData = function(){
                 $scope.filtertext = "";
                 $scope.search();
+                $location.path('/');
             }
 
             $scope.search = function () {

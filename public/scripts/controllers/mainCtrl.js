@@ -18,9 +18,9 @@
 			vm.loggedIn = Auth.isLoggedIn();
 
 
-			Auth.getUser().then( function(data){
+			var data = Auth.getUser();//.then( function(data){
 				vm.user = data.data;
-			});
+			//});
 		});
 
 		vm.doLogout = function(){
