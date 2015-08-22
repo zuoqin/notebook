@@ -38,9 +38,9 @@
 				.success(function(data){
 					vm.processing = false;
 
-					Auth.getUser().then(function(data){
-						vm.user = data.data;
-					});
+					//Auth.getUser().then(function(data){
+					//	vm.user = data.data;
+					//});
 
 					if(data.success)
 					{
