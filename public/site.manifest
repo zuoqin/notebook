@@ -38,7 +38,7 @@ fonts/glyphicons-halflings-regular.woff
 /scripts/angular-resource.min.js
 /scripts/angular-route.min.js
 /scripts/lodash.underscore.min.js
-/Scripts/uuid.js
+/scripts/uuid.js
 /scripts/math.uuid.js
 /scripts/offline.min.js
 # /scripts/offline-simulate-ui.min.js
