@@ -106,7 +106,7 @@
                                                 {
                                                     localDBService.delete(dbModel.objectStoreName, item._id).then(
                                                     function(result){
-                                                        console.log(result);
+                                                        //console.log(result);
                                                     });                                                              
                                                 }
                                             }

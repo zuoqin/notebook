@@ -106,7 +106,7 @@ module.exports = function(app,express){
 		}
 	});
 
-	api.route('/:id')
+	api.route('/')
 		.put(function(req, res){
 			//console.log("Inside put ");
 			//Story.find({_id: req.decoded._id}, function(err, stories){
@@ -208,7 +208,24 @@ module.exports = function(app,express){
 				res.json(data);
 			})
 		})
+	
+		.get(function(req,res){
+			var ObjectId = require('mongoose').Types.ObjectId; 
+			var query = { creator: new ObjectId(req.decoded._id) };
 
+			
+			Story.find(query, function(err, stories){
+				if (err) {
+					res.send(err);
+					return;
+				};
+				res.json(stories);
+				console.log("Total found stories:");
+				console.log(stories.length);
+			});
+		});
+
+	api.route('/:id')
 		.delete(function(req,res){
 			var story = new Story({
 				creator: req.decoded._id,
@@ -231,24 +248,8 @@ module.exports = function(app,express){
 					res.json(data);
 				}
 			);
-		})
-	
-		.get(function(req,res){
-			var ObjectId = require('mongoose').Types.ObjectId; 
-			var query = { creator: new ObjectId(req.decoded._id) };
-
-			
-			Story.find(query, function(err, stories){
-				if (err) {
-					res.send(err);
-					return;
-				};
-				res.json(stories);
-				console.log("Total found stories:");
-				console.log(stories.length);
-			});
 		});
-
+		
 	api.get('/me', function(req,res){
 		res.json(req.decoded);
 	});

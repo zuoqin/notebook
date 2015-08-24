@@ -122,9 +122,11 @@
             var deferred = $q.defer();
             _db.requireObjectStoreName(objectStoreName, deferred);
             _db.requireOpenDB(objectStoreName, deferred);
-            var store = _db.getObjectStore(objectStoreName, _db.transactionTypes.readwrite),
-                request = store.delete(key);
-            request.onsuccess = deferred.resolve;
+            var store = _db.getObjectStore(objectStoreName, _db.transactionTypes.readwrite);
+            var request = store.delete(key);
+            request.onsuccess = function(event) {
+                deferred.resolve(key);
+            };
             return deferred.promise;
         },
         update:function(objectStoreName, data, key) {
