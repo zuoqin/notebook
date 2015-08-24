@@ -77,7 +77,7 @@
                                                         title: $sce.trustAsHtml(item.title),
                                                         introduction: $sce.trustAsHtml(item.introduction),
                                                         modified: new Date(item.modified),
-                                                        //TopicId: item.TopicId,
+                                                        topic: item.topic,
                                                         creator: item.creator,
                                                         content: $sce.trustAsHtml(item.Content)
                                                     });
@@ -99,7 +99,7 @@
                                             title: $sce.trustAsHtml(item.title),
                                             introduction: $sce.trustAsHtml(item.introduction),
                                             modified: new Date(item.modified),
-                                            //TopicId: item.TopicId,
+                                            topic: item.topic,
                                             creator: item.UserId,
                                             content: $sce.trustAsHtml(item.content)
                                         });                                        

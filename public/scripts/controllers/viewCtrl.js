@@ -33,6 +33,7 @@
                         $scope.item._id = item._id;
                         $scope.item.title = $sce.trustAsHtml(item.title);
                         $scope.item.introduction = $sce.trustAsHtml(item.introduction);
+                        $scope.item.topic = item.topic;
                         $scope.item.modified = new Date(item.modified);
                         $scope.item.images = item.images;
                         $scope.item.creator = item.creator;

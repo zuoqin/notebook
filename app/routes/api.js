@@ -151,6 +151,7 @@ module.exports = function(app,express){
 				{
 					title: req.body.title,
 					introduction:req.body.introduction,
+					topic:req.body.topic,
 				 	content: req.body.content,
 				 	modified: req.body.modified,
 				 	created: req.body.created,
@@ -192,13 +193,15 @@ module.exports = function(app,express){
 			var story = new Story({
 				creator: req.decoded._id,
 				title: req.body.title,
+				topic: req.body.topic,
 				introduction: req.body.introduction,
 				content: req.body.content,
 			 	modified: req.body.modified,
 			 	created: req.body.created,
 			 	images: req.body.images
 			});
-
+			console.log("To be inserted");
+			console.log(req.body.topic);
 			story.save(function(err, data){
 				if (err) {
 					res.send(err);
@@ -227,18 +230,6 @@ module.exports = function(app,express){
 
 	api.route('/:id')
 		.delete(function(req,res){
-			var story = new Story({
-				creator: req.decoded._id,
-				title: req.body.title,
-				introduction: req.body.introduction,
-				content: req.body.content,
-			 	modified: req.body.modified,
-			 	created: req.body.created,
-			 	images: req.body.images
-			});
-			console.log("To be removed");
-			console.log( req.params);
-			console.log( req.params.id);
 			Story.remove({ _id: req.params.id },
 				function(err, data) {
 					if (err) {
@@ -249,7 +240,7 @@ module.exports = function(app,express){
 				}
 			);
 		});
-		
+
 	api.get('/me', function(req,res){
 		res.json(req.decoded);
 	});

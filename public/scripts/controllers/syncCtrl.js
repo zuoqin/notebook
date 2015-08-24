@@ -34,7 +34,7 @@
                                                         title: $sce.trustAsHtml(item.title),
                                                         introduction: $sce.trustAsHtml(item.introduction),
                                                         modified: new Date(item.modified),
-                                                        //TopicId: item.TopicId,
+                                                        topic: item.topic,
                                                         creator: item.creator,
                                                         content: $sce.trustAsHtml(item.Content)
                                                     });
@@ -55,7 +55,7 @@
                                         title: $sce.trustAsHtml(item.title),
                                         introduction: $sce.trustAsHtml(item.introduction),
                                         modified: new Date(item.modified),
-                                        //TopicId: item.TopicId,
+                                        topic: item.topic,
                                         creator: item.UserId,
                                         content: $sce.trustAsHtml(item.content)
                                     });
@@ -121,6 +121,41 @@
                 $scope.search();
                 $location.path('/');
             }
+
+            $scope.filterByTopic = function(topic){
+                var items = [];
+                $rootScope.showList = false;
+                vm.getData().then(function(result){            
+                    if ($rootScope.stories !== undefined) {
+                        for (var i = 0 ; i < $rootScope.stories.length ; i++) {
+
+                            if (topic !== 'Other') {
+                                if ($rootScope.stories[i].topic === topic) {
+                                    items.push($rootScope.stories[i]);
+                                };                                
+                            }
+                            else
+                            {
+                                if ($rootScope.stories[i].topic !== 'Programming' &&
+                                    $rootScope.stories[i].topic !== 'Life' &&
+                                    $rootScope.stories[i].topic !== 'Research'
+                                    ) {
+                                    items.push($rootScope.stories[i]);
+                                };                                   
+                            }
+                        };
+                    
+                    }
+                    setTimeout(function () {
+                        $rootScope.$apply(function () {
+                            $rootScope.stories = items;
+                            $rootScope.showList = true;
+                        });
+                    }, 100);
+
+                });
+            };
+
 
             $scope.search = function () {
                 var items = [];//$rootScope.stories;
@@ -198,7 +233,7 @@
                                         introduction: $sce.trustAsHtml(item.introduction),
                                         modified: new Date(item.modified),
                                         created: new Date(item.created),
-                                        //topic: item.topic,
+                                        topic: item.topic,
                                         creator: item.creator,
                                         content: $sce.trustAsHtml(item.content)
                                     });
