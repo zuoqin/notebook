@@ -91,16 +91,25 @@
                                                 var newItem = result;
                                                 localDBService.delete(dbModel.objectStoreName, item._id).then(
                                                     function(result){
-                                                        //var newItem = item;
-                                                        //newItem._id = result._id;
-                                                        //newItem.creator = result.creator;
-                                                        localDBService.insert(dbModel.objectStoreName, newItem, "_id").then(
-                                                        function(result){
+                                                        if (item.isDeleted === undefined || item.isDeleted === false) {
+                                                            localDBService.insert(dbModel.objectStoreName, newItem, "_id").then(
+                                                                function(result){
 
-                                                        })        
+                                                                })                                                                
+                                                        };
+    
                                                     })
                                                 
-                                            };
+                                            }
+                                            else{
+                                                if(item.isDeleted === true)
+                                                {
+                                                    localDBService.delete(dbModel.objectStoreName, item._id).then(
+                                                    function(result){
+                                                        console.log(result);
+                                                    });                                                              
+                                                }
+                                            }
                                         }
                                         //    }, deferred.reject);
                                         //} else {

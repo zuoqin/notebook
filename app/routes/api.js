@@ -85,7 +85,7 @@ module.exports = function(app,express){
 
 
 	api.use(function(req,res,next){
-		//console.log("Somebody just call app");
+		console.log("Somebody just call app");
 
 		var token = req.body.token || req.param('token') || req.headers['x-access-token'];
 
@@ -106,7 +106,7 @@ module.exports = function(app,express){
 		}
 	});
 
-	api.route('/')
+	api.route('/:id')
 		.put(function(req, res){
 			//console.log("Inside put ");
 			//Story.find({_id: req.decoded._id}, function(err, stories){
@@ -207,6 +207,30 @@ module.exports = function(app,express){
 
 				res.json(data);
 			})
+		})
+
+		.delete(function(req,res){
+			var story = new Story({
+				creator: req.decoded._id,
+				title: req.body.title,
+				introduction: req.body.introduction,
+				content: req.body.content,
+			 	modified: req.body.modified,
+			 	created: req.body.created,
+			 	images: req.body.images
+			});
+			console.log("To be removed");
+			console.log( req.params);
+			console.log( req.params.id);
+			Story.remove({ _id: req.params.id },
+				function(err, data) {
+					if (err) {
+						res.send(err);
+						return;
+					};
+					res.json(data);
+				}
+			);
 		})
 	
 		.get(function(req,res){

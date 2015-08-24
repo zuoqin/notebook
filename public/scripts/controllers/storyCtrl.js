@@ -20,13 +20,36 @@
 
         	vm.deleteStory = function(index){
         	    var id = $rootScope.stories[index]._id;
-        	    persistenceService.action.delete(id).then(
-        	        function(result) {
-        	            $rootScope.stories.splice(index, 1);
-        	        },
-        	        function(error) {
-        	            $scope.error = error;
-        	        });		
+                $rootScope.stories[index].isDeleted = true;
+                $rootScope.stories[index].modified = new Date();
+                persistenceService.setAction(1);
+                var item = $rootScope.stories[index];
+                persistenceService.action.getById($rootScope.stories[index]._id).then(
+                    function(result){
+                        result.isDeleted = true;
+                        result.modified = new Date();
+
+                        persistenceService.action.save(result).then(
+                            function() {
+                                setTimeout(function () {
+                                    $rootScope.$apply(function () {
+                                        $rootScope.stories.splice(index, 1);
+                                        $rootScope.showList = true;
+
+                                    });
+                                }, 100); 
+                            });
+
+                    }
+                    );
+      
+        	    // persistenceService.action.delete(id).then(
+        	    //     function(result) {
+        	    //         $rootScope.stories.splice(index, 1);
+        	    //     },
+        	    //     function(error) {
+        	    //         $scope.error = error;
+        	    //     });		
         		//persistenceService.deleteItem(item);
         	}
 
@@ -70,15 +93,17 @@
                                     return new Date(b.modified) - new Date(a.modified);
                                 });
                                 items.forEach(function (item) {
-                                    $rootScope.stories.push({
-                                        _id: item._id,
-                                        title: $sce.trustAsHtml(item.title),
-                                        introduction: $sce.trustAsHtml(item.introduction),
-                                        modified: new Date(item.modified),
-                                        //TopicId: item.TopicId,
-                                        craetor: item.UserId,
-                                        content: $sce.trustAsHtml(item.content)
-                                    });
+                                    if (item.isDeleted === undefined || item.isDeleted === false) {
+                                        $rootScope.stories.push({
+                                            _id: item._id,
+                                            title: $sce.trustAsHtml(item.title),
+                                            introduction: $sce.trustAsHtml(item.introduction),
+                                            modified: new Date(item.modified),
+                                            //TopicId: item.TopicId,
+                                            creator: item.UserId,
+                                            content: $sce.trustAsHtml(item.content)
+                                        });                                        
+                                    };
                                     //if (persistenceService.getAction() === 0) {
                                     //persistenceService.action.save(item);
 
@@ -103,12 +128,13 @@
                 //};
                 return deferred.promise;
             };
-
-            var lazyGetData = _.debounce(getData, 1000);
-            $rootScope.stories = [];
-        	//if ($rootScope.showItems === true) {
-        	    lazyGetData();
-        	//}
+            //if ($rootScope.stories.length === 0) {
+                var lazyGetData = _.debounce(getData, 1000);
+                $rootScope.stories = [];
+                //if ($rootScope.showItems === true) {
+                    lazyGetData();
+                //}                
+            //};
         }]);
 
 }());

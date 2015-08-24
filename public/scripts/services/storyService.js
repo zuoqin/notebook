@@ -18,6 +18,9 @@
 			update: function(storyData){
 				return $http.put('/api', storyData);
 			},
+			'delete': function(storyData){
+				return $http.delete('/api/' + storyData._id);
+			},
 		};
 		return svc;
      	}

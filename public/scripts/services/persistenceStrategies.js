@@ -17,14 +17,26 @@
                 //     .error(deferred.reject);
                 if (item._id !== undefined && item._id !== null) {
                     if (item._id.length > 24) {
-                        Story.create(item).success(function(data){
-                            deferred.resolve(data);
-                        });
+                        if (item.isDeleted === undefined || item.isDeleted === false) {
+                            Story.create(item).success(function(data){
+                                deferred.resolve(data);
+                            });                            
+                        }
+                        else
+                        {
+                            deferred.resolve(item);
+                        }
                     }
                     else{
-                        Story.update(item).then( function(){
-                            deferred.resolve();
-                        });                    
+                        if (item.isDeleted === undefined || item.isDeleted === false) {
+                            Story.update(item).then( function(){
+                                deferred.resolve();
+                            });                                                
+                        } else{
+                            Story.delete(item).then( function(){
+                                deferred.resolve();
+                            })
+                        }
                     }
                 };
 
@@ -100,9 +112,17 @@
                                                 if (res) {
                                                     
                                                     if (new Date(res.modified) < new Date(item.modified)) {
-                                                        localDBService.update(svc.dbModel.objectStoreName, item, id)
-                                                            .then(deferred.resolve, deferred.reject);
-
+                                                        //if (item.deleted === undefined || item.deleted === false) {
+                                                            localDBService.update(svc.dbModel.objectStoreName, item, id)
+                                                                .then(deferred.resolve, deferred.reject);                                                            
+                                                        //}
+                                                        //else
+                                                        //{
+                                                        //    localDBService.delete(svc.dbModel.objectStoreName, item._id).then(
+                                                        //         function(result){
+                                                        //             deferred.resolve(true);
+                                                        //             });        
+                                                        //}
                                                     }else{
                                                         deferred.resolve(true);
                                                     }

@@ -56,7 +56,7 @@
                                         introduction: $sce.trustAsHtml(item.introduction),
                                         modified: new Date(item.modified),
                                         //TopicId: item.TopicId,
-                                        craetor: item.UserId,
+                                        creator: item.UserId,
                                         content: $sce.trustAsHtml(item.content)
                                     });
                                     //if (persistenceService.getAction() === 0) {
