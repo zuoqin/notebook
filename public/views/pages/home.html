@@ -1,16 +1,9 @@
-
-
 <div class="jumbotron text-center" ng-if="!main.loggedIn">
 	<div>
 		<p>Login to the system</p>
 		<a href="/login" class="btn btn-primary">Login</a>
 	</div>
 </div>
-
-
-
-
-
 
 <div data-ng-hide="showList" align="center">
     <img src="/images/loader.gif" alt="loading..." title="loading..." />
@@ -23,53 +16,26 @@
 <div class="editwrapper" ng-if="main.loggedIn">
 </div>
 
-
-
-
-
-
-
-
 <div class="row main-wrapper" ng-if="main.loggedIn">
-
-
 	<div class="col-md-12" ng-controller="StoryController as controller">
-		<!--
-		<div class="row">
-			<div class="panel panel-primary">
-				<div class="panel-heading">Edit item</div>
-				<div class="panel-body">
-					<form ng-submit="story.createStory()">
-						<input class="form-control input-lg" type="text" name="story" ng-model="story.storyData.title">
-						<input class="form-control input-lg" type="text" name="story" ng-model="story.storyData.introduction">
-						<input class="form-control input-lg" type="text" name="story" ng-model="story.storyData.content" placeholder="...." required>
-
-					</form>
-				</div>
-			</div>
-		</div>
-		-->
-
         <div class="row home-list-item" data-ng-repeat="story in stories">
-            <!--
-            <div class="col-sm-8">
-                <div class="lead">{{item.Title}}</div>
-                <div class="lead">{{item.Introduction}}</div>
-                <div class="lead">{{item.Contents}}</div>
-                <button class="btn btn-link" data-ng-click="delete($index)">Delete</button>
-                <a data-ng-href="/items/edit/{{item.ItemId}}" class="btn btn-default">Edit</a>
-            </div>
-            -->
-            <div class="panel panel-primary">
+            <div ng-if="story.isDeleted === true" class="panel panel-danger">
                 <div class="panel-heading">
-                <!--
-                <h3 class="panel-title">
-                -->
                     <a data-ng-href="/view/{{story._id}}" class="panel-title">{{story.title}}</a>
-                    
-                <!--
-                </h3>
-                -->
+                </div>
+                <div class="panel-body">
+                    <p ng-bind-html="story.introduction">{{story.introduction}}</p>
+                    <p>
+                        on {{story.modified.toLocaleString()}}
+                    </p>
+                    <a data-ng-href="/edit/{{story._id}}" class="btn btn-default">Edit</a>
+                </div>
+
+            </div>
+
+            <div ng-if="story.isDeleted === false" class="panel panel-primary">
+                <div class="panel-heading">
+                    <a data-ng-href="/view/{{story._id}}" class="panel-title">{{story.title}}</a>
                 </div>
                 <div class="panel-body">
                     <p ng-bind-html="story.introduction">{{story.introduction}}</p>
@@ -80,18 +46,6 @@
                     <a data-ng-href="/edit/{{story._id}}" class="btn btn-default">Edit</a>
                 </div>
             </div>
-
-
-        </div> <!--class="row home-list-item" -->
-        <!--
-		<div class="panel panel-sucess">
-			<div class="panel-body" ng-repeat="story in story.stories">
-				<p>
-					{{story.content}}
-				</p>
-				
-			</div>
-		</div>
-		-->		
+        </div>
 	</div>
 </div>

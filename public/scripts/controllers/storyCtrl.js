@@ -93,17 +93,18 @@
                                     return new Date(b.modified) - new Date(a.modified);
                                 });
                                 items.forEach(function (item) {
-                                    if (item.isDeleted === undefined || item.isDeleted === false) {
+                                    //if (item.isDeleted === undefined || item.isDeleted === false) {
                                         $rootScope.stories.push({
                                             _id: item._id,
                                             title: $sce.trustAsHtml(item.title),
                                             introduction: $sce.trustAsHtml(item.introduction),
                                             modified: new Date(item.modified),
+                                            isDeleted: item.isDeleted === true ? true : false,
                                             topic: item.topic,
                                             creator: item.UserId,
                                             content: $sce.trustAsHtml(item.content)
                                         });                                        
-                                    };
+                                    //};
                                     //if (persistenceService.getAction() === 0) {
                                     //persistenceService.action.save(item);
 
