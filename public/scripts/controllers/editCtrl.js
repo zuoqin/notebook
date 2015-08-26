@@ -114,6 +114,7 @@
 
                     var item = $scope.item;
                     item.modified = new Date();
+                    item.isDeleted = false;
                  
                     //Temp code
                     // if (item.UserId == 0 || item.UserId === undefined) {

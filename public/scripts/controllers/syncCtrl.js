@@ -56,6 +56,7 @@
                                         introduction: $sce.trustAsHtml(item.introduction),
                                         modified: new Date(item.modified),
                                         topic: item.topic,
+                                        isDeleted: item.isDeleted === true ? true : false,
                                         creator: item.UserId,
                                         content: $sce.trustAsHtml(item.content)
                                     });
@@ -93,7 +94,13 @@
                 $rootScope.isLoggedIn = false;
                 $rootScope.showList = true;
             }
-            
+            if ($rootScope.stories === undefined || $rootScope.stories.length === 0) {
+                var lazyGetData = _.debounce(vm.getData, 1000);
+                //$rootScope.stories = [];
+                //if ($rootScope.showItems === true) {
+                    lazyGetData();
+                //}                
+            };            
             syncService.monitorUp().then(
                 function(result) {
                     $timeout(function() {
@@ -121,6 +128,52 @@
                 $scope.search();
                 $location.path('/');
             }
+            $scope.deleteStory = function(index){
+                var id = $rootScope.stories[index]._id;
+                $rootScope.stories[index].isDeleted = true;
+                $rootScope.stories[index].modified = new Date();
+                persistenceService.setAction(1);
+                var item = $rootScope.stories[index];
+                persistenceService.action.getById($rootScope.stories[index]._id).then(
+                    function(result){
+                        result.isDeleted = true;
+                        result.modified = new Date();
+
+                        persistenceService.action.save(result).then(
+                            function() {
+                                setTimeout(function () {
+                                    $rootScope.$apply(function () {
+                                        //$rootScope.stories.splice(index, 1);
+                                        $rootScope.showList = true;
+
+                                    });
+                                }, 100); 
+                            });
+
+                    }
+                    );
+            }
+            $scope.filterByDate = function(days){
+                var items = [];
+                $rootScope.showList = false;
+                vm.getData().then(function(result){            
+                    if ($rootScope.stories !== undefined) {
+                        for (var i = 0 ; i < $rootScope.stories.length ; i++) {
+                            var a = new Date( new Date() - days * 1000 * 60 * 60 * 24 );
+                            if ($rootScope.stories[i].modified > a) {
+                                items.push($rootScope.stories[i]);
+                            };                                
+                        };
+                    }
+                    setTimeout(function () {
+                        $rootScope.$apply(function () {
+                            $rootScope.stories = items;
+                            $rootScope.showList = true;
+                        });
+                    }, 100);
+
+                });
+            };
 
             $scope.filterByTopic = function(topic){
                 var items = [];

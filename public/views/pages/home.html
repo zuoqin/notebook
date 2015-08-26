@@ -15,9 +15,8 @@
 </div>
 <div class="editwrapper" ng-if="main.loggedIn">
 </div>
-
 <div class="row main-wrapper" ng-if="main.loggedIn">
-	<div class="col-md-12" ng-controller="StoryController as controller">
+	<div class="col-md-12">
         <div class="row home-list-item" data-ng-repeat="story in stories">
             <div ng-if="story.isDeleted === true" class="panel panel-danger">
                 <div class="panel-heading">
@@ -42,7 +41,7 @@
                     <p>
                         on {{story.modified.toLocaleString()}}
                     </p>
-                    <button class="btn btn-link" data-ng-click="controller.deleteStory($index)">Delete</button>
+                    <button class="btn btn-link" data-ng-controller="syncController" data-ng-click="deleteStory($index)">Delete</button>
                     <a data-ng-href="/edit/{{story._id}}" class="btn btn-default">Edit</a>
                 </div>
             </div>
