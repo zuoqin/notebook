@@ -318,6 +318,10 @@
                     $rootScope.error = error;
                 }
             );
+            var lazyGetData = _.debounce(vm.getData, 1000);
+
+            //if ($rootScope.showItems === true) {
+               // lazyGetData();            
 
         }]);
 }());
