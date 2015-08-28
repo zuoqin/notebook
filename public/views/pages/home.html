@@ -32,7 +32,7 @@
 
             </div>
 
-            <div ng-if="story.isDeleted === false" class="panel panel-primary">
+            <div ng-if="story.isDeleted === false || story.isDeleted === undefined" class="panel panel-primary">
                 <div class="panel-heading">
                     <a data-ng-href="/view/{{story._id}}" class="panel-title">{{story.title}}</a>
                 </div>
