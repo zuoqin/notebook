@@ -46,6 +46,7 @@
                                     );
                                 
                             } else {
+                                $rootScope.stories = [];
                                 items.sort(function (a, b) {
                                     return new Date(b.modified) - new Date(a.modified);
                                 });
@@ -318,10 +319,10 @@
                     $rootScope.error = error;
                 }
             );
-            var lazyGetData = _.debounce(vm.getData, 1000);
+            var lazyGetData = _.debounce(vm.getData, 100);
 
-            //if ($rootScope.showItems === true) {
-               // lazyGetData();            
-
+            //if ($rootScope.showItems === true && ($rootScope.stories ==undefined || $rootScope.stories.length == 0)) {
+                lazyGetData();            
+            //}
         }]);
 }());

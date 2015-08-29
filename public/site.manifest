@@ -57,7 +57,7 @@ fonts/glyphicons-halflings-regular.woff
 /scripts/services/authService.js
 /scripts/services/userCtrl.js
 /scripts/controllers/syncCtrl.js
-/scripts/controllers/storyCtrl.js
+# /scripts/controllers/storyCtrl.js
 /scripts/controllers/mainCtrl.js
 /scripts/controllers/editCtrl.js
 /scripts/controllers/viewCtrl.js
