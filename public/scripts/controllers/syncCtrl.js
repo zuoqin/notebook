@@ -9,8 +9,14 @@
             )
         {
             var vm = this;
-
+            $scope.toroot = function(){
+                $location.path('/');
+            }
             vm.getData = function () {
+                if ($rootScope.loaded !== undefined && $rootScope.loaded === true) {
+                    return;
+                };
+                $rootScope.loaded = true;
                 $location.path('/');
                 $rootScope.stories = [];
                 vm.showList = false;
@@ -44,7 +50,7 @@
                                         });
                                     }
                                     );
-                                
+                                $rootScope.loaded = false;
                             } else {
                                 $rootScope.stories = [];
                                 items.sort(function (a, b) {
@@ -66,10 +72,9 @@
 
                                     //}
                                 });
-                                
+                                $rootScope.loaded = false;
                                 
                             }
-
                             deferred.resolve(true);
                             $rootScope.showList = true;
                             $rootScope.showItems = true;
@@ -319,7 +324,7 @@
                     $rootScope.error = error;
                 }
             );
-            var lazyGetData = _.debounce(vm.getData, 100);
+            var lazyGetData = _.debounce(vm.getData, 1000);
 
             //if ($rootScope.showItems === true && ($rootScope.stories ==undefined || $rootScope.stories.length == 0)) {
                 lazyGetData();            
