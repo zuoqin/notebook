@@ -82,9 +82,13 @@
                     var deferred = $q.defer();
                     localDBService.open(dbModel).then(function() {
                         localDBService.getAll(dbModel.objectStoreName).then(function (items) {
-                            var lastDownload = new Date($window.localStorage.getItem('lastdownload'));
+                            var lastupload = new Date();
+                            if ($window.localStorage.getItem('lastupload') !== undefined)
+                            {
+                                lastupload = $window.localStorage.getItem('lastupload');
+                            };;
                             items.forEach(function(item) {
-                                if (new Date(item.modified) > lastDownload) {
+                                if (new Date(item.modified) > lastupload) {
                                     remotePersistenceStrategy.save(item).then(function (result) {
                                         if (item._id !== undefined && item._id !== null) {
                                             if (item._id.length > 24) {

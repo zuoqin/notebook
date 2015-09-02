@@ -15,6 +15,9 @@
 			allStory:  function(){
 				return $http.get('/api');
 			},
+			StoryFromTime:  function(datetime){
+				return $http.post('/api', datetime);
+			},
 			update: function(storyData){
 				return $http.put('/api', storyData);
 			},

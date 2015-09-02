@@ -190,26 +190,50 @@ module.exports = function(app,express){
 		})
 
 		.post(function(req,res){
-			var story = new Story({
-				creator: req.decoded._id,
-				title: req.body.title,
-				topic: req.body.topic,
-				introduction: req.body.introduction,
-				content: req.body.content,
-			 	modified: req.body.modified,
-			 	created: req.body.created,
-			 	images: req.body.images
-			});
-			console.log("To be inserted");
-			console.log(req.body.topic);
-			story.save(function(err, data){
-				if (err) {
-					res.send(err);
-					return;
-				};
+			if (req.body.title !== undefined && req.body.title.length > 0) {
+				var story = new Story({
+					creator: req.decoded._id,
+					title: req.body.title,
+					topic: req.body.topic,
+					introduction: req.body.introduction,
+					content: req.body.content,
+				 	modified: req.body.modified,
+				 	created: req.body.created,
+				 	images: req.body.images
+				});
+				console.log("To be inserted");
+				console.log(req.body.topic);
+				story.save(function(err, data){
+					if (err) {
+						res.send(err);
+						return;
+					};
 
-				res.json(data);
-			})
+					res.json(data);
+				})
+			};
+			if (req.body.datetime !== undefined && req.body.datetime.length > 0) {
+				var fromDate = new Date(req.body.datetime);
+				var inputDate = new Date(fromDate.toISOString());
+				console.log(fromDate);
+
+
+				var ObjectId = require('mongoose').Types.ObjectId; 
+				var query = { creator: new ObjectId(req.decoded._id),
+					modified: {$gte:inputDate} };
+
+				
+				Story.find(query, function(err, stories){
+					if (err) {
+						res.send(err);
+						return;
+					};
+					res.json(stories);
+					console.log("Total found stories:");
+					console.log(stories.length);
+				});				
+			}
+
 		})
 	
 		.get(function(req,res){

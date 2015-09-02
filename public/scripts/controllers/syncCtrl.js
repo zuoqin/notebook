@@ -10,6 +10,7 @@
         {
             var vm = this;
             $scope.toroot = function(){
+                $rootScope.filtertext = "";
                 $location.path('/');
             }
             vm.getData = function () {
@@ -259,10 +260,12 @@
 
             $scope.download = function () {
                 $rootScope.showList = false;
-                $rootScope.stories =[];
-                Story.allStory().success(function(data)
+                var curDate = $window.localStorage.getItem('lastdownload');
+                if (curDate === undefined) {
+                    curDate = new Date();
+                };
+                Story.StoryFromTime({"datetime":curDate}).success(function(data)
                 {
-                    $rootScope.stories =[];
                     var stories = data;
                     persistenceService.setAction(1);
                     var curDate = new Date();
@@ -286,29 +289,53 @@
                         $rootScope.$apply(function () {
                             data.forEach(function (item) {
                                 persistenceService.action.save(item).then(function() {
-                                    $rootScope.stories.push({
-                                        _id: item._id,
-                                        title: $sce.trustAsHtml(item.title),
-                                        introduction: $sce.trustAsHtml(item.introduction),
-                                        modified: new Date(item.modified),
-                                        created: new Date(item.created),
-                                        topic: item.topic,
-                                        creator: item.creator,
-                                        content: $sce.trustAsHtml(item.content)
+                                    var found = false;
+                                    for(var index = 0; index < $rootScope.stories.length; index++) {
+                                        if ($rootScope.stories[index]._id === item._id) {
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                    if (found === false) {
+                                        $rootScope.stories.push({
+                                            _id: item._id,
+                                            title: $sce.trustAsHtml(item.title),
+                                            introduction: $sce.trustAsHtml(item.introduction),
+                                            modified: new Date(item.modified),
+                                            created: new Date(item.created),
+                                            topic: item.topic,
+                                            creator: item.creator,
+                                            content: $sce.trustAsHtml(item.content)
+                                        });                                        
+                                    } else{
+                                        $rootScope.stories[index].title = $sce.trustAsHtml(item.title);
+                                        $rootScope.stories[index].introduction = $sce.trustAsHtml(item.introduction);
+                                        $rootScope.stories[index].content = $sce.trustAsHtml(item.content);
+                                        $rootScope.stories[index].modified = new Date(item.modified);
+                                        $rootScope.stories[index].created = new Date(item.created);
+                                        $rootScope.stories[index].topic = item.topic;
+                                        $rootScope.stories[index].creator = item.creator;
+                                    }
+
+                                    $rootScope.stories.sort(function(a, b) {
+                                        return new Date(b.modified) - new Date(a.modified);
                                     });
-
-                                    if ($rootScope.stories.length === data.length) {
-                                        $rootScope.stories.sort(function(a, b) {
-                                            return new Date(b.modified) - new Date(a.modified);
-                                        });
-                                        $rootScope.alert.show = false;
-                                        
-                                        $rootScope.showList = true;
-
-                                    };
+                                    $rootScope.alert.show = false;
+                                    
+                                    $rootScope.showList = true;
 
                                 });
                             });
+
+                        if (data.length === 0) {
+                            $rootScope.stories.sort(function(a, b) {
+                                return new Date(b.modified) - new Date(a.modified);
+                            });
+                            $rootScope.alert.show = false;
+                            
+                            $rootScope.showList = true;
+
+                        };
                         });
                     }, 1000);
                 });
