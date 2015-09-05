@@ -16,6 +16,9 @@
 				return $http.get('/api');
 			},
 			StoryFromTime:  function(datetime){
+				if (datetime === null || datetime === undefined) {
+					datetime = new Date(0);
+				};
 				return $http.post('/api', datetime);
 			},
 			update: function(storyData){

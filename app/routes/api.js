@@ -213,6 +213,9 @@ module.exports = function(app,express){
 				})
 			};
 			if (req.body.datetime !== undefined && req.body.datetime.length > 0) {
+				if (req.body.datetime === null || req.body.datetime === undefined) {
+					req.body.datetime = new Date(0);
+				};
 				var fromDate = new Date(req.body.datetime);
 				var inputDate = new Date(fromDate.toISOString());
 				console.log(fromDate);
