@@ -261,8 +261,8 @@
             $scope.download = function () {
                 $rootScope.showList = false;
                 var curDate = $window.localStorage.getItem('lastdownload');
-                if (curDate === undefined) {
-                    curDate = new Date();
+                if (curDate === undefined || curDate === null) {
+                    curDate = new Date(0);
                 };
                 Story.StoryFromTime({"datetime":curDate}).success(function(data)
                 {
