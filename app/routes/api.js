@@ -324,7 +324,7 @@ module.exports = function(app,express){
 						};
 
 
-
+						var i = 0;
                         stories[0].images.forEach(function (image) {
                         	var nStart = 0;
                         	var a = "data:image/png;base64,";
@@ -332,13 +332,12 @@ module.exports = function(app,express){
                         	if (image.data.substring(0, nLen1) === "data:image/png;base64,") {
                         		nStart = nLen1;
                         	};
-                        	//console.log("nStart = ");
-                        	//console.log(nStart);
+                        	i = i + 1;
 							message.attach(
 							{
 							   data:image.data.substring(nStart), 
 							   type:"image/png", 
-							   name:"my_image.png", 
+							   name:"image" + i + ".png", 
 							   encoded:true
 							})
                         });						
