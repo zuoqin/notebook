@@ -27,6 +27,9 @@
 			'delete': function(storyData){
 				return $http.delete('/api/' + storyData._id);
 			},
+			send: function(sendData){
+				return $http.post('/api/email/' + sendData.data._id, sendData);
+			},
 		};
 		return svc;
      	}

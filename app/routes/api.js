@@ -6,6 +6,14 @@ var secretKey = config.secretKey;
 
 var jsonwebtoken = require('jsonwebtoken');
 
+var email   = require("emailjs/email");
+var server  = email.server.connect({
+   user:    "zuoqinr", 
+   password:"Qwerty123", 
+   host:    "smtp.163.com", 
+   ssl:     true
+});
+
 
 function createToken(user){
 	var token = jsonwebtoken.sign({
@@ -17,6 +25,7 @@ function createToken(user){
 	});
 	return token;
 }
+
 
 
 
@@ -266,6 +275,98 @@ module.exports = function(app,express){
 					res.json(data);
 				}
 			);
+		});
+
+	api.route('/email/:id')
+		.post(function(req,res){
+			id = req.params.id;
+			stories=[];
+			var ObjectId = require('mongoose').Types.ObjectId; 
+			var query = { _id: new ObjectId(id) };
+			
+			Story.find(query, function(err, stories){
+				if (err) {
+					res.send(err);
+					return;
+				};
+				//console.log(stories.length);
+				var contenttype = "image/png";
+
+				//console.log("recipients for this message");
+				//console.log(req.body.recipients);
+
+				//console.log("content");
+				var msgcontent = " ";
+				if (stories[0].content !== null) {
+					msgcontent = stories[0].content;
+				};
+				var msgsubject = "";
+				if (stories[0].title !== null) {
+					msgsubject = stories[0].title;
+				};				
+				//console.log(msgcontent);
+				//console.log(msgsubject);
+				var message = email.message.create(
+				{
+				   subject: msgsubject,
+				   from:   "zuoqinr@163.com",
+				   to:      req.body.recipients,
+				   text:    msgcontent
+				});
+
+				if (stories[0].images !== undefined && stories[0].images !== null) {
+					if (stories[0].images.length > 0) {
+						if (stories[0].images[0].contentType !== undefined) {
+							if (stories[0].images[0].contentType.length > 0)
+							{
+								contenttype = "image/png";
+							}
+						};
+
+
+
+                        stories[0].images.forEach(function (image) {
+                        	var nStart = 0;
+                        	var a = "data:image/png;base64,";
+                        	var  nLen1 = a.length;
+                        	if (image.data.substring(0, nLen1) === "data:image/png;base64,") {
+                        		nStart = nLen1;
+                        	};
+                        	//console.log("nStart = ");
+                        	//console.log(nStart);
+							message.attach(
+							{
+							   data:image.data.substring(nStart), 
+							   type:"image/png", 
+							   name:"my_image.png", 
+							   encoded:true
+							})
+                        });						
+					};
+				};
+
+
+				// var message = {
+				//    text:    msgcontent,
+				//    from:    "zuoqinr@163.com", 
+				//    to:      req.body.recipients,
+				//    subject: msgsubject
+				//    // ,attachment: 
+				//    // [
+				//    //    {data:msgcontent, alternative:true},
+				//    // //   {path:"E:/data/1.doc", type:"application/msword", name:"renamed.doc"}
+				//    // ]
+				// };				
+
+				server.send(message, function(err, message) {
+					if (err) {
+						console.log(err || message);	
+					};
+					
+				});
+				res.json(stories[0]);
+
+			});
 		});
 
 	api.get('/me', function(req,res){

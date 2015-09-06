@@ -3,8 +3,8 @@
     var app = angular.module('MyApp');
     app.controller('viewController',
     [
-        '$scope', '$sce', '$location', 'persistenceService', '$routeParams',
-        function ($scope, $sce, $location, persistenceService, $routeParams)
+        '$scope', '$sce', '$location', 'persistenceService', '$routeParams', 'Story',
+        function ($scope, $sce, $location, persistenceService, $routeParams, Story)
         {
             $scope.showSuccessMessage = false;
             $scope.showFillOutFormMessage = false;
@@ -12,7 +12,7 @@
             $scope.item = {};
             $scope.showItems = false;
 
-
+            var recipients = "alexey.zuo@take5people.com";
             
             var parts = $location.absUrl().split('/');
             var id = parts[parts.length - 1];
@@ -24,6 +24,23 @@
             $scope.edit = function () {
                 if (id != null) {
                     window.location.href = "/edit/" + id;
+                }
+            };
+
+
+            $scope.sendbyemail = function () {
+
+                if (id != null) {
+                    var a = $scope.viewController.recipients;
+                    persistenceService.getById(id).then(
+                        function (item) {
+                            var recipients = {"recipients" : $scope.viewController.recipients, "data" : item};
+
+                            Story.send(recipients);
+                        },
+                        function (error) {
+                            $scope.error = error;
+                        });
                 }
             };
 

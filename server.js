@@ -3,7 +3,10 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var config = require('./config');
 var mongoose = require('mongoose');
+var params = require('express-params')
 var app = express();
+
+params.extend(app);
 
 mongoose.connect(config.database, function(err){
 	if(err){
