@@ -14,6 +14,9 @@
 
             var parts = $location.absUrl().split('/');
             var id = parts[parts.length - 1];
+            if (id.indexOf('?') > 0) {
+                id = id.substring(0,id.indexOf('?'));
+            };
             var uuidLength = 24;
             var topic = "";
             if (id.length < uuidLength) {
