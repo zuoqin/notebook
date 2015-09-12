@@ -3,14 +3,14 @@
     var app = angular.module('MyApp');
     app.controller('viewController',
     [
-        '$scope', '$sce', '$location', 'persistenceService', '$routeParams', 'Story',
-        function ($scope, $sce, $location, persistenceService, $routeParams, Story)
+        '$scope', '$rootScope', '$sce', '$location', 'persistenceService', '$routeParams', 'Story',
+        function ($scope, $rootScope, $sce, $location, persistenceService, $routeParams, Story)
         {
-            $scope.showSuccessMessage = false;
-            $scope.showFillOutFormMessage = false;
-            $scope.isOnline = true;
+            $rootScope.showSuccessMessage = false;
+            $rootScope.showFillOutFormMessage = false;
+            $rootScope.isOnline = true;
             $scope.item = {};
-            $scope.showItems = false;
+            $rootScope.showItems = false;
 
             var recipients = "alexey.zuo@take5people.com";
             

@@ -319,7 +319,7 @@ module.exports = function(app,express){
 						if (stories[0].images[0].contentType !== undefined) {
 							if (stories[0].images[0].contentType.length > 0)
 							{
-								contenttype = "image/png";
+								contenttype = stories[0].images[0].contentType;
 							}
 						};
 
@@ -332,12 +332,38 @@ module.exports = function(app,express){
                         	if (image.data.substring(0, nLen1) === "data:image/png;base64,") {
                         		nStart = nLen1;
                         	};
+
+							a = "data:image/jpeg;base64,";
+                        	nLen1 = a.length;
+                        	if (image.data.substring(0, nLen1) === "data:image/jpeg;base64,") {
+                        		nStart = nLen1;
+                        	};
+
+							a = "data:image/bmp;base64,";
+                        	nLen1 = a.length;
+                        	if (image.data.substring(0, nLen1) === "data:image/bmp;base64,") {
+                        		nStart = nLen1;
+                        	};
+							
+							a = "data:image/gif;base64,";
+                        	nLen1 = a.length;
+                        	if (image.data.substring(0, nLen1) === "data:image/gif;base64,") {
+                        		nStart = nLen1;
+                        	};
+
+
                         	i = i + 1;
+                        	var imagename = "image" + i + ".png";
+                        	if (stories[0].images[0].pic !== undefined && stories[0].images[0].pic !== null) {
+                        		if (stories[0].images[0].pic.length > 0) {
+                        			imagename = stories[0].images[0].pic;
+                        		};
+                        	};
 							message.attach(
 							{
 							   data:image.data.substring(nStart), 
-							   type:"image/png", 
-							   name:"image" + i + ".png", 
+							   type: contenttype, 
+							   name:   imagename, 
 							   encoded:true
 							})
                         });						

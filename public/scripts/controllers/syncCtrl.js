@@ -10,8 +10,10 @@
         {
             var vm = this;
             $scope.toroot = function(){
+                $rootScope.showItems = true;
                 $rootScope.filtertext = "";
                 $location.path('/');
+                lazyGetData();
             }
             vm.getData = function () {
                 if ($rootScope.loaded !== undefined && $rootScope.loaded === true) {
@@ -101,13 +103,13 @@
                 $rootScope.isLoggedIn = false;
                 $rootScope.showList = true;
             }
-            if ($rootScope.stories === undefined || $rootScope.stories.length === 0) {
-                var lazyGetData = _.debounce(vm.getData, 1000);
-                //$rootScope.stories = [];
-                //if ($rootScope.showItems === true) {
-                    lazyGetData();
-                //}                
-            };            
+            // if ($rootScope.stories === undefined || $rootScope.stories.length === 0) {
+            //     var lazyGetData = _.debounce(vm.getData, 1000);
+            //     //$rootScope.stories = [];
+            //     //if ($rootScope.showItems === true) {
+            //         lazyGetData();
+            //     //}                
+            // };            
             syncService.monitorUp().then(
                 function(result) {
                     $timeout(function() {
@@ -353,8 +355,10 @@
             );
             var lazyGetData = _.debounce(vm.getData, 1000);
 
-            //if ($rootScope.showItems === true && ($rootScope.stories ==undefined || $rootScope.stories.length == 0)) {
-                lazyGetData();            
-            //}
+
+            if ( ($rootScope.showItems === true || $location.$$path === '/') &&
+                ($rootScope.stories ==undefined || $rootScope.stories.length == 0)) {
+                lazyGetData();
+            }
         }]);
 }());

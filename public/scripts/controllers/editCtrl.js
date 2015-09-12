@@ -84,25 +84,24 @@
                         if (srcData.indexOf("data:image") === -1)
                         {
                             var pic1 = srcData.indexOf(";base64")
-                            srcData = "data:image/png" + srcData.substring(pic1);
+                            srcData = "data:" + filesSelected[0].type + srcData.substring(pic1);
                         };
-                        // var newImage = document.createElement('img');
-                        // newImage.src = srcData;
 
                         var images = $scope.item.images;
                         if ($scope.item.images === undefined || $scope.item.images.length === 0) {
-                            images = [{ data: srcData, contentType: 'image/png' }];
+                            images = [{data: srcData, contentType: filesSelected[0].type, pic: filesSelected[0].name}];
                         }
                         else
                         {
-                            images.unshift({data:srcData, contentType:'image/png'});    
+                            images.unshift({data:srcData, contentType:filesSelected[0].type, pic: filesSelected[0].name});    
                         }
 
                         setTimeout(function () {
                             $scope.$apply(function () {
                                 $scope.item.images = images;
                             });
-                        }, 100);                    }
+                        }, 100);                    
+                    }
                     fileReader.readAsDataURL(fileToLoad);
                 }
             };
