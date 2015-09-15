@@ -10,8 +10,8 @@ var StorySchema = new Schema({
 	modified: {type: Date, default: Date.now}, 
 	created: {type: Date, default: Date.now},
 	topic: String,
-	//images: { type : Array , "default" : [] }
-	images: [{ data: String, contentType: String, id: String, pic: String }]
+	weiboid: String,
+	images: [{ data: String, contentType: String, id: String, pic: String, weiboid: String }]
 	//img: 
 });
 
