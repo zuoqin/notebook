@@ -19,6 +19,13 @@
 .pull-right {
     padding-right: 0px;
 }
+.btnweibo {
+    background: url("weibo.jpg") no-repeat;
+    width: 40px;
+    height: 40px;
+    margin-left: 5px;
+    background-size: 100%;
+}
 .btnupload {
     background: url("uploadbtn.jpg") no-repeat;
     width: 90px;

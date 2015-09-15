@@ -74,7 +74,7 @@
 				if (token) {
 					config.headers['x-access-token'] = token;
 				};
-
+				//config.headers['Authorization'] = 'OAuth2 2.008OxyKC0CdMrdde3dbca8709bIjUC';
 				return config;
 			};
 

@@ -360,5 +360,10 @@
                 ($rootScope.stories ==undefined || $rootScope.stories.length == 0)) {
                 lazyGetData();
             }
+
+            if ( ($rootScope.showItems === false && $location.$$path === '/') &&
+                $rootScope.stories !== undefined && $rootScope.stories.length > 0)) {
+                $rootScope.showItems = true;
+            }            
         }]);
 }());

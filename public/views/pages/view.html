@@ -1,10 +1,31 @@
-﻿<div class="container" data-ng-controller="viewController">
+﻿<div data-ng-show="postingweibo">
+    <div class="alert alert-{{alert.type}} animated main-alert" ng-class="{'flipInY':alert.show, 'flipOutY':!alert.show, 'alert-hidden':!alert.hasBeenShown}"><strong>{{alert.title}}</strong>
+        {{alert.message}}
+    </div>
+</div>
+
+<div class="container" data-ng-controller="viewController">
         <div class="editwrapper">
         </div>
         <div class="main-wrapper col-sm-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h1 ng-bind-html="item.title" class="panel-title"/>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <h1 ng-bind-html="item.title" class="panel-title"></h1>
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btnweibo" ng-click="sendtoweibo()"></button>   
+                        </div>
+                        <div class="col-md-1">
+                            <!--data-ng-show="item.weiboid > 0"-->
+                            <button class="btn btn-danger" data-ng-click="deletefromweibo()" type="button">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </button>                            
+                        </div>
+
+                    </div>
+                    
                 </div>
                 <div class="panel-body">
 
@@ -50,9 +71,14 @@
                     <p></p>
                     <div class="container" ng-repeat="image in item.images">
                         <div class="row">    
+                            <p/>
+                            <p/>
+                            
+                            <button class="btnweibo" ng-click="sendtoweibo($index)"></button>   
+                            
                             <div class="col-md-12">
                                 <img class="editimagelist" ng-src="{{image.data}}">
-                            </div>
+                            </div>                          
                         </div>
                     </div>
                 </div>
