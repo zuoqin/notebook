@@ -362,7 +362,7 @@
             }
 
             if ( ($rootScope.showItems === false && $location.$$path === '/') &&
-                $rootScope.stories !== undefined && $rootScope.stories.length > 0)) {
+                ($rootScope.stories !== undefined && $rootScope.stories.length > 0)) {
                 $rootScope.showItems = true;
             }            
         }]);
