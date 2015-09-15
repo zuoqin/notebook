@@ -363,7 +363,13 @@
 
             if ( ($rootScope.showItems === false && $location.$$path === '/') &&
                 ($rootScope.stories !== undefined && $rootScope.stories.length > 0)) {
-                $rootScope.showItems = true;
+                setTimeout(function () {
+                    $rootScope.$apply(function () {
+                        //$rootScope.stories.splice(index, 1);
+                        $rootScope.showList = true;
+
+                    });
+                }, 100); 
             }            
         }]);
 }());
