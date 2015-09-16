@@ -11,7 +11,8 @@ angular.module('MyApp', [ 'ngResource', 'ngCookies', 'ngRoute'])
         ){
     	$httpProvider.interceptors.push('AuthInterceptor');
 
-
+        $httpProvider.defaults.useXDomain = true;
+        delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
     	$provide.constant('indexedDB', window.indexedDB);
         $provide.constant('_', window._);

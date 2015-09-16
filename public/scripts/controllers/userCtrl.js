@@ -53,10 +53,15 @@
         var code = '';
         if (parts.indexOf('?') > 0) {
             code = parts.substring(parts.indexOf('?'));
-            $http({method: 'POST',
-                url:'https://api.weibo.com/oauth2/access_token' + code + '&grant_type=authorization_code&client_id=588957036&forcelogon=true&client_secret=d6d06112b69d8c6482dd00f870a78dcf&redirect_uri=http://www.lifemall.com',                
-                headers:{'Content-Type': 'application/x-www-form-urlencoded'}
-            })
+            $http({method:'GET',
+        		url:'/api/weibo' + code,
+        		headers:{'Content-Type': 'application/x-www-form-urlencoded'}
+        	})
+            //$http({method: 'POST',
+            //
+            //    url:'https://api.weibo.com/oauth2/access_token' + code + '&grant_type=authorization_code&client_id=588957036&forcelogon=true&client_secret=d6d06112b69d8c6482dd00f870a78dcf&redirect_uri=http://www.lifemall.com',                
+            //    headers:{'Content-Type': 'application/x-www-form-urlencoded'}
+            //})
             .then(function(response)
             {                         
                 $window.localStorage.setItem('weibotoken', response.data.access_token);
@@ -68,7 +73,7 @@
                 }, 100);
 
             }, function(response){
-            	response = response;
+            	alert('Some error.');
             });     
         };    
 		$scope.getweibotoken = function()

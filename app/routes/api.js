@@ -1,7 +1,6 @@
 var User = require('../models/user');
 var Story = require('../models/story');
 var config = require('../../config');
-
 var secretKey = config.secretKey;
 
 var jsonwebtoken = require('jsonwebtoken');
@@ -54,6 +53,70 @@ module.exports = function(app,express){
 	});
 
 
+
+	api.get('/weibo', function(req,res){
+		var http = require("https");
+		//console.log('Code parameter:');
+		//console.log(req.query.code);
+	    var opt = {
+	          hostname: 'api.weibo.com',
+	          path: '/oauth2/access_token?code=' + req.query.code +'&grant_type=authorization_code&client_id=588957036&forcelogon=true&client_secret=d6d06112b69d8c6482dd00f870a78dcf&redirect_uri=http://www.lifemall.com'
+	          , method: 'POST'
+	         //  headers: {
+	         //   'Connection': 'keep-alive',
+	         //   'Cache-Control': 'no-cache',
+	         //   'Accept' : 
+	         //       'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+	         //   'User-Agent': 
+	         //       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36',
+	         //   'Accept-Encoding': '',
+	         //   'Accept-Language': 'ru,en-US;q=0.8,en;q=0.6,zh-CN;q=0.4,zh;q=0.2'
+	         // }
+	    };
+		
+		var body = '';
+		//Now we're going to set up the request and the callbacks to handle the data
+		var request = http.request(opt, function(response) {
+		    //When we receive data, we want to store it in a string
+		    response.on('data', function (chunk) {
+		        body += chunk;
+		    });
+		    //On end of the request, run what we need to
+		    response.on('end',function() {
+		        //Do Something with the data
+		        console.log(body);
+		        res.send(body);
+		    });
+		});
+
+		//Now we need to set up the request itself. 
+		//This is a simple sample error function
+		request.on('error', function(e) {
+		  console.log('problem with request: ' + e.message);
+		});
+
+
+		//Write our post data to the request
+		//request.write('');
+		//End the request.
+		request.end();		
+		// request.post(
+		//     'https://api.weibo.com/oauth2/access_token?code=' + '2f3c013581f25d7f3be781f8ed926dc1' +'&grant_type=authorization_code&client_id=588957036&forcelogon=true&client_secret=d6d06112b69d8c6482dd00f870a78dcf&redirect_uri=http://www.lifemall.com',
+		//     '',
+		//     function (error, response, body) {
+		//         if (!error && response.statusCode == 200) {
+		//         	console.log('success post to weibo');
+		//             console.log(body);
+		//             res.body;
+		//         }
+		//         else
+		//         {
+
+		//         	console.log(response.statusCode);
+		//         }
+		//     }
+		// );
+	});
 
 
 	api.get('/users', function(req,res){
