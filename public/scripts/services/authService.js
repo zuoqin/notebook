@@ -33,7 +33,7 @@
 			authFactory.getUser = function(){
 				if (AuthToken.getToken()) {
 					var person = {data:{data:'zuoqin'}};
-					return person;//$http.get('/api/me')
+					return $http.get('/api/me')
 				} else{
 					return $q.reject({message: "User has no token"});
 				}
@@ -74,7 +74,6 @@
 				if (token) {
 					config.headers['x-access-token'] = token;
 				};
-				//config.headers['Authorization'] = 'OAuth2 2.008OxyKC0CdMrdde3dbca8709bIjUC';
 				return config;
 			};
 

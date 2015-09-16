@@ -55,8 +55,17 @@ module.exports = function(app,express){
 
 
 
+
 	api.get('/users', function(req,res){
-		User.find({}, function(err, users){
+		var ObjectId = require('mongoose').Types.ObjectId;
+		var query = {};
+		if (req.decoded && req.decoded._id !== undefined && req.decoded._id !== null) {
+			query = { _id: new ObjectId(req.decoded._id) };	
+		};
+		
+
+
+		User.find(query, function(err, users){
 			if (err) {
 				res.send(err);
 				return;

@@ -3,8 +3,8 @@
     var app = angular.module('MyApp');
     app.controller('viewController',
     [
-        '$scope', '$rootScope', '$sce', '$location', 'persistenceService', '$routeParams', 'Story', '$http',
-        function ($scope, $rootScope, $sce, $location, persistenceService, $routeParams, Story, $http)
+        '$scope', '$rootScope', '$sce', '$location', 'persistenceService', '$routeParams', 'Story', '$http', '$window',
+        function ($scope, $rootScope, $sce, $location, persistenceService, $routeParams, Story, $http, $window)
         {
             $rootScope.showSuccessMessage = false;
             $rootScope.showFillOutFormMessage = false;
@@ -64,37 +64,45 @@
                         }
 
                         if (picid !== undefined && picid !== null) {
-                            $http({method: 'POST',
-                                url:'https://api.weibo.com/2/statuses/destroy.json',
-                                data: "id=" + picid,
-                                headers:{'Content-Type': 'application/x-www-form-urlencoded',
-                                        'Authorization': 'OAuth2 2.008OxyKC0CdMrdde3dbca8709bIjUC'}
-                            })
-                            .success(function(response)
-                            {                         
-                                item.modified = new Date();
-                                if (index !== undefined && index !== null) {
-                                    item.images[index].weiboid = null;
-                                }
-                                else
-                                {
-                                    item.weiboid = null;    
-                                }
-                                
-                                persistenceService.action.save(item).then(function()
-                                {
-                                    $rootScope.postingweibo = false;
-                                    $rootScope.alert.show = false;                       
-                                    $rootScope.postingweibo = false;
-                                    setTimeout(function () {
-                                        $rootScope.$apply(function () {
-                                            $scope.item.weiboid = item.weiboid;
-                                            $scope.item.images = item.images;
-                                        });
-                                    }, 100);                                    
+                            var weibotoken = $window.localStorage.getItem('weibotoken');
+                            if (weibotoken !== null && weibotoken !== undefined) {
+                                var auth = 'OAuth2 ' + weibotoken;
 
-                                });
-                            });                            
+
+
+                                $http({method: 'POST',
+                                    url:'https://api.weibo.com/2/statuses/destroy.json',
+                                    data: "id=" + picid,
+                                    headers:{'Content-Type': 'application/x-www-form-urlencoded',
+                                            'Authorization': auth}
+                                })
+                                .success(function(response)
+                                {                         
+                                    item.modified = new Date();
+                                    if (index !== undefined && index !== null) {
+                                        item.images[index].weiboid = null;
+                                    }
+                                    else
+                                    {
+                                        item.weiboid = null;    
+                                    }
+                                    
+                                    persistenceService.action.save(item).then(function()
+                                    {
+                                        $rootScope.postingweibo = false;
+                                        $rootScope.alert.show = false;                       
+                                        $rootScope.postingweibo = false;
+                                        setTimeout(function () {
+                                            $rootScope.$apply(function () {
+                                                $scope.item.weiboid = item.weiboid;
+                                                $scope.item.images = item.images;
+                                            });
+                                        }, 100);                                    
+
+                                    });
+                                });                            
+
+                            };                              
                         };
                     }
                 );
@@ -220,8 +228,12 @@
                 // We add the required HTTP header to handle a multipart form data POST request
                 XHR.setRequestHeader('Content-Type','multipart/form-data; boundary=' + boundary);
 
-                //XHR.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-                XHR.setRequestHeader('Authorization', 'OAuth2 2.008OxyKC0CdMrdde3dbca8709bIjUC');
+                var weibotoken = $window.localStorage.getItem('weibotoken');
+                if (weibotoken !== null && weibotoken !== undefined) {
+                    var auth = 'OAuth2 ' + weibotoken;
+                    XHR.setRequestHeader('Authorization', auth);
+                };  
+                
 
                 //XHR.setRequestHeader('Content-Length', data.length);
 
@@ -264,23 +276,25 @@
                     function (item) {
 
                         if (index === undefined || index === null) {
+                            var weibotoken = $window.localStorage.getItem('weibotoken');
+                            if (weibotoken !== null && weibotoken !== undefined) {
+                                var auth = 'OAuth2 ' + weibotoken;
+                                $http({method: 'POST',
+                                    url:'https://api.weibo.com/2/statuses/update.json',
+                                    data: "status=" + item.title,
+                                    headers:{'Content-Type': 'application/x-www-form-urlencoded',
+                                            'Authorization': auth}
+                                }).success(function(response) { 
+                                    item.modified = new Date();
+                                    item.weiboid = response.id;
+                                    persistenceService.action.save(item).then(function() {
+                                        $rootScope.postingweibo = false;
+                                        $rootScope.alert.show = false;                       
+                                        $rootScope.postingweibo = false;                            
 
-                            $http({method: 'POST',
-                                url:'https://api.weibo.com/2/statuses/update.json',
-                                data: "status=" + item.title,
-                                headers:{'Content-Type': 'application/x-www-form-urlencoded',
-                                        'Authorization': 'OAuth2 2.008OxyKC0CdMrdde3dbca8709bIjUC'}
-                            }).success(function(response) { 
-                                item.modified = new Date();
-                                item.weiboid = response.id;
-                                persistenceService.action.save(item).then(function() {
-                                    $rootScope.postingweibo = false;
-                                    $rootScope.alert.show = false;                       
-                                    $rootScope.postingweibo = false;                            
-
+                                    });
                                 });
-                            });
-
+                            }
                         }
                         else
                         {

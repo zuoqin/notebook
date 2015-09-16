@@ -13,6 +13,8 @@
 		all: function(){
 			return $http.get('/api/users');	
 		}
+
+
 	};
     return svc;
     }

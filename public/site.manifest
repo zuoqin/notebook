@@ -11,6 +11,7 @@ CACHE:
 /views/pages/login.html
 /views/pages/view.html
 /views/pages/signup.html
+/views/pages/user.html
 /views/index.html
 
 fonts/glyphicons-halflings-regular.woff2

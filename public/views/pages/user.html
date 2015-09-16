@@ -1,0 +1,57 @@
+<div class="container" data-ng-controller="UserManageController">
+
+    <div class="alert alert-success" data-ng-show="showSuccessMessage">
+        <strong>Success!</strong> item saved.
+    </div>
+
+    <div class="editwrapper" data-ng-show="showFillOutFormMessage">
+        <div class="alert alert-info">
+            <strong>Note:</strong> You need to fill out form title before attempting to save a new item.
+        </div>
+    </div>
+
+
+
+
+        
+    
+
+
+        <div class="col-sm-12">
+            <form class="form-horizontal" role="form">
+                <div>
+                    <div style="float: left; width: 100%;">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <label> {{user.username}}</label>
+                                </div>
+                                <div class="col-sm-2">
+                                     <label> {{user.weibotoken}}</label>
+                                </div>
+                                <div class="col-md-1">
+                                    <button class="btnweibo" ng-click="getweibotoken()"></button>   
+                                </div>
+                                
+                            </div>
+                        <!--
+                        <label for="Contents" class="col-sm-2 control-label">Title</label>
+                            -->
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="form-group" >
+                    <div class="col-sm-12" align="center">
+                        <input type="reset" data-ng-click="cancel()" value="Cancel" class="btn btn-link"/>
+                        <input type="button" data-ng-click="save()" value="Save" class="btn btn-default btn-primary"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+</div>

@@ -47,6 +47,11 @@ angular.module('MyApp', [ 'ngResource', 'ngCookies', 'ngRoute'])
             controllerAs: 'main'
         })
 
+        .when('/user', {
+            templateUrl: '/views/pages/user.html'
+            //,controller: 'UserManageController'
+        })
+
 
         .when('/login', {
             templateUrl: '/views/pages/login.html',
