@@ -63,7 +63,7 @@
                 
                 setTimeout(function () {
                     $scope.$apply(function () {
-                        user.weibotoken = response.data.access_token;
+                        $scope.user.weibotoken = response.data.access_token;
                     });
                 }, 100);
 
