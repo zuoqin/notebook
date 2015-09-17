@@ -223,7 +223,7 @@
                 });
 
                 // We setup our request
-                XHR.open('POST', 'https://upload.api.weibo.com/2/statuses/upload.json' );  //'https://api.weibo.com/2/statuses/update.json'
+                XHR.open('POST','/api/weibo/upload'  );  //'https://upload.api.weibo.com/2/statuses/upload.json'
 
                 // We add the required HTTP header to handle a multipart form data POST request
                 XHR.setRequestHeader('Content-Type','multipart/form-data; boundary=' + boundary);
@@ -280,7 +280,7 @@
                             if (weibotoken !== null && weibotoken !== undefined) {
                                 var auth = 'OAuth2 ' + weibotoken;
                                 $http({method: 'POST',
-                                    url:'https://api.weibo.com/2/statuses/update.json',
+                                    url:'/api/weibo/update', //https://api.weibo.com/2/statuses/update.json
                                     data: "status=" + item.title,
                                     headers:{'Content-Type': 'application/x-www-form-urlencoded',
                                             'Authorization': auth}

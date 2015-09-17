@@ -15,14 +15,37 @@ mongoose.connect(config.database, function(err){
 		console.log('Connected successfully');
 	}
 
-})
-app.use(bodyParser.urlencoded({extended:true, limit: '50mb'}));
+});
+
+
+
+// app.use('*', function(req, res, next) {
+//   req.rawBody = [];
+//   req.setEncoding('utf8');
+
+//   req.on('data', function(chunk) { 
+//     //console.log('j3333333333333333khjkhkjhjk');
+//     //var buf1 = new Buffer(req.rawBody);
+//     //var buf2 = new Buffer(chunk,'binary');
+//     //var buf3 = Buffer.concat([buf1,buf2]);
+//     req.rawBody.push(chunk);// = buf3;
+//   });
+//   //console.log('jkhjkhkjhjk');
+//   req.on('end', function() {
+//     req.rawBody = Buffer.concat(req.rawBody);
+//     next();  
+//   });
+  
+// });
+
+//app.use(bodyParser.urlencoded({extended:true, limit: '50mb'}));
 //app.use(bodyParser.json());
 app.use(morgan('dev'));
 
 //app.use(bodyParser.urlencoded({limit: '50mb'}));
-app.use(bodyParser.json({limit: '50mb'}));
-
+//app.use(bodyParser.json({limit: '50mb'}));
+//app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }));
+var BufferParser = 
 app.use(express.static(__dirname + '/public'));
 
 
@@ -47,6 +70,7 @@ app.use('*', function (req, res, next) {
 });
 
 
+
 app.get('/favicon/:id', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
@@ -69,6 +93,20 @@ app.get('*', function(req, res, next){
   //res.json({msg: 'This is CORS-enabled for all origins!'});
   next();
 });
+
+var BufferParser = bodyParser.raw();
+
+var multer  = require('multer');
+var upload = multer({ dest: 'uploads/' });
+
+//  app.post('/api/weibo/upload', upload.array('photos', 12), function (req, res, next){
+
+  //console.log(req.files);
+
+    //console.log(req.body);
+//    res.json({ok:true});
+
+//  });
 
 var api = require('./app/routes/api')(app,express);
 app.use('/api', api);
