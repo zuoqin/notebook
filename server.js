@@ -19,25 +19,26 @@ mongoose.connect(config.database, function(err){
 
 
 
-app.use('*', function(req, res, next) {
+app.use('*', function (req, res, next) {
+  //console.log('Begin');
   req.rawBody = [];
 
   req.on('data', function(chunk) { 
-    req.rawBody.push(chunk);// = buf3;
+    req.rawBody.push(chunk);
   });
   req.on('end', function() {
+    //console.log('end');
     req.rawBody = Buffer.concat(req.rawBody);
-    next();  
   });
-  
+  next();
 });
 
 app.use(bodyParser.urlencoded({extended:true, limit: '50mb'}));
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
 app.use(morgan('dev'));
 
 //app.use(bodyParser.urlencoded({limit: '50mb'}));
-//app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.json({limit: '50mb'}));
 //app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }));
 //var BufferParser = 
 app.use(express.static(__dirname + '/public'));
@@ -68,7 +69,7 @@ app.use('*', function (req, res, next) {
 app.get('/favicon/:id', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    console.log("11111");
+    //console.log("11111");
     res.json({msg: 'This is CORS-enabled for all origins!'});
 });
 

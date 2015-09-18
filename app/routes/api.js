@@ -88,7 +88,7 @@ module.exports = function(app,express){
 		    //On end of the request, run what we need to
 		    response.on('end',function() {
 		        //Do Something with the data
-		        console.log(body);
+		        //console.log(body);
 		        res.send(body);
 		    });
 		});
@@ -125,13 +125,13 @@ module.exports = function(app,express){
 	api.post('/weibo/update', function(req,res){
 		var http = require("https");
 		//console.log(JSON.stringify(req.headers));
-		console.log('-----------------------------');
+		//console.log('-----------------------------');
 		var authorization = req.headers['authorization'];
 		var contenttype = req.headers['content-type'];
 		
 		var input_body = req.rawBody;
-		console.log(input_body);
-		console.log('-----------------------------');
+		//console.log(input_body);
+		//console.log('-----------------------------');
 
 
 		res.send({ok:true});
@@ -212,8 +212,8 @@ module.exports = function(app,express){
             for (var nIdx = 0; nIdx < nBytes; nIdx++) {
                 data += '1';//binary[nIdx];
            }
-           console.log('data.length: ');
-           console.log(data.length);
+           //console.log('data.length: ');
+           //console.log(data.length);
           data +=  '\r\n'; 
         }
 
@@ -267,9 +267,9 @@ request.post(options, function optionalCallback(err, httpResponse, body) {
   if (err) {
     return console.error('upload failed:', err);
   }
-  console.log(binary.length);
-  console.log(nIndex1);
-  console.log('Upload successful!  Server responded with:', ui8Data.toString('utf8'));
+  //console.log(binary.length);
+  //console.log(nIndex1);
+  //console.log('Upload successful!  Server responded with:', ui8Data.toString('utf8'));
   res.send(body);
 });		
 
@@ -420,6 +420,7 @@ request.post(options, function optionalCallback(err, httpResponse, body) {
 	});
 
 	api.post('/login', function(req,res){
+		//console.log('inside login');
 		User.findOne({
 			username: req.body.username
 		}).select('name username password').exec(function(err, user){
@@ -448,7 +449,7 @@ request.post(options, function optionalCallback(err, httpResponse, body) {
 
 
 	api.use(function(req,res,next){
-		console.log("Somebody just call app");
+		//console.log("Somebody just call app");
 
 		var token = req.headers['x-access-token']; //req.body.token || req.param('token') || 
 
@@ -484,7 +485,7 @@ request.post(options, function optionalCallback(err, httpResponse, body) {
 			//console.log(req.body.content);
 			if (req.body._id.length > 24) {
 				req.body._id = '';
-				console.log("new item will be insert");
+				//console.log("new item will be insert");
 			}else{
 				Story.find({_id:req.body._id}, function(err, stories){
 					if (err) {
@@ -496,10 +497,10 @@ request.post(options, function optionalCallback(err, httpResponse, body) {
 						if (stories.length > 0) {
 							if (stories[0].modified > req.body.modified) {
 								res.json(stories[0]);
-								console.log("newer item was found");
+								//console.log("newer item was found");
 								return;
 							}else{
-								console.log("older item was found");
+								//console.log("older item was found");
 							}						
 						};
 					};
@@ -553,6 +554,7 @@ request.post(options, function optionalCallback(err, httpResponse, body) {
 		})
 
 		.post(function(req,res){
+			console('inside auth post');
 			if (req.body.title !== undefined && req.body.title.length > 0) {
 				var story = new Story({
 					creator: req.decoded._id,
@@ -564,8 +566,8 @@ request.post(options, function optionalCallback(err, httpResponse, body) {
 				 	created: req.body.created,
 				 	images: req.body.images
 				});
-				console.log("To be inserted");
-				console.log(req.body.topic);
+				//console.log("To be inserted");
+				//console.log(req.body.topic);
 				story.save(function(err, data){
 					if (err) {
 						res.send(err);
@@ -581,7 +583,7 @@ request.post(options, function optionalCallback(err, httpResponse, body) {
 				};
 				var fromDate = new Date(req.body.datetime);
 				var inputDate = new Date(fromDate.toISOString());
-				console.log(fromDate);
+				//console.log(fromDate);
 
 
 				var ObjectId = require('mongoose').Types.ObjectId; 
@@ -595,8 +597,8 @@ request.post(options, function optionalCallback(err, httpResponse, body) {
 						return;
 					};
 					res.json(stories);
-					console.log("Total found stories:");
-					console.log(stories.length);
+					//console.log("Total found stories:");
+					//console.log(stories.length);
 				});				
 			}
 
@@ -613,8 +615,8 @@ request.post(options, function optionalCallback(err, httpResponse, body) {
 					return;
 				};
 				res.json(stories);
-				console.log("Total found stories:");
-				console.log(stories.length);
+				//console.log("Total found stories:");
+				//console.log(stories.length);
 			});
 		});
 
@@ -749,6 +751,7 @@ request.post(options, function optionalCallback(err, httpResponse, body) {
 		});
 
 	api.get('/me', function(req,res){
+		//console.log('inside me');
 		res.json(req.decoded);
 	});
 	return api;
