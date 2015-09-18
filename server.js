@@ -34,13 +34,9 @@ app.use('*', function (req, res, next) {
 });
 
 app.use(bodyParser.urlencoded({extended:true, limit: '50mb'}));
-//app.use(bodyParser.json());
 app.use(morgan('dev'));
-
-//app.use(bodyParser.urlencoded({limit: '50mb'}));
 app.use(bodyParser.json({limit: '50mb'}));
 //app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }));
-//var BufferParser = 
 app.use(express.static(__dirname + '/public'));
 
 

@@ -1,5 +1,6 @@
 var User = require('../models/user');
 var Story = require('../models/story');
+var Control = require('../models/control');
 var config = require('../../config');
 var secretKey = config.secretKey;
 var request = require('request');
@@ -10,12 +11,7 @@ var BufferParser = bodyParser.raw();
 
 
 var email   = require("emailjs/email");
-var server  = email.server.connect({
-   user:    "zuoqinr", 
-   password:"Qwerty123", 
-   host:    "smtp.163.com", 
-   ssl:     true
-});
+
 
 
 function createToken(user){
@@ -573,7 +569,6 @@ request.post(options, function optionalCallback(err, httpResponse, body) {
 						res.send(err);
 						return;
 					};
-
 					res.json(data);
 				})
 			};
@@ -640,7 +635,8 @@ request.post(options, function optionalCallback(err, httpResponse, body) {
 			var ObjectId = require('mongoose').Types.ObjectId; 
 			var query = { _id: new ObjectId(id) };
 			
-			Story.find(query, function(err, stories){
+			Story.find(query, function(err, stories)
+			{
 				if (err) {
 					res.send(err);
 					return;
@@ -665,11 +661,11 @@ request.post(options, function optionalCallback(err, httpResponse, body) {
 				var message = email.message.create(
 				{
 				   subject: msgsubject,
-				   from:   "zuoqinr@163.com",
+				   from:   "zuoqinrb@163.com",
 				   to:      req.body.recipients,
 				   text:    msgcontent
 				});
-
+				console.log('recipients: ' + req.body.recipients);
 				if (stories[0].images !== undefined && stories[0].images !== null) {
 					if (stories[0].images.length > 0) {
 						if (stories[0].images[0].contentType !== undefined) {
@@ -737,13 +733,29 @@ request.post(options, function optionalCallback(err, httpResponse, body) {
 				//    //    {data:msgcontent, alternative:true},
 				//    // //   {path:"E:/data/1.doc", type:"application/msword", name:"renamed.doc"}
 				//    // ]
-				// };				
-
-				server.send(message, function(err, message) {
+				// };
+				var query = { name: "server" };
+				Control.find(query, function(err, server_config){
 					if (err) {
-						console.log(err || message);	
+						res.send(err);
+						return;
 					};
-					
+
+					var server  = email.server.connect({
+					   user:    server_config[0].sfield1, 
+					   password:server_config[0].sfield2, 
+					   host:    server_config[0].sfield3,
+					   ssl:     server_config[0].bfield1,
+					});
+
+					server.send(message, function(err, message) {
+						if (err) {
+							console.log(err || message);	
+						};					
+					});
+
+
+
 				});
 				res.json(stories[0]);
 
