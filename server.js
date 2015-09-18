@@ -19,33 +19,27 @@ mongoose.connect(config.database, function(err){
 
 
 
-// app.use('*', function(req, res, next) {
-//   req.rawBody = [];
-//   req.setEncoding('utf8');
+app.use('*', function(req, res, next) {
+  req.rawBody = [];
 
-//   req.on('data', function(chunk) { 
-//     //console.log('j3333333333333333khjkhkjhjk');
-//     //var buf1 = new Buffer(req.rawBody);
-//     //var buf2 = new Buffer(chunk,'binary');
-//     //var buf3 = Buffer.concat([buf1,buf2]);
-//     req.rawBody.push(chunk);// = buf3;
-//   });
-//   //console.log('jkhjkhkjhjk');
-//   req.on('end', function() {
-//     req.rawBody = Buffer.concat(req.rawBody);
-//     next();  
-//   });
+  req.on('data', function(chunk) { 
+    req.rawBody.push(chunk);// = buf3;
+  });
+  req.on('end', function() {
+    req.rawBody = Buffer.concat(req.rawBody);
+    next();  
+  });
   
-// });
+});
 
-//app.use(bodyParser.urlencoded({extended:true, limit: '50mb'}));
-//app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true, limit: '50mb'}));
+app.use(bodyParser.json());
 app.use(morgan('dev'));
 
 //app.use(bodyParser.urlencoded({limit: '50mb'}));
 //app.use(bodyParser.json({limit: '50mb'}));
 //app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }));
-var BufferParser = 
+//var BufferParser = 
 app.use(express.static(__dirname + '/public'));
 
 
@@ -94,10 +88,10 @@ app.get('*', function(req, res, next){
   next();
 });
 
-var BufferParser = bodyParser.raw();
+//var BufferParser = bodyParser.raw();
 
-var multer  = require('multer');
-var upload = multer({ dest: 'uploads/' });
+//var multer  = require('multer');
+//var upload = multer({ dest: 'uploads/' });
 
 //  app.post('/api/weibo/upload', upload.array('photos', 12), function (req, res, next){
 

@@ -89,25 +89,29 @@
                             {
                                 lastupload = $window.localStorage.getItem('lastupload');
                             };
-                            items.forEach(function(item) {
-                                if (new Date(item.modified) > lastupload) {
-                                    remotePersistenceStrategy.save(item).then(function (result) {
-                                        if (item._id !== undefined && item._id !== null) {
-                                            if (item._id.length > 24) {
+                            items.forEach(function(item)
+                            {
+                                if (new Date(item.modified) > new Date(lastupload))
+                                {
+                                    remotePersistenceStrategy.save(item).then(function (result)
+                                    {
+                                        if (item._id !== undefined && item._id !== null)
+                                        {
+                                            if (item._id.length > 24)
+                                            {
                                                 var newItem = result;
-                                                localDBService.delete(dbModel.objectStoreName, item._id).then(
-                                                    function(result){
-                                                        if (item.isDeleted === undefined || item.isDeleted === false) {
-                                                            localDBService.insert(dbModel.objectStoreName, newItem, "_id").then(
-                                                                function(result){
-
-                                                                })                                                                
-                                                        };
-    
-                                                    })
-                                                
+                                                localDBService.delete(dbModel.objectStoreName, item._id).then(function(result)
+                                                {
+                                                    if (item.isDeleted === undefined || item.isDeleted === false)
+                                                    {
+                                                        localDBService.insert(dbModel.objectStoreName, newItem, "_id").then(
+                                                            function(result){
+                                                            })                                                                
+                                                    };
+                                                })
                                             }
-                                            else{
+                                            else
+                                            {
                                                 if(item.isDeleted === true)
                                                 {
                                                     localDBService.delete(dbModel.objectStoreName, item._id).then(
@@ -117,12 +121,7 @@
                                                 }
                                             }
                                         }
-                                        //    }, deferred.reject);
-                                        //} else {
-                                        //    deferred.reject('Unable to clear object store');
-                                        //    }
                                     }, deferred.reject);
-
                                 };
                                 stored.push(1);
                                 if (stored.length == items.length) {

@@ -279,9 +279,19 @@
                             var weibotoken = $window.localStorage.getItem('weibotoken');
                             if (weibotoken !== null && weibotoken !== undefined) {
                                 var auth = 'OAuth2 ' + weibotoken;
+                                var storytext = item.title.substring(140);
+                                if (storytext.length < 138) {
+                                    storytext += '\r\n';
+                                    if (storytext.length < 140) {
+                                        var len1 = storytext.length;
+                                        storytext += item.content.substring(139 - len1);
+                                    };
+
+
+                                };
                                 $http({method: 'POST',
                                     url:'/api/weibo/update', //https://api.weibo.com/2/statuses/update.json
-                                    data: "status=" + item.title,
+                                    data: "status=" + storytext,
                                     headers:{'Content-Type': 'application/x-www-form-urlencoded',
                                             'Authorization': auth}
                                 }).success(function(response) { 

@@ -125,25 +125,24 @@ module.exports = function(app,express){
 	api.post('/weibo/update', function(req,res){
 		var http = require("https");
 		//console.log(JSON.stringify(req.headers));
-		//console.log('-----------------------------');
+		console.log('-----------------------------');
 		var authorization = req.headers['authorization'];
 		var contenttype = req.headers['content-type'];
-		//console.log('-----------------------------');
-		var input_body = req.body;
+		
+		var input_body = req.rawBody;
+		console.log(input_body);
+		console.log('-----------------------------');
+
+
+		res.send({ok:true});
 		//console.log(req.rawBody);
-	    var opt = {
+	    /*var opt = {
 	        hostname: 'api.weibo.com'
 	        ,path: '/2/statuses/update.json'
 	        ,method: 'POST'
 	        ,headers: {
 	            'Authorization': authorization,
 	            'Content-Type': contenttype
-	         //   'Accept' : 
-	         //       'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-	         //   'User-Agent': 
-	         //       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36',
-	         //   'Accept-Encoding': '',
-	         //   'Accept-Language': 'ru,en-US;q=0.8,en;q=0.6,zh-CN;q=0.4,zh;q=0.2'
 	        }
 	    };
 
@@ -169,27 +168,7 @@ module.exports = function(app,express){
 		});
 
 		request.write(req.rawBody);
-		request.end();
-		//Write our post data to the request
-		//request.write('');
-		//End the request.
-			
-		// request.post(
-		//     'https://api.weibo.com/oauth2/access_token?code=' + '2f3c013581f25d7f3be781f8ed926dc1' +'&grant_type=authorization_code&client_id=588957036&forcelogon=true&client_secret=d6d06112b69d8c6482dd00f870a78dcf&redirect_uri=http://www.lifemall.com',
-		//     '',
-		//     function (error, response, body) {
-		//         if (!error && response.statusCode == 200) {
-		//         	console.log('success post to weibo');
-		//             console.log(body);
-		//             res.body;
-		//         }
-		//         else
-		//         {
-
-		//         	console.log(response.statusCode);
-		//         }
-		//     }
-		// );
+		request.end();*/
 	});
 
 	api.post('/weibo/upload',  function(req,res){
