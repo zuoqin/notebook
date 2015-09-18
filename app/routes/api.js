@@ -554,7 +554,7 @@ request.post(options, function optionalCallback(err, httpResponse, body) {
 		})
 
 		.post(function(req,res){
-			console('inside auth post');
+			//console('inside auth post');
 			if (req.body.title !== undefined && req.body.title.length > 0) {
 				var story = new Story({
 					creator: req.decoded._id,
