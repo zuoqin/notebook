@@ -30,7 +30,7 @@ function createToken(user){
 
 module.exports = function(app,express){
 	var api = express.Router();
-	api.post('/signup', function(req,res){
+	api.post('/user/signup', function(req,res){
 		var user = new User(
 		{
 			name: req.body.name,
@@ -191,6 +191,43 @@ module.exports = function(app,express){
 	});
 
 
+
+	api.put('/user/update', function(req,res){
+		var ObjectId = require('mongoose').Types.ObjectId;
+		var query = {};
+		if (req.decoded && req.decoded._id !== undefined && req.decoded._id !== null) {
+			query = { _id: new ObjectId(req.decoded._id) };	
+		};
+		
+		User.findOne(query).exec(function(err, user){
+			if(err){
+				throw err;
+			}
+			if(!user){
+				res.send({message:'User does not exist'});
+			}else if(user)
+			{
+				console.log(user);
+				console.log(req.body.weibotoken);
+				user.weibotoken = req.body.weibotoken;
+				user.save(function(err){
+					if (err) {
+						res.send(err);
+						return;
+					};
+
+					res.json({
+						success: true,
+						message:'User has been created!',
+						token: token
+					});
+				});
+			}
+
+		});
+
+	});
+
 	api.post('/weibo/update', function(req,res){
 		var http = require("https");
 		//console.log(JSON.stringify(req.headers));
@@ -259,7 +296,7 @@ module.exports = function(app,express){
 				//{
 				User.findOne({
 					_id: story.creator
-				}).select('weiboid').exec(function(err, user)
+				}).select('weibotoken').exec(function(err, user)
 				{
 					user = user.toObject();
 					if(err){
@@ -390,7 +427,7 @@ module.exports = function(app,express){
 						var options = {
 						    url: 'https://upload.api.weibo.com/2/statuses/upload.json', //'http://localhost:2589/',  //
 						    headers: {
-							            'Authorization': 'OAuth2 ' +  user.weiboid,
+							            'Authorization': 'OAuth2 ' +  user.weibotoken,
 							            'Content-Type': 'multipart/form-data; boundary=' + boundary
 							        },
 						    body: ui8Data
@@ -400,7 +437,7 @@ module.exports = function(app,express){
 						  if (err) {
 						    return console.error('upload failed:', err);
 						  }
-						  console.log(body);
+						  //console.log(body);
 						  res.send(body);
 
 

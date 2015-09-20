@@ -83,6 +83,17 @@
 				$window.location.href = 'https://api.weibo.com/oauth2/authorize?client_id=588957036&redirect_uri=http://www.lifemall.com/service/user&response_type=code';
 			};
 		}
+
+
+		$scope.save = function()
+		{
+			var weibotoken = $window.localStorage.getItem('weibotoken');
+			if (weibotoken !== null && weibotoken !== undefined) {
+				User.update($scope.user).then(function(response){
+					vm.message = response.data.message;
+				});				
+			};			
+		}
     }]);
 
 

@@ -7,13 +7,15 @@
     function($http){
 		var svc = {
 		create: function(userdata){
-			return $http.post('/api/signup', userdata);
+			return $http.post('/api/user/signup', userdata);
 		},
 
 		all: function(){
 			return $http.get('/api/users');	
+		},
+		update: function(userdata){
+			return $http.put('/api/user/update', userdata);	
 		}
-
 
 	};
     return svc;
