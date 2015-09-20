@@ -308,15 +308,35 @@
                         }
                         else
                         {
-                            var srcData = item.images[index].data;
-                            if (srcData.indexOf("data:image") > -1)
-                            {
-                                var pic1 = srcData.indexOf(";base64,")
-                                srcData = srcData.substring(pic1 + 8);
-                            };                            
-                            var decodedData = window.atob(srcData); // decode the string
-                            sendData(decodedData, index);
-                            index = index;
+                            // var srcData = item.images[index].data;
+                            // if (srcData.indexOf("data:image") > -1)
+                            // {
+                            //     var pic1 = srcData.indexOf(";base64,")
+                            //     srcData = srcData.substring(pic1 + 8);
+                            // };
+                            // If we need to send data from the browser                            
+                            // var decodedData = window.atob(srcData); // decode the string
+                            // sendData(decodedData, index);
+
+                            $http({method: 'POST',
+                                url:'/api/weibo/upload', //https://api.weibo.com/2/statuses/update.json
+                                data: {"_id" : item._id, "index" : index},
+                                headers:{'Content-Type': 'application/json',
+                                        'Authorization': auth}
+                            }).success(function(response) { 
+                                item.modified = new Date();
+                                item.images[index].weiboid = response.id;
+                                persistenceService.action.save(item).then(function() {
+                                    $rootScope.postingweibo = false;
+                                    $rootScope.alert.show = false;                       
+                                    $rootScope.postingweibo = false;                            
+                                    setTimeout(function () {
+                                        $rootScope.$apply(function () {
+                                            $scope.item.images = item.images;
+                                        });
+                                    }, 100);  
+                                });
+                            });                            
                         }
                     });
 

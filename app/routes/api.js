@@ -6,8 +6,8 @@ var secretKey = config.secretKey;
 var request = require('request');
 var jsonwebtoken = require('jsonwebtoken');
 var bodyParser = require('body-parser')
-
-var BufferParser = bodyParser.raw();
+var querystring = require("querystring");
+//var BufferParser = bodyParser.raw();
 
 
 var email   = require("emailjs/email");
@@ -118,283 +118,7 @@ module.exports = function(app,express){
 		// );
 	});
 
-	api.post('/weibo/update', function(req,res){
-		var http = require("https");
-		//console.log(JSON.stringify(req.headers));
-		//console.log('-----------------------------');
-		var authorization = req.headers['authorization'];
-		var contenttype = req.headers['content-type'];
-		
-		var input_body = req.rawBody;
-		//console.log(input_body);
-		//console.log('-----------------------------');
 
-
-		res.send({ok:true});
-		//console.log(req.rawBody);
-	    /*var opt = {
-	        hostname: 'api.weibo.com'
-	        ,path: '/2/statuses/update.json'
-	        ,method: 'POST'
-	        ,headers: {
-	            'Authorization': authorization,
-	            'Content-Type': contenttype
-	        }
-	    };
-
-		var body = '';
-		//Now we're going to set up the request and the callbacks to handle the data
-		var request = http.request(opt, function(response) {
-		    //When we receive data, we want to store it in a string
-		    response.on('data', function (chunk) {
-		        body += chunk;
-		    });
-		    //On end of the request, run what we need to
-		    response.on('end',function() {
-		        //Do Something with the data
-		        //console.log(body);
-		        res.send(body);
-		    });
-		});
-
-		//Now we need to set up the request itself. 
-		//This is a simple sample error function
-		request.on('error', function(e) {
-		  console.log('problem with request: ' + e.message);
-		});
-
-		request.write(req.rawBody);
-		request.end();*/
-	});
-
-	api.post('/weibo/upload',  function(req,res){
-
-		var http = require("request");
-
-		var authorization = req.headers['authorization'];
-		var contenttype = req.headers['content-type'];
-		var fs = require('fs'); //FileSystem module of Node.js
-
-		var boundary = "----WebKitFormBoundary5EaJNmmdPVXH1CBC";
-        var data     = "";
-        data += "\r\n"
-        data += "--" + boundary + "\r\n";
-        data += 'Content-Disposition: form-data; name="status"';
-        data += "\r\n" + "\r\n";
-        data += "My new post......"
-        data += "\r\n"
-        data += "--" + boundary + "\r\n";
-        data += 'Content-Disposition: form-data; name="url"';
-        data += "\r\n" + "\r\n";
-        data += "http://lifemall.com"
-        data += "\r\n"
-        var binary = fs.readFileSync(__dirname + '/eeee.png');
-        // So, if the user has selected a file
-        var nIndex1 = data.length;
-        if (binary !== undefined && binary !== null)
-        {
-            // We start a new part in our body's request
-            data += "--" + boundary + "\r\n";
-
-            data += 'Content-Disposition: form-data; name="pic"; filename="shell.png"' + '\r\n';
-            data += 'Content-Type: image/jpeg';
-            // There is always a blank line between the meta-data and the data
-            data += '\r\n';
-            data += '\r\n';
-            // We happen the binary data to our body's request
-
-            nIndex1 = data.length;
-            var nBytes = binary.length;
-            for (var nIdx = 0; nIdx < nBytes; nIdx++) {
-                data += '1';//binary[nIdx];
-           }
-           //console.log('data.length: ');
-           //console.log(data.length);
-          data +=  '\r\n'; 
-        }
-
-        // For text data, it's simpler
-        // We start a new part in our body's request
-        data += "--" + boundary + "\r\n";
-        data += 'Content-Disposition: form-data; name="source"';
-        data += '\r\n';
-        data += '\r\n';
-        data += '588957036'
-        data += '\r\n';
-        data += "--" + boundary + "--\r\n";
-
-                var nBytes = data.length, ui8Data = new Buffer(nBytes);
-                var nIdx = 0
-                for (nIdx = 0; nIdx < nBytes; nIdx++)
-                {
-                    ui8Data[nIdx] = data.charCodeAt(nIdx) & 0xff;
-                }
-
-                for (nIdx = 0; nIdx < binary.length; nIdx++)
-                {
-                    ui8Data[nIdx + nIndex1] = binary[nIdx];// & 0xff;
-                }
-
-
-//var FormData = require('form-data'); //Pretty multipart form maker.
- 
-
-
-// var formData = {
-//   // Pass a simple key-value pair
-//   source: '588957036',
-//   // Pass data via Buffers
-//   status: 'jkhhkjjhkjh',
-//   // Pass data via Streams
-//   my_file: fs.createReadStream(__dirname + '/cat.jpg'),
-
-// };
-
-//POST request options, notice 'path' has access_token parameter
-var options = {
-    url: 'https://upload.api.weibo.com/2/statuses/upload.json', //'http://localhost:2589/',  //
-    headers: {
-	            'Authorization': authorization,
-	            'Content-Type': contenttype
-	        },
-    body: ui8Data
-}
-request.post(options, function optionalCallback(err, httpResponse, body) {
-  if (err) {
-    return console.error('upload failed:', err);
-  }
-  //console.log(binary.length);
-  //console.log(nIndex1);
-  //console.log('Upload successful!  Server responded with:', ui8Data.toString('utf8'));
-  res.send(body);
-});		
-
-// var httpreq = require('httpreq');
-// //console.log(req.rawBody);
-// httpreq.post('https://upload.api.weibo.com/2/statuses/upload.json', {
-//     parameters: {
-//         source: '588957036',
-//         status: 'fsdsfsdfdsf'
-//     },
-//     binary: true,
-//     headers: {
-// 	            'Authorization': authorization,
-// 	            'Content-Type': contenttype
-// 	        },
-//     body: req.rawBody
-// }, function (err, res){
-//     if (err){
-//         console.log(err);
-//     }else{
-//         console.log(res.body.toString('binary'));
-//     }
-// });
-
-
-
- 
-// var form = new FormData(); //Create multipart form
-// form.append('file', fs.createReadStream(__dirname+'/cat.jpg')); //Put file
-// form.append('source', "588957036"); //Put message
-// form.append('status', "fsdsfsdfdsf"); //Put message
- 
-// //POST request options, notice 'path' has access_token parameter
-// var options = {
-//     method: 'POST',
-//     host: 'upload.api.weibo.com',
-//     path: '/2/statuses/upload.json',
-//     headers: {
-// 	            'Authorization': authorization,
-// 	            'Content-Type': contenttype
-// 	        }
-// }
- 
-//Do POST request, callback for response
-//var request = http.request(options, function (res){
-     //console.log(res);
-//     console.log(res.statusCode);
-//});
- //request.on('response', function(res) {
- // console.log(res);
-//});
-//Binds form to request
-//form.pipe(request);
-// form.submit(options, function(err, res) {
-//  console.log(res);
-//});
-
-//If anything goes wrong (request-wise not FB)
-//request.on('error', function (error) {
-//     console.log(error);
-//     console.log('9089098989898');
-//});
-
-
-		//console.log(JSON.stringify(req.headers));
-		// console.log('-----------------------------');
-		// var authorization = req.headers['authorization'];
-		// var contenttype = req.headers['content-type'];
-		// console.log(authorization);
-		// console.log(contenttype);
-		// console.log(req.body);
-		// console.log('-----------------------------');
-		// var input_body = new Buffer('kjhkjhk');
-		// //console.log(req.rawBody);
-	 //    var opt = {
-	 //        uri: 'https://upload.api.weibo.com/2/statuses/upload.json'
-	 //        //,path: '/2/statuses/upload.json'
-	 //        ,method: 'POST'
-	 //        ,headers: {
-	 //            'Authorization': authorization,
-	 //            'Content-Type': contenttype
-	 //        }
-	 //        ,body: input_body
-	 //    };
-
-
-
-
-		// var body = '';
-		// //Now we're going to set up the request and the callbacks to handle the data
-		// request(opt, function (error, response, body) {
-		//     if (error) {
-		//       return console.error('upload failed:', error);
-		//     }
-		//     console.log('Upload successful!  Server responded with:', body);
-		// });
-
-		//Now we need to set up the request itself. 
-		//This is a simple sample error function
-		// request.on('error', function(e) {
-		//   console.log('problem with request: ' + e.message);
-		// });
-		//console.log(req.rawBody.toString());
-		//var bf = new Buffer(req.rawBody);
-		//request.write(bf);
-		//request.setEncoding('binary');
-		//request.write(req.rawBody);
-		//request.end();
-		//Write our post data to the request
-		//request.write('');
-		//End the request.
-			
-		// request.post(
-		//     'https://api.weibo.com/oauth2/access_token?code=' + '2f3c013581f25d7f3be781f8ed926dc1' +'&grant_type=authorization_code&client_id=588957036&forcelogon=true&client_secret=d6d06112b69d8c6482dd00f870a78dcf&redirect_uri=http://www.lifemall.com',
-		//     '',
-		//     function (error, response, body) {
-		//         if (!error && response.statusCode == 200) {
-		//         	console.log('success post to weibo');
-		//             console.log(body);
-		//             res.body;
-		//         }
-		//         else
-		//         {
-
-		//         	console.log(response.statusCode);
-		//         }
-		//     }
-		// );*/
-	});
 
 
 	api.get('/users', function(req,res){
@@ -465,6 +189,241 @@ request.post(options, function optionalCallback(err, httpResponse, body) {
 				message: "No token provided"});
 		}
 	});
+
+
+	api.post('/weibo/update', function(req,res){
+		var http = require("https");
+		//console.log(JSON.stringify(req.headers));
+		//console.log('-----------------------------');
+		var authorization = req.headers['authorization'];
+		var contenttype = req.headers['content-type'];
+		
+		var input_body = req.rawBody;
+		//console.log(input_body);
+		//console.log('-----------------------------');
+
+
+		res.send({ok:true});
+		//console.log(req.rawBody);
+	    /*var opt = {
+	        hostname: 'api.weibo.com'
+	        ,path: '/2/statuses/update.json'
+	        ,method: 'POST'
+	        ,headers: {
+	            'Authorization': authorization,
+	            'Content-Type': contenttype
+	        }
+	    };
+
+		var body = '';
+		//Now we're going to set up the request and the callbacks to handle the data
+		var request = http.request(opt, function(response) {
+		    //When we receive data, we want to store it in a string
+		    response.on('data', function (chunk) {
+		        body += chunk;
+		    });
+		    //On end of the request, run what we need to
+		    response.on('end',function() {
+		        //Do Something with the data
+		        //console.log(body);
+		        res.send(body);
+		    });
+		});
+
+		//Now we need to set up the request itself. 
+		//This is a simple sample error function
+		request.on('error', function(e) {
+		  console.log('problem with request: ' + e.message);
+		});
+
+		request.write(req.rawBody);
+		request.end();*/
+	});
+
+	api.post('/weibo/upload',  function(req,res){
+		console.log('inside weibo upload');
+		var http = require("request");
+
+		var authorization = req.headers['authorization'];
+		var contenttype = req.headers['content-type'];
+		//var fs = require('fs'); //FileSystem module of Node.js
+
+		Story.findOne({_id:req.body._id}, function(err, story){
+			if (err) {
+				res.send(err);
+				return;
+			};
+			
+			if (story !== undefined && story !== null) {
+				//if (stories.length > 0)
+				//{
+				User.findOne({
+					_id: story.creator
+				}).select('weiboid').exec(function(err, user)
+				{
+					user = user.toObject();
+					if(err){
+						throw err;
+					}
+					if(!user){
+						res.send({message:'User does not exist'});
+					}
+	
+
+					else if(user)
+					{
+
+						var boundary = "----WebKitFormBoundary5EaJNmmdPVXH1CBC";
+				        var data = "";
+				        data += "\r\n"
+				        data += "--" + boundary + "\r\n";
+				        data += 'Content-Disposition: form-data; name="status"';
+				        data += "\r\n" + "\r\n";
+				        //console.log(stories[0].title);
+				        var escaped_str = querystring.escape(story.title);
+						//console.log(escaped_str);
+				        data += escaped_str;
+				        data += "\r\n"
+				        data += "--" + boundary + "\r\n";
+				        data += 'Content-Disposition: form-data; name="url"';
+				        data += "\r\n" + "\r\n";
+				        data += "http://lifemall.com"
+				        data += "\r\n"
+				        if (story.images !== undefined && story.images !== null && story.images.length > 0) {
+				        	var image = story.images[req.body.index];
+
+		                	var nStart = 0;
+		                	var a = "data:image/png;base64,";
+		                	var  nLen1 = a.length;
+		                	if (image.data.substring(0, nLen1) === "data:image/png;base64,") {
+		                		nStart = nLen1;
+		                	};
+
+							a = "data:image/jpeg;base64,";
+		                	nLen1 = a.length;
+		                	if (image.data.substring(0, nLen1) === "data:image/jpeg;base64,") {
+		                		nStart = nLen1;
+		                	};
+
+							a = "data:image/bmp;base64,";
+		                	nLen1 = a.length;
+		                	if (image.data.substring(0, nLen1) === "data:image/bmp;base64,") {
+		                		nStart = nLen1;
+		                	};
+							
+							a = "data:image/gif;base64,";
+		                	nLen1 = a.length;
+		                	if (image.data.substring(0, nLen1) === "data:image/gif;base64,") {
+		                		nStart = nLen1;
+		                	};
+
+
+					        var binary = new Buffer(image.data.substring(nStart), 'base64'); //fs.readFileSync(__dirname + '/eeee.png');
+					        // So, if the user has selected a file
+					        var nIndex1 = data.length;
+					        if (binary !== undefined && binary !== null)
+					        {
+					            // We start a new part in our body's request
+					            data += "--" + boundary + "\r\n";
+
+					            data += 'Content-Disposition: form-data; name="pic"; filename="shell.png"' + '\r\n';
+					            data += 'Content-Type: image/jpeg';
+					            // There is always a blank line between the meta-data and the data
+					            data += '\r\n';
+					            data += '\r\n';
+					            // We happen the binary data to our body's request
+
+					            nIndex1 = data.length;
+					            var nBytes = binary.length;
+					            for (var nIdx = 0; nIdx < nBytes; nIdx++) {
+					                data += '1';//binary[nIdx];
+					           }
+					           //console.log('data.length: ');
+					           //console.log(data.length);
+					          data +=  '\r\n'; 
+					        }
+
+				        };
+
+				        // For text data, it's simpler
+				        // We start a new part in our body's request
+				        data += "--" + boundary + "\r\n";
+				        data += 'Content-Disposition: form-data; name="source"';
+				        data += '\r\n';
+				        data += '\r\n';
+
+
+						Control.findOne({
+							name: "weiboappkey"
+						}).select('sfield1').exec(function(err, control)
+						{	
+							console.log(control);
+							if(err){
+								throw err;
+							}
+							if(!control){
+								res.send({message:'weiboappkey does not exist'});
+							}
+							else if(control)
+							{
+								//control = control.toObject();
+								data += control.sfield1;
+							}
+				        });
+				        data += '\r\n';
+				        data += "--" + boundary + "--\r\n";
+
+		                var nBytes = data.length, ui8Data = new Buffer(data, 'utf8');
+		                var nIdx = 0
+		                for (nIdx = 0; nIdx < nBytes; nIdx++)
+		                {
+		                    ui8Data[nIdx] = data.charCodeAt(nIdx);// & 0xff;
+		                }
+
+		                for (nIdx = 0; nIdx < binary.length; nIdx++)
+		                {
+		                    ui8Data[nIdx + nIndex1] = binary[nIdx];// & 0xff;
+		                }
+                
+
+						//POST request options, notice 'path' has access_token parameter
+						var options = {
+						    url: 'https://upload.api.weibo.com/2/statuses/upload.json', //'http://localhost:2589/',  //
+						    headers: {
+							            'Authorization': 'OAuth2 ' +  user.weiboid,
+							            'Content-Type': 'multipart/form-data; boundary=' + boundary
+							        },
+						    body: ui8Data
+						};
+
+						//console.log(stories[0]);
+						// request.post(options, function optionalCallback(err, httpResponse, body) {
+						//   if (err) {
+						//     return console.error('upload failed:', err);
+						//   }
+						//   console.log(body);
+						//   res.send(body);
+
+
+						// });	
+						// var str = '\u00bd + \u00bc = \u00be';
+						// var test1 = new Buffer(str, 'utf8');
+						// console.log(test1);
+						res.send(req.body);		
+					}
+
+
+				})
+			};
+
+		});
+
+
+	});	
+			
+
+
+
 
 	api.route('/')
 		.put(function(req, res){
@@ -734,7 +693,7 @@ request.post(options, function optionalCallback(err, httpResponse, body) {
 				//    // //   {path:"E:/data/1.doc", type:"application/msword", name:"renamed.doc"}
 				//    // ]
 				// };
-				var query = { name: "server" };
+				var query = { name: "emailserver" };
 				Control.find(query, function(err, server_config){
 					if (err) {
 						res.send(err);

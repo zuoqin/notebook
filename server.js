@@ -5,6 +5,8 @@ var config = require('./config');
 var mongoose = require('mongoose');
 var params = require('express-params')
 var app = express();
+var querystring = require("querystring");
+
 
 params.extend(app);
 
@@ -17,21 +19,22 @@ mongoose.connect(config.database, function(err){
 
 });
 
+///////////////////////////////////////////////////////
+// In case need to use rawdata in the future
+// app.use('*', function (req, res, next) {
+//   //console.log('Begin');
+//   req.rawBody = [];
 
-
-app.use('*', function (req, res, next) {
-  //console.log('Begin');
-  req.rawBody = [];
-
-  req.on('data', function(chunk) { 
-    req.rawBody.push(chunk);
-  });
-  req.on('end', function() {
-    //console.log('end');
-    req.rawBody = Buffer.concat(req.rawBody);
-  });
-  next();
-});
+//   req.on('data', function(chunk) { 
+//     req.rawBody.push(chunk);
+//   });
+//   req.on('end', function() {
+//     //console.log('end');
+//     req.rawBody = Buffer.concat(req.rawBody);
+//   });
+//   next();
+// });
+///////////////////////////////////////////////////////
 
 app.use(bodyParser.urlencoded({extended:true, limit: '50mb'}));
 app.use(morgan('dev'));
@@ -115,6 +118,32 @@ app.get('*', function(req,res){
 	res.sendFile(__dirname + '/public/views/index.html');
 })
 
+
+//var str = '\u00bd + \u00bc = \u00be';
+//var str = '中';
+//var str = querystring.stringify({status: "中文"});
+//var str = require('querystring').escape('中文');
+//console.log(escaped_str);
+
+// var ui8Data = new Buffer(str, 'utf8');
+// console.log(str + ": " + str.length + " characters, " +
+//   Buffer.byteLength(str, 'utf8') + " bytes");
+
+
+// for (var nIdx = 0; nIdx < Buffer.byteLength(str, 'utf8'); nIdx++)
+// {
+//     //ui8Data[nIdx] = str.charCodeAt(nIdx);// & 0xff;
+//     console.log(ui8Data[nIdx] + '\r\n');
+// }
+// console.log('-------------------');
+// for (var nIdx = 0; nIdx < str.length; nIdx++)
+// {
+    
+//     console.log(str.charCodeAt(nIdx) + '\r\n');
+// }
+
+
+// console.log(ui8Data.toString());
 
 app.listen(config.port,function(err){
 	if (err) {
