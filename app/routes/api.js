@@ -357,7 +357,7 @@ module.exports = function(app,express){
 							name: "weiboappkey"
 						}).select('sfield1').exec(function(err, control)
 						{	
-							console.log(control);
+							//console.log(control);
 							if(err){
 								throw err;
 							}
@@ -395,21 +395,20 @@ module.exports = function(app,express){
 							        },
 						    body: ui8Data
 						};
+						
+						request.post(options, function optionalCallback(err, httpResponse, body) {
+						  if (err) {
+						    return console.error('upload failed:', err);
+						  }
+						  console.log(body);
+						  res.send(body);
 
-						//console.log(stories[0]);
-						// request.post(options, function optionalCallback(err, httpResponse, body) {
-						//   if (err) {
-						//     return console.error('upload failed:', err);
-						//   }
-						//   console.log(body);
-						//   res.send(body);
 
-
-						// });	
+						});	
 						// var str = '\u00bd + \u00bc = \u00be';
 						// var test1 = new Buffer(str, 'utf8');
 						// console.log(test1);
-						res.send(req.body);		
+						//res.send(req.body);		
 					}
 
 
