@@ -70,11 +70,11 @@
 
 
 
-                                $http({method: 'POST',
-                                    url:'https://api.weibo.com/2/statuses/destroy.json',
-                                    data: "id=" + picid,
-                                    headers:{'Content-Type': 'application/x-www-form-urlencoded',
-                                            'Authorization': auth}
+                                $http({method: 'DELETE',
+                                    url:'/api/weibo/' + picid, //       'https://api.weibo.com/2/statuses/destroy.json',
+                                    data: item,
+                                    //headers:{'Content-Type': 'application/x-www-form-urlencoded',
+                                    //        'Authorization': auth}
                                 })
                                 .success(function(response)
                                 {                         

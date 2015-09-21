@@ -207,8 +207,6 @@ module.exports = function(app,express){
 				res.send({message:'User does not exist'});
 			}else if(user)
 			{
-				console.log(user);
-				console.log(req.body.weibotoken);
 				user.weibotoken = req.body.weibotoken;
 				user.save(function(err){
 					if (err) {
@@ -236,45 +234,118 @@ module.exports = function(app,express){
 		var contenttype = req.headers['content-type'];
 		
 		var input_body = req.rawBody;
-		//console.log(input_body);
-		//console.log('-----------------------------');
-
-
 		res.send({ok:true});
-		//console.log(req.rawBody);
-	    /*var opt = {
-	        hostname: 'api.weibo.com'
-	        ,path: '/2/statuses/update.json'
-	        ,method: 'POST'
-	        ,headers: {
-	            'Authorization': authorization,
-	            'Content-Type': contenttype
-	        }
-	    };
+	});
+	
 
-		var body = '';
-		//Now we're going to set up the request and the callbacks to handle the data
-		var request = http.request(opt, function(response) {
-		    //When we receive data, we want to store it in a string
-		    response.on('data', function (chunk) {
-		        body += chunk;
-		    });
-		    //On end of the request, run what we need to
-		    response.on('end',function() {
-		        //Do Something with the data
-		        //console.log(body);
-		        res.send(body);
-		    });
+	api.delete('/weibo/:id',  function(req,res){
+		console.log('inside weibo delete');
+		var id = req.params.id;
+		console.log(id);
+		console.log(req.body);
+
+		// var http = require("request");
+
+
+		var ObjectId = require('mongoose').Types.ObjectId; 
+		
+		//var query = { creator: new ObjectId(id) };
+		Story.find({}, {images: {$elemMatch: {'weiboid' : id}}}, function(err, stories)
+		{
+			if (err) {
+				res.send(err);
+				return;
+			};
+			//console.log(stories);
+			stories.forEach(function(entry) {
+			    console.log(entry);
+			    if (entry.images.length>0 && entry.images[0].weiboid !== undefined &&
+			    	 entry.images[0].weiboid !== null &&  entry.images[0].weiboid === id) {
+
+
+
+
+
+
+			    	var query = { _id: new ObjectId(entry._id) };
+					Story.findOne(query, function(err, story){
+						if (err) {
+							res.send(err);
+							return;
+						};
+						
+						if (story !== undefined && story !== null) {
+							//if (stories.length > 0)
+							//{
+							User.findOne({
+								_id: story.creator
+							}).select('weibotoken').exec(function(err, user)
+							{
+								user = user.toObject();
+								if(err){
+									throw err;
+								}
+								if(!user){
+									res.send({message:'User does not exist'});
+								}
+				
+
+								else if(user)
+								{
+									var data = "id=" + id;
+									var options = {
+									    url: 'https://api.weibo.com/2/statuses/destroy.json',
+									    headers: {
+										            'Authorization': 'OAuth2 ' +  user.weibotoken,
+										            'Content-Type': 'application/x-www-form-urlencoded'
+										        },
+									    body: data
+									};
+									//res.send(data);
+									request.post(options, function optionalCallback(err, httpResponse, body) {
+									  if (err) {
+									    return console.error('upload failed:', err);
+									  }
+									  console.log(body);
+									  res.send(body);
+
+
+									});	
+				
+								}
+
+
+							})
+						};
+
+					});
+
+
+
+
+
+
+
+
+
+
+
+
+			    };
+			});
 		});
 
-		//Now we need to set up the request itself. 
-		//This is a simple sample error function
-		request.on('error', function(e) {
-		  console.log('problem with request: ' + e.message);
-		});
 
-		request.write(req.rawBody);
-		request.end();*/
+
+
+
+
+
+
+		// var str = '\u00bd + \u00bc = \u00be';
+		// var test1 = new Buffer(str, 'utf8');
+		// console.log(test1);
+		//res.send(req.body);	
 	});
 
 	api.post('/weibo/upload',  function(req,res){
