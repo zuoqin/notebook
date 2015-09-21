@@ -30,6 +30,8 @@ fonts/glyphicons-halflings-regular.woff
 /css/offline-theme-chrome.css
 /css/offline-language-english.css
 /css/jquery.smartmenus.bootstrap.css
+/css/toastr.css
+
 
 /scripts/jquery-2.1.4.js
 /scripts/jquery.min.js
@@ -43,7 +45,7 @@ fonts/glyphicons-halflings-regular.woff
 /scripts/uuid.js
 /scripts/math.uuid.js
 /scripts/offline.min.js
-# /scripts/offline-simulate-ui.min.js
+/scripts/toastr.js
 
 
 

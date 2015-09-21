@@ -344,19 +344,35 @@
             };
 
             $scope.sendbyemail = function () {
-
-                if (id != null) {
+                setTimeout(function () {
+                    $rootScope.$apply(function () {
+                        toastr.options.closeButton = true;
+                        toastr.options.closeMethod = 'fadeOut';
+                        toastr.options.closeDuration = 300;
+                        toastr.options.closeEasing = 'swing';
+                        toastr.options.positionClass = "toast-bottom-right";
+                        toastr.error('Are you the 6 fingered man?');
+                    });
+                }, 100);    
+                /*if (id != null) {
                     var a = $scope.viewController.recipients;
                     persistenceService.getById(id).then(
                         function (item) {
                             var recipients = {"recipients" : $scope.viewController.recipients, "data" : item};
 
-                            Story.send(recipients);
+                            Story.send(recipients).success(function(data)
+                                {
+                                    toastr.options.closeButton = true;
+                                    toastr.options.closeMethod = 'fadeOut';
+                                    toastr.options.closeDuration = 300;
+                                    toastr.options.closeEasing = 'swing';
+                                    toastr.info('Are you the 6 fingered man?');
+                                });
                         },
                         function (error) {
                             $scope.error = error;
                         });
-                }
+                }*/
             };
 
             if (id != null) {
