@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var config = require('./config');
 var mongoose = require('mongoose');
-var params = require('express-params')
+var params = require('express-params');
 var app = express();
 var querystring = require("querystring");
 
@@ -108,7 +108,7 @@ app.use('/api', api);
 
 app.get('/test', function(req,res){
 	res.sendFile(__dirname + '/public/test/index.html');
-})
+});
 
 
 
@@ -116,7 +116,7 @@ app.get('*', function(req,res){
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");	
 	res.sendFile(__dirname + '/public/views/index.html');
-})
+});
 
 
 //var str = '\u00bd + \u00bc = \u00be';

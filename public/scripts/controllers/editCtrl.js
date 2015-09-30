@@ -84,20 +84,30 @@
 
                     fileReader.onload = function(fileLoadedEvent) {
                         var srcData = fileLoadedEvent.target.result; // <--- data: base64
+                        var contentType = (filesSelected !== null && filesSelected !== undefined) ? filesSelected[0].type : '';
+
+                        var filename = (filesSelected !== null && filesSelected !== undefined) ? filesSelected[0].name : '';
                         
+                        if (filename === null || filename === undefined || filename.length < 1) {
+                            filename = 'Image' + ($scope.item.images.length+1);
+                        }
+
                         if (srcData.indexOf('data:image') === -1)
                         {
                             var pic1 = srcData.indexOf(';base64');
-                            srcData = 'data:' + filesSelected[0].type + srcData.substring(pic1);
+                            contentType = (filesSelected[0].type === null || filesSelected[0].type === undefined) ?
+                                'image/png' : filesSelected[0].type;
+
+                            srcData = 'data:' + contentType + srcData.substring(pic1);
                         }
 
                         var images = $scope.item.images;
                         if ($scope.item.images === undefined || $scope.item.images.length === 0) {
-                            images = [{data: srcData, contentType: filesSelected[0].type, pic: filesSelected[0].name}];
+                            images = [{data: srcData, contentType: contentType, pic: filename}];
                         }
                         else
                         {
-                            images.unshift({data:srcData, contentType:filesSelected[0].type, pic: filesSelected[0].name});    
+                            images.unshift({data:srcData, contentType: contentType, pic: filename});    
                         }
 
                         setTimeout(function () {
