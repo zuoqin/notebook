@@ -94,11 +94,16 @@
 
                         if (srcData.indexOf('data:image') === -1)
                         {
+
                             var pic1 = srcData.indexOf(';base64');
                             contentType = (filesSelected[0].type === null || filesSelected[0].type === undefined) ?
                                 'image/png' : filesSelected[0].type;
 
+
+                            window.alert(contentType);
                             srcData = 'data:' + contentType + srcData.substring(pic1);
+
+                            window.alert(srcData);
                         }
 
                         var images = $scope.item.images;
