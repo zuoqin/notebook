@@ -101,11 +101,7 @@
                                 contentType = 'image/png';
                             }
 
-
-                            window.alert(contentType);
                             srcData = 'data:' + contentType + srcData.substring(pic1);
-
-                            window.alert(srcData);
                         }
 
                         var images = $scope.item.images;
