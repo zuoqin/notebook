@@ -7,20 +7,14 @@
         function($rootScope, $location, Auth){
 		var vm = this;
 
-        
-    	vm.model = {
-        	message: "This is my app111!!!"
-    	};
-
 		vm.loggedIn = Auth.isLoggedIn();
 
 		$rootScope.$on('$routeChangeStart', function(){
 			vm.loggedIn = Auth.isLoggedIn();
 
 
-			var data = Auth.getUser();//.then( function(data){
-				vm.user = data.data;
-			//});
+			var data = Auth.getUser();
+			vm.user = data.data;
 		});
 
 		vm.doLogout = function(){
@@ -38,10 +32,6 @@
 				.success(function(data){
 					vm.processing = false;
 
-					//Auth.getUser().then(function(data){
-					//	vm.user = data.data;
-					//});
-
 					if(data.success)
 					{
 						$rootScope.showItems = false;
@@ -50,11 +40,10 @@
 					}
 					else
 					{
-						vm.error = data.message;
+					 	vm.error = data.message;
 						$rootScope.showList = false;
-	                    var type = "warning";
-	                    var message = "Downloaded items";
-	                    var title = "Login";
+	                    var type = 'warning';
+	                    var title = 'Login';
 	                    $rootScope.alert = {
 	                        hasBeenShown: true,
 	                        show:true,
@@ -67,10 +56,10 @@
 	                        $rootScope.$apply(function () {
 	                            $rootScope.showList = true;
 	                        });
-	                    }, 2000);	                    					
-					};
+	                    }, 2000);              					
+					}
 				});
-		}
-	}]);
+		};
+    }]);
 
 }());

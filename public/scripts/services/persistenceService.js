@@ -3,17 +3,33 @@
         var app = angular.module('MyApp');
         app.service('persistenceService',
         [
-            '$q', 'Offline', 'remotePersistenceStrategy', 'localPersistenceStrategy',
-            function($q, Offline, remotePersistenceStrategy, localPersistenceStrategy)
+            '$q', 'remotePersistenceStrategy', 'localPersistenceStrategy',
+            function($q, remotePersistenceStrategy, localPersistenceStrategy)
             {
                 var self = this;
+                var stories = [];
+
+                self.addStory = function(newStory) {
+                      stories.push(newStory);
+                };
+
+                self.clearStories = function(){
+                    stories = [];
+                };
+
+                self.getStories = function(){
+                      return stories;
+                };
+
+
 
                 self.persistenceType = 'local';
                 
                 self.action = localPersistenceStrategy;
                 self.deleteItem = function(id){
                     return localPersistenceStrategy.delete(id);
-                }
+                };
+
                 self.ClearLocalDB = function () {
                         var deferred = $q.defer();
                         localPersistenceStrategy.clearAll().then(
@@ -22,7 +38,8 @@
                             }, deferred.reject
                             );
                         return deferred.promise;
-                }
+                };
+
                 self.setAction = function (id) {
                     if (id === 0) {
                         self.action = remotePersistenceStrategy;
@@ -30,13 +47,15 @@
                         self.action = localPersistenceStrategy;
                     }
                 };
+                
                 self.getAction = function() {
                     if (self.action === remotePersistenceStrategy) {
                         return 0;
                     } else {
                         return 1;
                     }
-                }
+                };
+
                 self.getRemoteItem = function(id) {
                     return remotePersistenceStrategy.getById(id);
                 };
@@ -51,7 +70,6 @@
                 };
                 self.getById = function (id) {
                     var deferred = $q.defer();
-                    //if (Offline.state === 'up') {
                     if (self.action === remotePersistenceStrategy) {
                         var remoteItem = {},
                             localItem = {};

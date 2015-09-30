@@ -3,8 +3,8 @@
     var app = angular.module('MyApp');
     app.controller('StoryController',
     [
-        'Story', '$scope', '$sce', '_', 'persistenceService', 'Offline', '$q','$rootScope',
-        function(Story, $scope, $sce, _, persistenceService, Offline, $q,$rootScope)
+        'Story', '$scope', '$sce', '_', 'persistenceService', '$q','$rootScope',
+        function(Story, $scope, $sce, _, persistenceService, $q,$rootScope)
         {
         	var vm = this;
         	
@@ -19,11 +19,11 @@
         	};
 
         	vm.deleteStory = function(index){
-        	    var id = $rootScope.stories[index]._id;
+        	    //var id = $rootScope.stories[index]._id;
                 $rootScope.stories[index].isDeleted = true;
                 $rootScope.stories[index].modified = new Date();
                 persistenceService.setAction(1);
-                var item = $rootScope.stories[index];
+                //var item = $rootScope.stories[index];
                 persistenceService.action.getById($rootScope.stories[index]._id).then(
                     function(result){
                         result.isDeleted = true;
@@ -51,7 +51,7 @@
         	    //         $scope.error = error;
         	    //     });		
         		//persistenceService.deleteItem(item);
-        	}
+        	};
 
 
             var getData = function () {

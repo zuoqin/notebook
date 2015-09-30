@@ -35,10 +35,10 @@
                         } else{
                             Story.delete(item).then( function(){
                                 deferred.resolve();
-                            })
+                            });
                         }
                     }
-                };
+                }
 
                 return deferred.promise;
             },
@@ -50,7 +50,8 @@
                 //     .success(deferred.resolve)
                 //     .error(deferred.reject);
                 return deferred.promise;
-            } ,
+            },
+
             getById: function(id) {
                 
                 var deferred = $q.defer();
@@ -59,7 +60,8 @@
                 //     .success(deferred.resolve)
                 //     .error(deferred.reject);
                 return deferred.promise;
-            } ,
+            },
+
             'delete': function (id) {
                 
                 var deferred = $q.defer();
@@ -88,7 +90,7 @@
                             if (res) {
                                 deferred.resolve(true);
                             } else {
-                                deferred.reject("Unable to clear object store");
+                                deferred.reject('Unable to clear object store');
                             }
                         }, deferred.reject);
                     }, deferred.reject);
@@ -164,7 +166,7 @@
                     var deferred = $q.defer();
                     svc.getById(id).then(function (_Event) {
                         var item = _Event;
-                        if (item != undefined && item !== true) {
+                        if (item !== undefined && item !== true) {
                             deferred.resolve(item._id === id);
                         } else {
                             deferred.resolve(false);
@@ -176,7 +178,7 @@
                     var deferred = $q.defer();
                     localDBService.delete(svc.dbModel.objectStoreName, id).then(
                         function(result){
-                                deferred.resolve(result)
+                                deferred.resolve(result);
                             },
                                  deferred.reject);
                     return deferred.promise;

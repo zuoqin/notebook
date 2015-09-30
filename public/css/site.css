@@ -2,6 +2,7 @@
     padding-top: 10px;
     padding-bottom: 20px;
     padding-top: 0px;
+    word-wrap: break-word;
 }
 .offline-ui {
     z-index: 100000;

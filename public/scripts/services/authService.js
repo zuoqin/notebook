@@ -14,13 +14,13 @@
 				.success(function(data){
 					AuthToken.setToken(data.token);
 					return data;
-				})
-			}
+				});
+			};
 
 
 			authFactory.logout = function(){
 				AuthToken.setToken();
-			}
+			};
 
 			authFactory.isLoggedIn = function(){
 				if (AuthToken.getToken()) {
@@ -32,10 +32,10 @@
 
 			authFactory.getUser = function(){
 				if (AuthToken.getToken()) {
-					var person = {data:{data:'zuoqin'}};
-					return $http.get('/api/me')
+					//var person = {data:{data:'zuoqin'}};
+					return $http.get('/api/me');
 				} else{
-					return $q.reject({message: "User has no token"});
+					return $q.reject({message: 'User has no token'});
 				}
 			};
 
@@ -49,7 +49,7 @@
 		var authTokenFactory = {};
 		authTokenFactory.getToken = function(){
 			return $window.localStorage.getItem('token');
-		}
+		};
 
 		authTokenFactory.setToken = function(token){
 			if (token) {
@@ -57,7 +57,7 @@
 			} else{
 				$window.localStorage.removeItem('token');
 			}
-		}
+		};
 
 		return authTokenFactory;
     }]);
@@ -73,14 +73,14 @@
 
 				if (token) {
 					config.headers['x-access-token'] = token;
-				};
+				}
 				return config;
 			};
 
 			interceptorFactory.responseError = function(response){
 				if (response.status == 403) {
 					$location.path('login');
-				};
+				}
 				return $q.reject(response);
 			};
 

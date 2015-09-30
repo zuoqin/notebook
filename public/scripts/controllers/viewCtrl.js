@@ -12,21 +12,21 @@
             $scope.item = {};
             $rootScope.showItems = false;
 
-            var recipients = "alexey.zuo@take5people.com";
+            var recipients = 'alexey.zuo@take5people.com';
             
             var parts = $location.absUrl().split('/');
             var id = parts[parts.length - 1];
             if (id.indexOf('?') > 0) {
                 id = id.substring(0,id.indexOf('?'));
-            };            
+            }
             var uuidLength = 24;
             if (id.length < uuidLength) {
                 id = null;
             }
 
             $scope.edit = function () {
-                if (id != null) {
-                    window.location.href = "/edit/" + id;
+                if (id !== null) {
+                    window.location.href = '/edit/' + id;
                 }
             };
 
@@ -38,12 +38,13 @@
                 {
                     return ($scope.item.weiboid !== undefined && $scope.item.weiboid !== null);   
                 }
-            }
+            };
+
             $scope.deletefromweibo = function(index){
                 $rootScope.postingweibo = true;
-                var type = "warning";
-                var message = "Downloaded items";
-                var title = "Download";
+                var type = 'warning';
+                var message = 'Downloaded items';
+                var title = 'Download';
                 $rootScope.alert = {
                     hasBeenShown: true,
                     show:true,
@@ -101,9 +102,8 @@
 
                                     });
                                 });                            
-
-                            };                              
-                        };
+                            }                            
+                        }
                     }
                 );
             };
@@ -125,27 +125,27 @@
                 var XHR      = new XMLHttpRequest();
 
                 // We need a sperator to define each part of the request
-                var boundary = "----WebKitFormBoundary5EaJNmmdPVXH1CBC";
+                var boundary = '----WebKitFormBoundary5EaJNmmdPVXH1CBC';
 
                 // And we'll store our body request as a string.
-                var data     = "";
-                data += "\r\n"
-                data += "--" + boundary + "\r\n";
+                var data  = '';
+                data += '\r\n';
+                data += '--' + boundary + '\r\n';
                 data += 'Content-Disposition: form-data; name="status"';
-                data += "\r\n" + "\r\n";
-                data += "My new post......"
-                data += "\r\n"
-                data += "--" + boundary + "\r\n";
+                data += '\r\n' + '\r\n';
+                data += 'My new post......';
+                data += '\r\n';
+                data += '--' + boundary + '\r\n';
                 data += 'Content-Disposition: form-data; name="url"';
-                data += "\r\n" + "\r\n";
-                data += "http://lifemall.com"
-                data += "\r\n"
+                data += '\r\n' + '\r\n';
+                data += 'http://lifemall.com';
+                data += '\r\n';
 
                 // So, if the user has selected a file
                 if (binary !== undefined && binary !== null)
                 {
                     // We start a new part in our body's request
-                    data += "--" + boundary + "\r\n";
+                    data += '--' + boundary + '\r\n';
 
                     data += 'Content-Disposition: form-data; name="pic"; filename="shell.png"' + '\r\n';
                     data += 'Content-Type: image/jpeg';
@@ -165,20 +165,20 @@
 
                 // For text data, it's simpler
                 // We start a new part in our body's request
-                data += "--" + boundary + "\r\n";
+                data += '--' + boundary + '\r\n';
                 data += 'Content-Disposition: form-data; name="source"';
                 data += '\r\n';
                 data += '\r\n';
-                data += '588957036'
+                data += '588957036';
                 data += '\r\n';
-                data += "--" + boundary + "--\r\n";
+                data += '--' + boundary + '--\r\n';
 
 
 
                 // We define what will happen if the data are successfully sent
                 XHR.addEventListener('load', function(event) {
                     if (event.target.status === 200 ) {
-                        var ffff = JSON.parse(event.target.response)
+                        var ffff = JSON.parse(event.target.response);
 
                         persistenceService.getById(id).then(
                             function (item) {   
@@ -212,14 +212,14 @@
                     }
                     else
                     {
-                        alert('Yeah! Data sent and response loaded.');
+                        //alert('Yeah! Data sent and response loaded.');
                     }
                     
                 });
 
                 // We define what will happen in case of error
                 XHR.addEventListener('error', function(event) {
-                    alert('Oups! Something goes wrong.');
+                    //alert('Oups! Something goes wrong.');
                 });
 
                 // We setup our request
@@ -232,7 +232,7 @@
                 if (weibotoken !== null && weibotoken !== undefined) {
                     var auth = 'OAuth2 ' + weibotoken;
                     XHR.setRequestHeader('Authorization', auth);
-                };  
+                } 
                 
 
                 //XHR.setRequestHeader('Content-Length', data.length);
@@ -251,7 +251,7 @@
                 /* send as ArrayBufferView...: */
                 XHR.send(ui8Data);
                 /* ...or as ArrayBuffer (legacy)...: this.send(ui8Data.buffer); */                
-              };
+              }
 
 
 
@@ -260,9 +260,9 @@
 
             $scope.sendtoweibo = function (index) {
                 $rootScope.postingweibo = true;
-                var type = "warning";
-                var message = "Downloaded items";
-                var title = "Download";
+                var type = 'warning';
+                var message = 'Downloaded items';
+                var title = 'Download';
                 $rootScope.alert = {
                     hasBeenShown: true,
                     show:true,
@@ -285,13 +285,12 @@
                                     if (storytext.length < 140) {
                                         var len1 = storytext.length;
                                         storytext += item.content.substring(139 - len1);
-                                    };
+                                    }
+                                }
 
-
-                                };
                                 $http({method: 'POST',
                                     url:'/api/weibo/update', //https://api.weibo.com/2/statuses/update.json
-                                    data: "status=" + storytext,
+                                    data: 'status=' + storytext,
                                     headers:{'Content-Type': 'application/x-www-form-urlencoded',
                                             'Authorization': auth}
                                 }).success(function(response) { 
@@ -320,7 +319,7 @@
 
                             $http({method: 'POST',
                                 url:'/api/weibo/upload', //https://api.weibo.com/2/statuses/update.json
-                                data: {"_id" : item._id, "index" : index},
+                                data: {'_id' : item._id, 'index' : index},
                                 headers:{'Content-Type': 'application/json',
                                         'Authorization': auth}
                             }).success(function(response) { 
@@ -344,7 +343,7 @@
             };
 
             $scope.sendbyemail = function () {
-                setTimeout(function () {
+                /*setTimeout(function () {
                     $rootScope.$apply(function () {
                         toastr.options.closeButton = true;
                         toastr.options.closeMethod = 'fadeOut';
@@ -353,29 +352,24 @@
                         toastr.options.positionClass = "toast-bottom-right";
                         toastr.error('Are you the 6 fingered man?');
                     });
-                }, 100);    
-                /*if (id != null) {
-                    var a = $scope.viewController.recipients;
+                }, 100);*/
+                if (id !== null) {
                     persistenceService.getById(id).then(
                         function (item) {
-                            var recipients = {"recipients" : $scope.viewController.recipients, "data" : item};
+                            var recipients = {'recipients' : $scope.viewController.recipients, 'data' : item};
 
                             Story.send(recipients).success(function(data)
-                                {
-                                    toastr.options.closeButton = true;
-                                    toastr.options.closeMethod = 'fadeOut';
-                                    toastr.options.closeDuration = 300;
-                                    toastr.options.closeEasing = 'swing';
-                                    toastr.info('Are you the 6 fingered man?');
-                                });
+                            {
+                            });
                         },
                         function (error) {
                             $scope.error = error;
-                        });
-                }*/
+                        }
+                    );
+                }
             };
 
-            if (id != null) {
+            if (id !== null) {
                 persistenceService.getById(id).then(
                     function (item) {
                         $scope.item._id = item._id;

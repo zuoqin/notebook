@@ -3,8 +3,8 @@
     var app = angular.module('MyApp');
     app.controller('editController',
     [
-        '$scope', '$rootScope', '$location', 'persistenceService', 'Offline',
-        function ($scope, $rootScope, $location, persistenceService, Offline) {
+        '$scope', '$rootScope', '$location', 'persistenceService',
+        function ($scope, $rootScope, $location, persistenceService) {
             $scope.showSuccessMessage = false;
             $scope.showFillOutFormMessage = false;
             $scope.isOnline = true;
@@ -16,15 +16,15 @@
             var id = parts[parts.length - 1];
             if (id.indexOf('?') > 0) {
                 id = id.substring(0,id.indexOf('?'));
-            };
+            }
             var uuidLength = 24;
-            var topic = "";
+            var topic = '';
             if (id.length < uuidLength) {
                 topic = id;
                 id = null;
 
             }
-            if (id != null) {
+            if (id !== null) {
                 persistenceService.getById(id).then(
                     function(item) {
                         $scope.item = item;
@@ -35,7 +35,7 @@
                             //document.getElementById($scope.item.images[0].pic).innerHTML = newImage.outerHTML;                            
                         }
                         else{
-                            var images = new Array();
+                            var images = [];
                             $scope.item.images = images;
                         }
 
@@ -46,7 +46,7 @@
                     });
             }
             else{
-                var images = new Array();
+                var images = [];
                 $scope.item.images = images;                
                 $scope.item.topic = topic;
             }
@@ -71,10 +71,11 @@
             $scope.deleteImage = function(index)
             {
                 $scope.item.images.splice(index, 1);
-            }
+            };
+
             $scope.encodeImageFileAsURL = function(){
 
-                var filesSelected = document.getElementById("upload_input").files;
+                var filesSelected = document.getElementById('upload_input').files;
                 if (filesSelected.length > 0)
                 {
                     var fileToLoad = filesSelected[0];
@@ -84,11 +85,11 @@
                     fileReader.onload = function(fileLoadedEvent) {
                         var srcData = fileLoadedEvent.target.result; // <--- data: base64
                         
-                        if (srcData.indexOf("data:image") === -1)
+                        if (srcData.indexOf('data:image') === -1)
                         {
-                            var pic1 = srcData.indexOf(";base64")
-                            srcData = "data:" + filesSelected[0].type + srcData.substring(pic1);
-                        };
+                            var pic1 = srcData.indexOf(';base64');
+                            srcData = 'data:' + filesSelected[0].type + srcData.substring(pic1);
+                        }
 
                         var images = $scope.item.images;
                         if ($scope.item.images === undefined || $scope.item.images.length === 0) {
@@ -104,7 +105,7 @@
                                 $scope.item.images = images;
                             });
                         }, 100);                    
-                    }
+                    };
                     fileReader.readAsDataURL(fileToLoad);
                 }
             };
@@ -129,6 +130,11 @@
                         function(result) {
                             $scope.showSuccessMessage = true;
                             $scope.showErrorMessage = false;
+
+                            // var obj = _.find($rootScope.stories, function(obj)
+                            //     {
+                            //         return obj._id === item._id;
+                            //     });
                         },
                         function(error) {
                             $scope.showSuccessMessage = false;
@@ -136,18 +142,7 @@
                         });
                 }
 
-            }
-
-            // Offline.on('confirmed-down', function () {
-            //     $scope.$apply(function () {
-            //         $scope.isOnline = false;
-            //     });
-            // });
-            // Offline.on('confirmed-up', function () {
-            //     $scope.$apply(function() {
-            //         $scope.isOnline = true;
-            //     });
-            // })
+            };
     }]);
 
 }());

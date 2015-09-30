@@ -11,14 +11,23 @@
             var vm = this;
             $scope.toroot = function(){
                 $rootScope.showItems = true;
-                $rootScope.filtertext = "";
+                $rootScope.filtertext = '';
                 $location.path('/');
-                lazyGetData();
-            }
+                if ( ($rootScope.showItems === true || $location.$$path === '/') &&
+                    ($rootScope.stories === undefined || $rootScope.stories.length === 0)) {
+                    lazyGetData();
+                }
+                else
+                {
+                    $rootScope.showList = true;
+                }
+
+            };
+
             vm.getData = function () {
                 if ($rootScope.loaded !== undefined && $rootScope.loaded === true) {
                     return;
-                };
+                }
                 $rootScope.loaded = true;
                 $location.path('/');
                 $rootScope.stories = [];
@@ -133,16 +142,17 @@
 
 
             $scope.getData = function(){
-                $scope.filtertext = "";
+                $scope.filtertext = '';
                 $scope.search();
                 $location.path('/');
-            }
+            };
+
             $scope.deleteStory = function(index){
-                var id = $rootScope.stories[index]._id;
+                //var id = $rootScope.stories[index]._id;
                 $rootScope.stories[index].isDeleted = true;
                 $rootScope.stories[index].modified = new Date();
                 persistenceService.setAction(1);
-                var item = $rootScope.stories[index];
+                //var item = $rootScope.stories[index];
                 persistenceService.action.getById($rootScope.stories[index]._id).then(
                     function(result){
                         result.isDeleted = true;
@@ -161,7 +171,8 @@
 
                     }
                     );
-            }
+            };
+
             $scope.filterByDate = function(days){
                 var items = [];
                 $rootScope.showList = false;
@@ -171,8 +182,8 @@
                             var a = new Date( new Date() - days * 1000 * 60 * 60 * 24 );
                             if ($rootScope.stories[i].modified > a) {
                                 items.push($rootScope.stories[i]);
-                            };                                
-                        };
+                            }
+                        }
                     }
                     setTimeout(function () {
                         $rootScope.$apply(function () {
@@ -194,7 +205,7 @@
                             if (topic !== 'Other') {
                                 if ($rootScope.stories[i].topic === topic) {
                                     items.push($rootScope.stories[i]);
-                                };                                
+                                }                                
                             }
                             else
                             {
@@ -203,9 +214,9 @@
                                     $rootScope.stories[i].topic !== 'Research'
                                     ) {
                                     items.push($rootScope.stories[i]);
-                                };                                   
+                                }                                   
                             }
-                        };
+                        }
                     
                     }
                     setTimeout(function () {
@@ -231,9 +242,8 @@
                                 ($rootScope.stories[i].introduction !== undefined && $rootScope.stories[i].introduction.toString().toLowerCase().indexOf(srch.toLowerCase()) > -1) ||
                                 ($rootScope.stories[i].content !== undefined && $rootScope.stories[i].content.toString().toLowerCase().indexOf(srch.toLowerCase()) > -1)) {
                                 items.push($rootScope.stories[i]);
-                            };
-                        };
-                    
+                            }
+                        }
                     }
                     //items = $rootScope.stories;
                     setTimeout(function () {
@@ -265,19 +275,19 @@
                 var curDate = $window.localStorage.getItem('lastdownload');
                 if (curDate === undefined || curDate === null) {
                     curDate = new Date(0);
-                };
-                Story.StoryFromTime({"datetime":curDate}).success(function(data)
+                }
+                Story.StoryFromTime({'datetime':curDate}).success(function(data)
                 {
-                    var stories = data;
+                    //var stories = data;
                     persistenceService.setAction(1);
                     var curDate = new Date();
                     $window.localStorage.setItem('lastdownload', curDate);
                     //persistenceService.ClearLocalDB().then(function() {
 
                     
-                    var type = "warning";
-                    var message = "Downloaded items";
-                    var title = "Download";
+                    var type = 'warning';
+                    var message = 'Downloaded items';
+                    var title = 'Download';
                     $rootScope.alert = {
                         hasBeenShown: true,
                         show:true,
@@ -336,8 +346,7 @@
                             $rootScope.alert.show = false;
                             
                             $rootScope.showList = true;
-
-                        };
+                        }
                         });
                     }, 1000);
                 });
@@ -357,19 +366,22 @@
 
 
             if ( ($rootScope.showItems === true || $location.$$path === '/') &&
-                ($rootScope.stories ==undefined || $rootScope.stories.length == 0)) {
+                ($rootScope.stories === undefined || $rootScope.stories.length === 0)) {
                 lazyGetData();
             }
 
-            if ( ($rootScope.showItems === false && $location.$$path === '/') &&
-                ($rootScope.stories !== undefined && $rootScope.stories.length > 0)) {
-                setTimeout(function () {
-                    $rootScope.$apply(function () {
-                        //$rootScope.stories.splice(index, 1);
-                        $rootScope.showList = true;
+            if ($rootScope.showItems === false && $location.$$path === '/')
+            {
+                if ($rootScope.stories !== undefined && $rootScope.stories.length > 0) {
+                    setTimeout(function () {
+                        $rootScope.$apply(function () {
+                            $rootScope.showItems = true;
+                            $rootScope.showList = true;
 
-                    });
-                }, 100); 
-            }            
+                        });
+                    }, 100); 
+                }
+            }
+
         }]);
 }());

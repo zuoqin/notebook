@@ -35,7 +35,7 @@
                 deferred.resolve();
             };
             request.onerror = function (event) {
-                alert("Why didn't you allow my web app to use IndexedDB?!");
+                //alert('Why didn't you allow my web app to use IndexedDB?!'');
             };
             return deferred.promise;
         },
@@ -45,9 +45,9 @@
             }
         },
         getObjectStore: function(objectStoreName, mode) {
-            var mode = mode || _db.transactionTypes.readonly,
-                store;
-            if (_db.instance != null) {
+            mode = mode || _db.transactionTypes.readonly;
+            var store;
+            if (_db.instance !== null) {
                 var txn = _db.instance.transaction(objectStoreName, mode);
                 store = txn.objectStore(objectStoreName);
             } else
@@ -67,7 +67,7 @@
             _db.requireOpenDB(objectStoreName, deferred);
             var store = _db.getObjectStore(objectStoreName),
                 count;
-            if (store!= null) {
+            if (store!== null) {
                 var request = store.count();
                 request.onsuccess = function (e) {
                     count = e.target.result;
@@ -88,7 +88,7 @@
             var data = [];
             cursor.onsuccess = function(e) {
                 var result = e.target.result;
-                if (result && result != null) {
+                if (result && result !== null) {
                     data.push(result.value);
                     result.continue();
                 } else {
@@ -138,17 +138,17 @@
                 updateRequest;
             getRequest.onsuccess = function(e) {
                 var origData = e.target.result;
-                if (origData != undefined) {
+                if (origData !== undefined) {
                     data.insertDate = origData.insertDate;
                     if (data.modified === null || data.modified === undefined) {
                         data.modified = new Date();    
-                    };
+                    }
                     if ( origData.modified !== null && origData.modified !== undefined) {
                         if (new Date(data.modified) < new Date(origData.modified)) {
                              deferred.resolve(origData, e);
                              return;
                         }
-                    };
+                    }
                     if (new Date(data.modified) >= new Date(origData.modified)) {
                         updateRequest = store.put(data);
                         updateRequest.onsuccess = function(e) {
@@ -171,7 +171,7 @@
             var store = _db.getObjectStore(objectStoreName);
             var request = store.get(key);
             request.onsuccess = function (e) {
-                if (e.target.result != undefined) {
+                if (e.target.result !== undefined) {
                     deferred.resolve(e.target.result);
                 } else {
                     deferred.resolve(true);
@@ -196,7 +196,7 @@
             var store = _db.getObjectStore(objectStoreName);
             var request = store.get(user);
             request.onsuccess = function (e) {
-                if (e.target.result != undefined) {
+                if (e.target.result !== undefined) {
                     deferred.resolve(e.target.result);
                 } else {
                     deferred.resolve(true);
