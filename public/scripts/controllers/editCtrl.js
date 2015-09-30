@@ -84,7 +84,8 @@
 
                     fileReader.onload = function(fileLoadedEvent) {
                         var srcData = fileLoadedEvent.target.result; // <--- data: base64
-                        var contentType = (filesSelected !== null && filesSelected !== undefined) ? filesSelected[0].type : '';
+                        var contentType = (filesSelected !== null && filesSelected !== undefined && filesSelected.length > 0) ?
+                            filesSelected[0].type : '';
 
                         var filename = (filesSelected !== null && filesSelected !== undefined) ? filesSelected[0].name : '';
                         
@@ -96,8 +97,9 @@
                         {
 
                             var pic1 = srcData.indexOf(';base64');
-                            contentType = (filesSelected[0].type === null || filesSelected[0].type === undefined) ?
-                                'image/png' : filesSelected[0].type;
+                            if (contentType === null || contentType === undefined || contentType.length < 1) {
+                                contentType = 'image/png';
+                            }
 
 
                             window.alert(contentType);
