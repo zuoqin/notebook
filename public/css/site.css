@@ -99,8 +99,8 @@ input {
 }
 select,
 textarea {
-    /*max-width: 1080px;*/
-    max-height: 200px;
+    /*max-width: 1080px;
+    max-height: 200px;*/
 }
 input.form-control-search {
     width: 150px;
@@ -120,7 +120,7 @@ textarea.form-control-medium {
     width: 100%;
 } 
 textarea.form-control {
-    height: 1080px;
+    height: 500px;
 }
 .navbar {
     background-color: #fff;
@@ -366,4 +366,26 @@ div.upload input {
     vertical-align: middle;
     width: 0;
     margin-left:5px;
+}
+
+
+
+
+
+
+.noscroll {
+    overflow: hidden;
+}
+
+.hiddendiv {
+    margin: 20px;
+    display: none;
+    white-space: pre-wrap;
+    width: 100%;
+    min-height: 30px;
+    /*font-family: Arial, sans-serif;
+    font-size: 13px;*/
+    overflow: hidden;
+    padding: 5px;
+    word-wrap: break-word;
 }

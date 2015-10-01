@@ -170,7 +170,7 @@
                             });
 
                     }
-                    );
+                );
             };
 
             $scope.filterByDate = function(days){
@@ -269,6 +269,47 @@
                     });
             };
 
+            var hasModified = function(){
+                var id = sessionStorage.getItem('isModified');
+                if (id !== null && id !== undefined) {
+                    return true;
+                } else{
+                    return false;
+                }
+
+            };
+            var setHtmlItem = function(index, item){
+                $rootScope.stories[index].title = $sce.trustAsHtml(item.title);
+                $rootScope.stories[index].introduction = $sce.trustAsHtml(item.introduction);
+                $rootScope.stories[index].content = $sce.trustAsHtml(item.content);
+                $rootScope.stories[index].modified = new Date(item.modified);
+                $rootScope.stories[index].created = new Date(item.created);
+                $rootScope.stories[index].topic = item.topic;
+                $rootScope.stories[index].creator = item.creator;
+            };
+
+            var checkModified = function(){
+                if (hasModified()) {
+                    var id = sessionStorage.getItem('isModified');
+                    persistenceService.setAction(1);
+                    persistenceService.action.getById(id).then(
+                        function(result){
+                            var index = _.findIndex( $rootScope.stories, function(item) {
+                                    return item._id == id; 
+                            });
+                            if (index >= 0) {
+                                setHtmlItem(index, result);
+                                
+                                setTimeout(function () {
+                                    $rootScope.$apply(function () {
+                                        $('body').scrollTop($('#itemheader-' + id).position().top);
+                                    });
+                                }, 100); 
+                            }
+                        }
+                    );
+                }
+            };
 
             $scope.download = function () {
                 $rootScope.showList = false;
@@ -320,13 +361,7 @@
                                             content: $sce.trustAsHtml(item.content)
                                         });                                        
                                     } else{
-                                        $rootScope.stories[index].title = $sce.trustAsHtml(item.title);
-                                        $rootScope.stories[index].introduction = $sce.trustAsHtml(item.introduction);
-                                        $rootScope.stories[index].content = $sce.trustAsHtml(item.content);
-                                        $rootScope.stories[index].modified = new Date(item.modified);
-                                        $rootScope.stories[index].created = new Date(item.created);
-                                        $rootScope.stories[index].topic = item.topic;
-                                        $rootScope.stories[index].creator = item.creator;
+                                        setHtmlItem(index, item);
                                     }
 
                                     $rootScope.stories.sort(function(a, b) {
@@ -369,6 +404,13 @@
                 ($rootScope.stories === undefined || $rootScope.stories.length === 0)) {
                 lazyGetData();
             }
+            else{
+                if (hasModified()) {
+                    checkModified();
+                }
+
+            }
+
 
             if ($rootScope.showItems === false && $location.$$path === '/')
             {

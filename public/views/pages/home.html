@@ -19,7 +19,7 @@
 	<div class="col-md-12">
         <div class="row home-list-item" data-ng-repeat="story in stories" >
             <div ng-if="story.isDeleted === true" class="panel panel-danger">
-                <div class="panel-heading">
+                <div ng-attr-id="{{ 'itemheader-' + story._id }}" class="panel-heading">
                     <a data-ng-href="/view/{{story._id}}" class="panel-title">{{story.title}}</a>
                 </div>
                 <div class="panel-body">
@@ -33,7 +33,7 @@
             </div>
 
             <div ng-if="story.isDeleted === false || story.isDeleted === undefined" class="panel panel-primary">
-                <div class="panel-heading">
+                <div ng-attr-id="{{ 'itemheader-' + story._id }}" class="panel-heading">
                     <a data-ng-href="/view/{{story._id}}" class="panel-title">{{story.title}}</a>
                 </div>
                 <div class="panel-body">

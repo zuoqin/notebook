@@ -11,6 +11,35 @@
             $scope.item = {};
             $rootScope.showList = false;
             $rootScope.showItems = false;
+            var resizeCtrl = function(id){
+                setTimeout(function () {
+                    $scope.$apply(function () {
+                        var content = $(id).val();//item.introduction;
+                        content = content.replace(/\n/g, '<br>');
+                        var hiddenDiv = $(document.createElement('div'));
+                        hiddenDiv.addClass('hiddendiv');
+                        hiddenDiv.html(content);
+                        $('body').append(hiddenDiv);
+                        var element = $(id);
+                        element.addClass('noscroll');
+                        $(id).css('height', hiddenDiv.height() + 20);
+                        
+
+                        element.bind('keyup', function() {
+                            
+                            content = $(this).val();
+                            content = content.replace(/\n/g, '<br>');
+                            hiddenDiv.html(content);
+
+                            $(this).css('height', hiddenDiv.height() + 20);
+
+                        });
+
+                    });
+                }, 50);
+
+            }
+
 
             var parts = $location.absUrl().split('/');
             var id = parts[parts.length - 1];
@@ -27,6 +56,10 @@
             if (id !== null) {
                 persistenceService.getById(id).then(
                     function(item) {
+
+                        resizeCtrl('#title');
+                        resizeCtrl('#introduction');
+                        resizeCtrl('#content');
                         $scope.item = item;
                         if ($scope.item.images !== undefined && $scope.item.images.length > 0) {
                             //var newImage = document.createElement('img');
@@ -52,6 +85,7 @@
             }
 
             $scope.cancel = function() {
+                sessionStorage.setItem('isModified', null);
                 window.location = '/';
             };
 
@@ -117,7 +151,7 @@
                             $scope.$apply(function () {
                                 $scope.item.images = images;
                             });
-                        }, 100);                    
+                        }, 50);                    
                     };
                     fileReader.readAsDataURL(fileToLoad);
                 }
@@ -132,22 +166,11 @@
                     item.modified = new Date();
                     item.isDeleted = false;
                  
-                    //Temp code
-                    // if (item.UserId == 0 || item.UserId === undefined) {
-                    //     item.UserId = 1;
-                    // }
-                    // if (item.TopicId == 0 || item.TopicId === undefined) {
-                    //     item.TopicId = 1;
-                    // }
                     persistenceService.action.save(item).then(
                         function(result) {
+                            sessionStorage.setItem('isModified', item._id);
                             $scope.showSuccessMessage = true;
                             $scope.showErrorMessage = false;
-
-                            // var obj = _.find($rootScope.stories, function(obj)
-                            //     {
-                            //         return obj._id === item._id;
-                            //     });
                         },
                         function(error) {
                             $scope.showSuccessMessage = false;
