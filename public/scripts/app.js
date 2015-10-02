@@ -43,9 +43,9 @@ angular.module('MyApp', [ 'ngResource', 'ngCookies', 'ngRoute'])
 
         $routeProvider
         .when('/', {
-            templateUrl: '/views/pages/home.html',
-            controller: 'MainController',
-            controllerAs: 'main'
+            templateUrl: '/views/pages/home.html'
+            //, controller: 'MainController'
+            //, controllerAs: 'main'
         })
 
         .when('/user', {
@@ -74,8 +74,8 @@ angular.module('MyApp', [ 'ngResource', 'ngCookies', 'ngRoute'])
         })
 
         .when('/new/:topic', {
-            templateUrl: '/views/pages/edit.html',
-            controller: 'editController'
+            templateUrl: '/views/pages/edit.html'
+            //,controller: 'editController'
         })
         $locationProvider.html5Mode(true);
 

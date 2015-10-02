@@ -12,9 +12,12 @@
 		$rootScope.$on('$routeChangeStart', function(){
 			vm.loggedIn = Auth.isLoggedIn();
 
-
-			var data = Auth.getUser();
-			vm.user = data.data;
+			if (vm.user === undefined || vm.user === null) {
+				var data = Auth.getUser().then(function(data){
+					vm.user = data.data;	
+				});				
+			}
+			
 		});
 
 		vm.doLogout = function(){
