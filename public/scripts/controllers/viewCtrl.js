@@ -295,7 +295,7 @@
                                     }
 
                                 }
-
+                                storytext = encodeURIComponent(storytext);
                                 $http({method: 'POST',
                                     url:'/api/weibo/update', //https://api.weibo.com/2/statuses/update.json
                                     data: 'status=' + storytext,

@@ -227,21 +227,21 @@ module.exports = function(app,express){
 	});
 
 	api.post('/weibo/update', function(req,res){
-		var http = require("https");
+		//var http = require("https");
 		//console.log(JSON.stringify(req.headers));
 		//console.log('-----------------------------');
 		var authorization = req.headers.authorization;
 		var contenttype = req.headers['content-type'];
 		
 		var input_body = new Buffer(req.body);
-		console.log(req.body.status);
+		//console.log(req.body.status);
 		var options = {
 		    url: 'https://api.weibo.com/2/statuses/update.json',
 		    headers: {
 			            'Authorization': authorization,
 			            'Content-Type': contenttype
 			        },
-		    body: 'status=' + req.body.status
+		    body: 'status=' + encodeURIComponent(req.body.status)
 		};
 		
 		request.post(options, function optionalCallback(err, httpResponse, body) {
@@ -259,7 +259,7 @@ module.exports = function(app,express){
 	
 
 	api.delete('/weibo/:id',  function(req,res){
-		console.log('inside weibo delete');
+		//console.log('inside weibo delete');
 		var id = req.params.id;
 		//console.log(id);
 		var authorization = req.headers.authorization;
