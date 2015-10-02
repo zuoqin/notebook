@@ -1,6 +1,6 @@
-window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || Window.msIndexedDB
-window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction
-window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange
+window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || Window.msIndexedDB;
+window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
+window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
 
 
 angular.module('MyApp', [ 'ngResource', 'ngCookies', 'ngRoute'])
@@ -43,9 +43,9 @@ angular.module('MyApp', [ 'ngResource', 'ngCookies', 'ngRoute'])
 
         $routeProvider
         .when('/', {
-            templateUrl: '/views/pages/home.html'
-            //, controller: 'MainController'
-            //, controllerAs: 'main'
+            templateUrl: '/views/pages/home.html',
+            controller: 'MainController',
+            controllerAs: 'main'
         })
 
         .when('/user', {
@@ -76,7 +76,7 @@ angular.module('MyApp', [ 'ngResource', 'ngCookies', 'ngRoute'])
         .when('/new/:topic', {
             templateUrl: '/views/pages/edit.html'
             //,controller: 'editController'
-        })
+        });
         $locationProvider.html5Mode(true);
 
     }

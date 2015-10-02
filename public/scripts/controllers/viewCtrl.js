@@ -74,8 +74,8 @@
                                 $http({method: 'DELETE',
                                     url:'/api/weibo/' + picid, //       'https://api.weibo.com/2/statuses/destroy.json',
                                     data: item,
-                                    //headers:{'Content-Type': 'application/x-www-form-urlencoded',
-                                    //        'Authorization': auth}
+                                    headers:{'Content-Type': 'application/x-www-form-urlencoded',
+                                            'Authorization': auth}
                                 })
                                 .success(function(response)
                                 {                         
@@ -279,13 +279,21 @@
                             var weibotoken = $window.localStorage.getItem('weibotoken');
                             if (weibotoken !== null && weibotoken !== undefined) {
                                 var auth = 'OAuth2 ' + weibotoken;
-                                var storytext = item.title.substring(140);
-                                if (storytext.length < 138) {
+
+                                var storytext = item.title.substring(0, 139);
+                                var len1 = storytext.length;
+                                if (len1 < 139) {
                                     storytext += '\r\n';
-                                    if (storytext.length < 140) {
-                                        var len1 = storytext.length;
-                                        storytext += item.content.substring(139 - len1);
+                                    len1 = storytext.length;
+                                    if (len1 < 139) {
+                                        len1 = storytext.length;
+                                        storytext += item.introduction.substring(0, 139 - len1);
                                     }
+                                    if (len1 < 139) {
+                                        len1 = storytext.length;
+                                        storytext += item.content.substring(0, 139 - len1);
+                                    }
+
                                 }
 
                                 $http({method: 'POST',
@@ -297,10 +305,17 @@
                                     item.modified = new Date();
                                     item.weiboid = response.id;
                                     persistenceService.action.save(item).then(function() {
-                                        $rootScope.postingweibo = false;
-                                        $rootScope.alert.show = false;                       
-                                        $rootScope.postingweibo = false;                            
 
+
+                                        $rootScope.postingweibo = false;
+                                        $rootScope.alert.show = false;
+                                        $rootScope.postingweibo = false;
+                                        setTimeout(function () {
+                                            $rootScope.$apply(function () {
+                                                $scope.item.modified = item.modified;
+                                                $scope.item.weiboid = item.weiboid;
+                                            });
+                                        }, 100);  
                                     });
                                 });
                             }

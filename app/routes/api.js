@@ -5,7 +5,7 @@ var config = require('../../config');
 var secretKey = config.secretKey;
 var request = require('request');
 var jsonwebtoken = require('jsonwebtoken');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 var querystring = require("querystring");
 //var BufferParser = bodyParser.raw();
 
@@ -42,7 +42,7 @@ module.exports = function(app,express){
 			if (err) {
 				res.send(err);
 				return;
-			};
+			}
 
 			res.json({
 				success: true,
@@ -60,8 +60,8 @@ module.exports = function(app,express){
 		//console.log(req.query.code);
 	    var opt = {
 	          hostname: 'api.weibo.com',
-	          path: '/oauth2/access_token?code=' + req.query.code +'&grant_type=authorization_code&client_id=588957036&forcelogon=true&client_secret=d6d06112b69d8c6482dd00f870a78dcf&redirect_uri=http://www.lifemall.com'
-	          , method: 'POST'
+	          path: '/oauth2/access_token?code=' + req.query.code +'&grant_type=authorization_code&client_id=588957036&forcelogon=true&client_secret=d6d06112b69d8c6482dd00f870a78dcf&redirect_uri=http://www.lifemall.com',
+	          method: 'POST'
 	         //  headers: {
 	         //   'Connection': 'keep-alive',
 	         //   'Cache-Control': 'no-cache',
@@ -126,7 +126,7 @@ module.exports = function(app,express){
 		var query = {};
 		if (req.decoded && req.decoded._id !== undefined && req.decoded._id !== null) {
 			query = { _id: new ObjectId(req.decoded._id) };	
-		};
+		}
 		
 
 
@@ -134,7 +134,7 @@ module.exports = function(app,express){
 			if (err) {
 				res.send(err);
 				return;
-			};
+			}
 			res.json(users);
 		});
 	});
@@ -183,7 +183,7 @@ module.exports = function(app,express){
 					req.decoded = decoded;
 					next();
 				}
-			})
+			});
 		}else{
 			res.status(403).send({success:false,
 				message: "No token provided"});
@@ -197,7 +197,7 @@ module.exports = function(app,express){
 		var query = {};
 		if (req.decoded && req.decoded._id !== undefined && req.decoded._id !== null) {
 			query = { _id: new ObjectId(req.decoded._id) };	
-		};
+		}
 		
 		User.findOne(query).exec(function(err, user){
 			if(err){
@@ -212,7 +212,7 @@ module.exports = function(app,express){
 					if (err) {
 						res.send(err);
 						return;
-					};
+					}
 
 					res.json({
 						success: true,
@@ -230,110 +230,158 @@ module.exports = function(app,express){
 		var http = require("https");
 		//console.log(JSON.stringify(req.headers));
 		//console.log('-----------------------------');
-		var authorization = req.headers['authorization'];
+		var authorization = req.headers.authorization;
 		var contenttype = req.headers['content-type'];
 		
-		var input_body = req.rawBody;
-		res.send({ok:true});
+		var input_body = new Buffer(req.body);
+		console.log(req.body.status);
+		var options = {
+		    url: 'https://api.weibo.com/2/statuses/update.json',
+		    headers: {
+			            'Authorization': authorization,
+			            'Content-Type': contenttype
+			        },
+		    body: 'status=' + req.body.status
+		};
+		
+		request.post(options, function optionalCallback(err, httpResponse, body) {
+			if (err) {
+		    	return console.error('upload failed:', err);
+		  	}
+			
+		  	res.send(body);
+
+
+		});	
+
+		//res.send({ok:true});
 	});
 	
 
 	api.delete('/weibo/:id',  function(req,res){
 		console.log('inside weibo delete');
 		var id = req.params.id;
-		console.log(id);
-		console.log(req.body);
+		//console.log(id);
+		var authorization = req.headers.authorization;
+		var contenttype = req.headers['content-type'];
 
-		// var http = require("request");
-
-
-		var ObjectId = require('mongoose').Types.ObjectId; 
-		
-		//var query = { creator: new ObjectId(id) };
-		Story.find({}, {images: {$elemMatch: {'weiboid' : id}}}, function(err, stories)
-		{
-			if (err) {
-				res.send(err);
-				return;
+		if (id !== null && id !== undefined && authorization !== null && authorization !== undefined &&
+			authorization.length > 0 && contenttype !== null && contenttype !== undefined &&
+			contenttype.length > 0) {
+			var data = "id=" + id;
+			var options = {
+			    url: 'https://api.weibo.com/2/statuses/destroy.json',
+			    headers: {
+				            'Authorization': authorization,
+				            'Content-Type': contenttype
+				        },
+			    body: data
 			};
-			//console.log(stories);
-			stories.forEach(function(entry) {
-			    console.log(entry);
-			    if (entry.images.length>0 && entry.images[0].weiboid !== undefined &&
-			    	 entry.images[0].weiboid !== null &&  entry.images[0].weiboid === id) {
+
+			//console.log('sending request');
+			//console.log(data);
+			//res.send(data);
+			request.post(options, function optionalCallback(err, httpResponse, body) {
+			  if (err) {
+			    return console.error('upload failed:', err);
+			  }
+			  //console.log(body);
+			  res.send(body);
 
 
-
-
-
-
-			    	var query = { _id: new ObjectId(entry._id) };
-					Story.findOne(query, function(err, story){
-						if (err) {
-							res.send(err);
-							return;
-						};
-						
-						if (story !== undefined && story !== null) {
-							//if (stories.length > 0)
-							//{
-							User.findOne({
-								_id: story.creator
-							}).select('weibotoken').exec(function(err, user)
-							{
-								user = user.toObject();
-								if(err){
-									throw err;
-								}
-								if(!user){
-									res.send({message:'User does not exist'});
-								}
-				
-
-								else if(user)
-								{
-									var data = "id=" + id;
-									var options = {
-									    url: 'https://api.weibo.com/2/statuses/destroy.json',
-									    headers: {
-										            'Authorization': 'OAuth2 ' +  user.weibotoken,
-										            'Content-Type': 'application/x-www-form-urlencoded'
-										        },
-									    body: data
-									};
-									//res.send(data);
-									request.post(options, function optionalCallback(err, httpResponse, body) {
-									  if (err) {
-									    return console.error('upload failed:', err);
-									  }
-									  console.log(body);
-									  res.send(body);
-
-
-									});	
-				
-								}
-
-
-							})
-						};
-
-					});
-
-
-
-
-
-
-
-
-
-
-
-
-			    };
 			});
-		});
+		}
+		else
+		{
+
+
+
+			var ObjectId = require('mongoose').Types.ObjectId; 
+			
+
+			//var query = { creator: new ObjectId(id) };
+			Story.find({}, {images: {$elemMatch: {'weiboid' : id}}}, function(err, stories)
+			{
+				if (err) {
+					res.send(err);
+					return;
+				}
+				//console.log(stories);
+				stories.forEach(function(entry) {
+				    //console.log(entry);
+				    if (entry.images.length>0 && entry.images[0].weiboid !== undefined &&
+				    	 entry.images[0].weiboid !== null &&  entry.images[0].weiboid === id) {
+
+
+
+
+
+
+				    	var query = { _id: new ObjectId(entry._id) };
+						Story.findOne(query, function(err, story){
+							if (err) {
+								res.send(err);
+								return;
+							}
+							
+							if (story !== undefined && story !== null) {
+								//if (stories.length > 0)
+								//{
+								User.findOne({
+									_id: story.creator
+								}).select('weibotoken').exec(function(err, user)
+								{
+									user = user.toObject();
+									if(err){
+										throw err;
+									}
+									if(!user){
+										res.send({message:'User does not exist'});
+									}
+					
+
+									else if(user)
+									{
+										var data = "id=" + id;
+										var options = {
+										    url: 'https://api.weibo.com/2/statuses/destroy.json',
+										    headers: {
+											            'Authorization': 'OAuth2 ' +  user.weibotoken,
+											            'Content-Type': 'application/x-www-form-urlencoded'
+											        },
+										    body: data
+										};
+										//res.send(data);
+										request.post(options, function optionalCallback(err, httpResponse, body) {
+										  if (err) {
+										    return console.error('upload failed:', err);
+										  }
+										  //console.log(body);
+										  res.send(body);
+
+
+										});	
+					
+									}
+
+
+								});
+							}
+
+						});
+				    }
+				});
+			});
+
+
+
+
+
+
+
+		}
+
+
 
 
 
@@ -351,16 +399,18 @@ module.exports = function(app,express){
 	api.post('/weibo/upload',  function(req,res){
 		console.log('inside weibo upload');
 		var http = require("request");
-
-		var authorization = req.headers['authorization'];
+		var nIdx = 0;
+		var nBytes = 0;
+		var authorization = req.headers.authorization;
 		var contenttype = req.headers['content-type'];
-		//var fs = require('fs'); //FileSystem module of Node.js
+	    var binary, nIndex1;
+
 
 		Story.findOne({_id:req.body._id}, function(err, story){
 			if (err) {
 				res.send(err);
 				return;
-			};
+			}
 			
 			if (story !== undefined && story !== null) {
 				//if (stories.length > 0)
@@ -383,7 +433,7 @@ module.exports = function(app,express){
 
 						var boundary = "----WebKitFormBoundary5EaJNmmdPVXH1CBC";
 				        var data = "";
-				        data += "\r\n"
+				        data += "\r\n";
 				        data += "--" + boundary + "\r\n";
 				        data += 'Content-Disposition: form-data; name="status"';
 				        data += "\r\n" + "\r\n";
@@ -391,12 +441,12 @@ module.exports = function(app,express){
 				        var escaped_str = querystring.escape(story.title);
 						//console.log(escaped_str);
 				        data += escaped_str;
-				        data += "\r\n"
+				        data += "\r\n";
 				        data += "--" + boundary + "\r\n";
 				        data += 'Content-Disposition: form-data; name="url"';
 				        data += "\r\n" + "\r\n";
-				        data += "http://lifemall.com"
-				        data += "\r\n"
+				        data += "http://lifemall.com";
+				        data += "\r\n";
 				        if (story.images !== undefined && story.images !== null && story.images.length > 0) {
 				        	var image = story.images[req.body.index];
 
@@ -405,30 +455,30 @@ module.exports = function(app,express){
 		                	var  nLen1 = a.length;
 		                	if (image.data.substring(0, nLen1) === "data:image/png;base64,") {
 		                		nStart = nLen1;
-		                	};
+		                	}
 
 							a = "data:image/jpeg;base64,";
 		                	nLen1 = a.length;
 		                	if (image.data.substring(0, nLen1) === "data:image/jpeg;base64,") {
 		                		nStart = nLen1;
-		                	};
+		                	}
 
 							a = "data:image/bmp;base64,";
 		                	nLen1 = a.length;
 		                	if (image.data.substring(0, nLen1) === "data:image/bmp;base64,") {
 		                		nStart = nLen1;
-		                	};
+		                	}
 							
 							a = "data:image/gif;base64,";
 		                	nLen1 = a.length;
 		                	if (image.data.substring(0, nLen1) === "data:image/gif;base64,") {
 		                		nStart = nLen1;
-		                	};
+		                	}
 
 
-					        var binary = new Buffer(image.data.substring(nStart), 'base64'); //fs.readFileSync(__dirname + '/eeee.png');
+					        binary = new Buffer(image.data.substring(nStart), 'base64'); //fs.readFileSync(__dirname + '/eeee.png');
 					        // So, if the user has selected a file
-					        var nIndex1 = data.length;
+					        nIndex1 = data.length;
 					        if (binary !== undefined && binary !== null)
 					        {
 					            // We start a new part in our body's request
@@ -442,8 +492,8 @@ module.exports = function(app,express){
 					            // We happen the binary data to our body's request
 
 					            nIndex1 = data.length;
-					            var nBytes = binary.length;
-					            for (var nIdx = 0; nIdx < nBytes; nIdx++) {
+					            nBytes = binary.length;
+					            for (nIdx = 0; nIdx < nBytes; nIdx++) {
 					                data += '1';//binary[nIdx];
 					           }
 					           //console.log('data.length: ');
@@ -451,7 +501,7 @@ module.exports = function(app,express){
 					          data +=  '\r\n'; 
 					        }
 
-				        };
+				        }
 
 				        // For text data, it's simpler
 				        // We start a new part in our body's request
@@ -481,8 +531,9 @@ module.exports = function(app,express){
 				        data += '\r\n';
 				        data += "--" + boundary + "--\r\n";
 
-		                var nBytes = data.length, ui8Data = new Buffer(data, 'utf8');
-		                var nIdx = 0
+		                nBytes = data.length;
+		                var ui8Data = new Buffer(data, 'utf8');
+		                nIdx = 0;
 		                for (nIdx = 0; nIdx < nBytes; nIdx++)
 		                {
 		                    ui8Data[nIdx] = data.charCodeAt(nIdx);// & 0xff;
@@ -520,8 +571,8 @@ module.exports = function(app,express){
 					}
 
 
-				})
-			};
+				});
+			}
 
 		});
 
@@ -553,7 +604,7 @@ module.exports = function(app,express){
 					if (err) {
 						res.send(err);
 						return;
-					};
+					}
 					
 					if (stories !== undefined && stories !== null) {
 						if (stories.length > 0) {
@@ -564,8 +615,8 @@ module.exports = function(app,express){
 							}else{
 								//console.log("older item was found");
 							}						
-						};
-					};
+						}
+					}
 				});
 
 			}
@@ -589,12 +640,12 @@ module.exports = function(app,express){
 						//console.log(err);
 						res.send(err);
 						return;
-					};
+					}
 
 					//console.log(data);
 					res.json(data);
 				}
-			)
+			);
 
 			// var story = new Story({
 			// 	_id: req.decoded._id,
@@ -634,14 +685,15 @@ module.exports = function(app,express){
 					if (err) {
 						res.send(err);
 						return;
-					};
+					}
 					res.json(data);
-				})
-			};
+				});
+			}
+
 			if (req.body.datetime !== undefined && req.body.datetime.length > 0) {
 				if (req.body.datetime === null || req.body.datetime === undefined) {
 					req.body.datetime = new Date(0);
-				};
+				}
 				var fromDate = new Date(req.body.datetime);
 				var inputDate = new Date(fromDate.toISOString());
 				//console.log(fromDate);
@@ -656,7 +708,7 @@ module.exports = function(app,express){
 					if (err) {
 						res.send(err);
 						return;
-					};
+					}
 					res.json(stories);
 					//console.log("Total found stories:");
 					//console.log(stories.length);
@@ -674,7 +726,7 @@ module.exports = function(app,express){
 				if (err) {
 					res.send(err);
 					return;
-				};
+				}
 				res.json(stories);
 				//console.log("Total found stories:");
 				//console.log(stories.length);
@@ -688,7 +740,7 @@ module.exports = function(app,express){
 					if (err) {
 						res.send(err);
 						return;
-					};
+					}
 					res.json(data);
 				}
 			);
@@ -706,7 +758,7 @@ module.exports = function(app,express){
 				if (err) {
 					res.send(err);
 					return;
-				};
+				}
 				//console.log(stories.length);
 				var contenttype = "image/png";
 
@@ -717,11 +769,11 @@ module.exports = function(app,express){
 				var msgcontent = " ";
 				if (stories[0].content !== null) {
 					msgcontent = stories[0].content;
-				};
+				}
 				var msgsubject = "";
 				if (stories[0].title !== null) {
 					msgsubject = stories[0].title;
-				};				
+				}			
 				//console.log(msgcontent);
 				//console.log(msgsubject);
 				var message = email.message.create(
@@ -739,7 +791,7 @@ module.exports = function(app,express){
 							{
 								contenttype = stories[0].images[0].contentType;
 							}
-						};
+						}
 
 
 						var i = 0;
@@ -749,25 +801,25 @@ module.exports = function(app,express){
                         	var  nLen1 = a.length;
                         	if (image.data.substring(0, nLen1) === "data:image/png;base64,") {
                         		nStart = nLen1;
-                        	};
+                        	}
 
 							a = "data:image/jpeg;base64,";
                         	nLen1 = a.length;
                         	if (image.data.substring(0, nLen1) === "data:image/jpeg;base64,") {
                         		nStart = nLen1;
-                        	};
+                        	}
 
 							a = "data:image/bmp;base64,";
                         	nLen1 = a.length;
                         	if (image.data.substring(0, nLen1) === "data:image/bmp;base64,") {
                         		nStart = nLen1;
-                        	};
+                        	}
 							
 							a = "data:image/gif;base64,";
                         	nLen1 = a.length;
                         	if (image.data.substring(0, nLen1) === "data:image/gif;base64,") {
                         		nStart = nLen1;
-                        	};
+                        	}
 
 
                         	i = i + 1;
@@ -775,18 +827,18 @@ module.exports = function(app,express){
                         	if (stories[0].images[0].pic !== undefined && stories[0].images[0].pic !== null) {
                         		if (stories[0].images[0].pic.length > 0) {
                         			imagename = stories[0].images[0].pic;
-                        		};
-                        	};
+                        		}
+                        	}
 							message.attach(
 							{
 							   data:image.data.substring(nStart), 
 							   type: contenttype, 
 							   name:   imagename, 
 							   encoded:true
-							})
+							});
                         });						
-					};
-				};
+					}
+				}
 
 
 				// var message = {
@@ -805,7 +857,7 @@ module.exports = function(app,express){
 					if (err) {
 						res.send(err);
 						return;
-					};
+					}
 
 					var server  = email.server.connect({
 					   user:    server_config[0].sfield1, 
@@ -817,11 +869,8 @@ module.exports = function(app,express){
 					server.send(message, function(err, message) {
 						if (err) {
 							console.log(err || message);	
-						};					
+						}					
 					});
-
-
-
 				});
 				res.json(stories[0]);
 

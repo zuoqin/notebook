@@ -20,7 +20,7 @@
         <div class="row home-list-item" data-ng-repeat="story in stories" >
             <div ng-if="story.isDeleted === true" class="panel panel-danger">
                 <div ng-attr-id="{{ 'itemheader-' + story._id }}" class="panel-heading">
-                    <a data-ng-href="/view/{{story._id}}" class="panel-title">{{story.title}}</a>
+                    <a ng-href="/view/{{story._id}}" class="panel-title">{{story.title}}</a>
                 </div>
                 <div class="panel-body">
                     <p ng-bind-html="story.introduction">{{story.introduction}}</p>
@@ -34,7 +34,7 @@
 
             <div ng-if="story.isDeleted === false || story.isDeleted === undefined" class="panel panel-primary">
                 <div ng-attr-id="{{ 'itemheader-' + story._id }}" class="panel-heading">
-                    <a data-ng-href="/view/{{story._id}}" class="panel-title">{{story.title}}</a>
+                    <a ng-href="/view/{{story._id}}" class="panel-title">{{story.title}}</a>
                 </div>
                 <div class="panel-body">
                     <p ng-bind-html="story.introduction">{{story.introduction}}</p>
