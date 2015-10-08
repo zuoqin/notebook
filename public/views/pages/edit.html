@@ -1,9 +1,10 @@
 <div class="container" data-ng-controller="editController">
 
+    <!--
     <div class="alert alert-success" data-ng-show="showSuccessMessage">
         <strong>Success!</strong> item saved.
     </div>
-
+    -->
     <div class="editwrapper" data-ng-show="showFillOutFormMessage">
         <div class="alert alert-info">
             <strong>Note:</strong> You need to fill out form title before attempting to save a new item.
@@ -30,11 +31,12 @@
                                 <label for="title">Title</label>
                             </div>
                             <div class="col-sm-12">
-                                <textarea data-ng-model="item.title"
-                                          name="title"
-                                          id="title"
-                                          class="form-control-small"
-                                          placeholder="Item Title"></textarea>
+                                <textarea   data-ng-model="item.title"
+                                            ng-change="change()"
+                                            name="title"
+                                            id="title"
+                                            class="form-control-small"
+                                            placeholder="Item Title"></textarea>
                             </div>
                         </div>
 
@@ -48,11 +50,12 @@
                                 <label for="introduction">Short Description</label>
                             </div>
                             <div class="col-sm-12">
-                                <textarea data-ng-model="item.introduction"
-                                          name="introduction"
-                                          id="introduction"
-                                          class="form-control-medium"
-                                          placeholder="Short Description"></textarea>
+                                <textarea   data-ng-model="item.introduction"
+                                            ng-change="change()"
+                                            name="introduction"
+                                            id="introduction"
+                                            class="form-control-medium"
+                                            placeholder="Short Description"></textarea>
                             </div>
                         </div>
 
@@ -65,11 +68,12 @@
                                 <label for="content">Contents</label>
                             </div>
                             <div class="col-sm-12">
-                                <textarea data-ng-model="item.content"
-                                          name="content"
-                                          id="content"
-                                          class="form-control"
-                                          placeholder="Contents"></textarea>
+                                <textarea   data-ng-model="item.content"
+                                            ng-change="change()"
+                                            name="content"
+                                            id="content"
+                                            class="form-control"
+                                            placeholder="Contents"></textarea>
                             </div>
                         </div>
 
@@ -104,7 +108,7 @@
                 <div class="form-group" >
                     <div class="col-sm-12" align="center">
                         <input type="reset" data-ng-click="cancel()" value="Cancel" class="btn btn-link"/>
-                        <input type="button" data-ng-click="save()" value="Save" class="btn btn-default btn-primary"/>
+                        <input type="button" data-ng-click="save()" ng-disabled="!isModified" value="Save" class="btn btn-default btn-primary"/>
                     </div>
                 </div>
             </form>
@@ -112,52 +116,3 @@
     </div>
 
 </div>
-
-<script type="text/javascript">
-    // 'use strict';
-    // var title = $('#title'),
-    //     introduction = $('#introduction'),
-    //     contents = $('#content'),
-    //     hiddenDiv = $(document.createElement('div')),
-    //     content = null;
-
-    // title.addClass('noscroll');
-    // contents.addClass('noscroll');
-
-    // hiddenDiv.addClass('hiddendiv');
-
-    // $('body').append(hiddenDiv);
-
-    // title.bind('keyup', function() {
-        
-    //     content = $(this).val();
-    //     content = content.replace(/\n/g, '<br>');
-    //     hiddenDiv.html(content);
-        
-    //     $(this).css('height', hiddenDiv.height() + 20);
-
-    // });    
-
-
-
-
-    // contents.bind('keyup', function() {
-        
-    //     content = $(this).val();
-    //     content = content.replace(/\n/g, '<br>');
-    //     hiddenDiv.html(content);
-
-    //     $(this).css('height', hiddenDiv.height() + 20);
-
-    // });
-
-
-    // content = $('#content').val();
-    // //window.aler(content);
-    // content = content.replace(/\n/g, '<br>');
-    // hiddenDiv.html(content);
-    // $('#content').css('height', hiddenDiv.height() + 20);
-
-
-
-</script>

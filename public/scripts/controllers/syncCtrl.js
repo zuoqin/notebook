@@ -13,8 +13,8 @@
                 $rootScope.showItems = true;
                 $rootScope.filtertext = '';
                 $location.path('/');
-                if ( ($rootScope.showItems === true || $location.$$path === '/') //&&
-                    //($rootScope.stories === undefined || $rootScope.stories.length === 0)
+                if ( ($rootScope.showItems === true || $location.$$path === '/') &&
+                    ($rootScope.stories === undefined || $rootScope.stories.length === 0)
                     )
                 {
                     lazyGetData();

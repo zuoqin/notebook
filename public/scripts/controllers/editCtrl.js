@@ -5,7 +5,11 @@
     [
         '$scope', '$rootScope', '$location', 'persistenceService',
         function ($scope, $rootScope, $location, persistenceService) {
-            $scope.showSuccessMessage = false;
+            
+
+            //$scope.showSuccessMessage = false;
+            
+            $scope.isModified = false;
             $scope.showFillOutFormMessage = false;
             $scope.isOnline = true;
             $scope.item = {};
@@ -89,6 +93,11 @@
                 window.location = '/';
             };
 
+
+            $scope.change = function(){
+                $scope.isModified = true;
+            };
+
             var hasAnItemToSave = function() {
                 var hasValue = function(value) {
                     if (typeof value === 'string') {
@@ -151,7 +160,7 @@
                             $scope.$apply(function () {
                                 $scope.item.images = images;
                             });
-                        }, 50);                    
+                        }, 50);
                     };
                     fileReader.readAsDataURL(fileToLoad);
                 }
@@ -169,11 +178,23 @@
                     persistenceService.action.save(item).then(
                         function(result) {
                             sessionStorage.setItem('isModified', item._id);
-                            $scope.showSuccessMessage = true;
+                            //$scope.showSuccessMessage = true;
                             $scope.showErrorMessage = false;
+                            $scope.isModified = false;
+
+                            setTimeout(function () {
+                                $rootScope.$apply(function () {
+                                    toastr.options.closeButton = true;
+                                    toastr.options.closeMethod = 'fadeOut';
+                                    toastr.options.closeDuration = 300;
+                                    toastr.options.closeEasing = 'swing';
+                                    toastr.options.positionClass = "toast-bottom-right";
+                                    toastr.success('Data has been saved');
+                                });
+                            }, 100);
                         },
                         function(error) {
-                            $scope.showSuccessMessage = false;
+                            //$scope.showSuccessMessage = false;
                             $scope.showErrorMessage = true;
                         });
                 }
