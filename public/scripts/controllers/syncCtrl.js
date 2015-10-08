@@ -8,13 +8,14 @@
         function(Story, $location, $rootScope, $scope, $timeout, syncService, Auth, persistenceService, $q, $sce, $window
             )
         {
+            $scope.filtertext = 'mongodb';
             var vm = this;
             $scope.toroot = function(){
                 $rootScope.showItems = true;
-                $rootScope.filtertext = '';
+                
                 $location.path('/');
                 if ( ($rootScope.showItems === true || $location.$$path === '/') &&
-                    ($rootScope.stories === undefined || $rootScope.stories.length === 0)
+                    ($rootScope.stories === undefined || $rootScope.stories.length === 0 || $rootScope.filtertext !== '')
                     )
                 {
                     lazyGetData();
@@ -23,7 +24,7 @@
                 {
                     $rootScope.showList = true;
                 }
-
+                $rootScope.filtertext = '';
             };
 
             vm.getData = function () {
@@ -141,6 +142,22 @@
                     $rootScope.error = error;
                 }
             );
+
+            $scope.onChangeFilter = function(){
+                $rootScope.filtertext = $scope.filtertext;
+                $rootScope.$broadcast('filterchanged');
+            };
+
+
+            $scope.$on('filterchanged', function(event, args) {
+                
+                setTimeout(function () {
+                    $rootScope.$apply(function () {
+                        $scope.filtertext = $rootScope.filtertext;
+
+                    });
+                }, 100); 
+            });
 
 
             $scope.getData = function(){
