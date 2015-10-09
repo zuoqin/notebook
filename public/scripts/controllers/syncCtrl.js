@@ -8,7 +8,7 @@
         function(Story, $location, $rootScope, $scope, $timeout, syncService, Auth, persistenceService, $q, $sce, $window
             )
         {
-            $scope.filtertext = 'mongodb';
+            $scope.filtertext = '';
             var vm = this;
             $scope.toroot = function(){
                 $rootScope.showItems = true;
@@ -282,9 +282,33 @@
                     function (result) {
                         $rootScope.showList = true;
                         $rootScope.hasLocalDataToSync = false;
+
+                        setTimeout(function () {
+                            $rootScope.$apply(function () {
+                                toastr.options.closeButton = true;
+                                toastr.options.closeMethod = 'fadeOut';
+                                toastr.options.closeDuration = 300;
+                                toastr.options.closeEasing = 'swing';
+                                toastr.options.positionClass = "toast-bottom-right";
+                                toastr.success('Data has been uploaded');
+                            });
+                        }, 50);
+
                     },
                     function(error) {
-                        $rootScope.error = error;
+                        $rootScope.showList = true;
+                        $rootScope.hasLocalDataToSync = false;
+
+                        setTimeout(function () {
+                            $rootScope.$apply(function () {
+                                toastr.options.closeButton = true;
+                                toastr.options.closeMethod = 'fadeOut';
+                                toastr.options.closeDuration = 300;
+                                toastr.options.closeEasing = 'swing';
+                                toastr.options.positionClass = "toast-bottom-right";
+                                toastr.error(error, 'An error occured');
+                            });
+                        }, 50);
                     });
             };
 

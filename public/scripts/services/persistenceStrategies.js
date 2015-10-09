@@ -29,9 +29,15 @@
                     }
                     else{
                         if (item.isDeleted === undefined || item.isDeleted === false) {
-                            Story.update(item).then( function(){
+                            Story.update(item).then( function(result){
                                 deferred.resolve();
-                            });                                                
+                            },
+                            function (response) {
+                                if (response.statusText.length === 0) {
+                                    response.statusText = 'No connection to the host';
+                                }
+                                deferred.reject(response.statusText);
+                            });
                         } else{
                             Story.delete(item).then( function(){
                                 deferred.resolve();

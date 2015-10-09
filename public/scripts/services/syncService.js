@@ -121,9 +121,21 @@
                                                 }
                                             }
                                         }
-                                    }, deferred.reject);
+                                        stored.push(1);
+                                        if (stored.length == items.length) {
+                                            $window.localStorage.setItem('lastupload', new Date());
+                                            deferred.resolve(true);
+                                        }
+
+                                    }, function(result){
+                                        deferred.reject(result);
+                                    });
                                 }
-                                stored.push(1);
+                                else
+                                {
+                                    stored.push(1);
+                                }
+                                
                                 if (stored.length == items.length) {
                                     $window.localStorage.setItem('lastupload', new Date());
                                     deferred.resolve(true);
