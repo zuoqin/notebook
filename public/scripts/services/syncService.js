@@ -83,6 +83,12 @@
                     localDBService.open(dbModel).then(function() {
                         localDBService.getAll(dbModel.objectStoreName).then(function (items) {
                             var lastupload = new Date(0);
+
+                            if ($window.localStorage.getItem('lastdownload') !== undefined &&
+                                $window.localStorage.getItem('lastdownload') !== null) {
+                                lastupload = $window.localStorage.getItem('lastdownload');
+                            }
+
                             if ($window.localStorage.getItem('lastupload') !== undefined &&
                                 $window.localStorage.getItem('lastupload') !== null
                                 )
