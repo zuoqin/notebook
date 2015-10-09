@@ -54,19 +54,32 @@
         if (parts.indexOf('?') > 0) {
             code = parts.substring(parts.indexOf('?'));
             $http({method:'GET',
-        		url:'/api/weibo' + code,
+        		url:'/api/weibo/token' + code,
         		headers:{'Content-Type': 'application/x-www-form-urlencoded'}
         	})
 
             .then(function(response)
-            {                         
-                $window.localStorage.setItem('weibotoken', response.data.access_token);
-                
-                setTimeout(function () {
-                    $scope.$apply(function () {
-                        $scope.user.weibotoken = response.data.access_token;
-                    });
-                }, 100);
+            {
+            	if (response.data.access_token !== undefined &&
+            		response.data.access_token !== null) {
+	                $window.localStorage.setItem('weibotoken', response.data.access_token);
+	                
+	                setTimeout(function () {
+	                    $scope.$apply(function () {
+	                        $scope.user.weibotoken = response.data.access_token;
+	                    });
+	                }, 100);
+
+            	} else{
+            		var error = response.data.error;
+	                toastr.options.closeButton = true;
+	                toastr.options.closeMethod = 'fadeOut';
+	                toastr.options.closeDuration = 300;
+	                toastr.options.closeEasing = 'swing';
+	                toastr.options.positionClass = "toast-bottom-right";
+	                toastr.error(error, 'An error occured');
+	                $location.path('/user');
+            	}
 
             }, function(response){
             	alert('Some error.');
