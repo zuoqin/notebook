@@ -150,50 +150,74 @@ module.exports = function(app,express){
 
 				if (secret.length > 0) {
 
-					var http = require("https");
-				    var opt = {
-				          hostname: 'api.weibo.com',
-				          path: '/oauth2/access_token?code=' + req.query.code +'&grant_type=authorization_code&client_id=588957036&forcelogon=true&client_secret=' + secret + '&redirect_uri=http://www.lifemall.com',
-				          method: 'POST'
-				    };
-					
-					var body = '';
-					//Now we're going to set up the request and the callbacks to handle the data
-					var request = http.request(opt, function(response) {
-					    //When we receive data, we want to store it in a string
-					    response.on('data', function (chunk) {
-					        body += chunk;
-					    });
-					    //On end of the request, run what we need to
-					    response.on('end',function() {
-					        res.send(body);
-					    });
-					});
-
-					request.on('error', function(e) {
-					  console.log('problem with request: ' + e.message);
-					});
 
 
-					request.end();		
+
+
+
+
+
+					Control.findOne({
+						name: "weiboappkey"
+					}).select('sfield1').exec(function(err, control)
+					{	
+						
+						if(err){
+							throw err;
+						}
+						if(!control){
+							res.send({message:'weiboappkey does not exist'});
+						}
+						else if(control)
+						{
+							theControl = control.toObject();
+							appkey = theControl.sfield1;
+
+
+							if (appkey !== undefined && appkey !== null && appkey.length > 0) {
+
+								var http = require("https");
+							    var opt = {
+							          hostname: 'api.weibo.com',
+							          path: '/oauth2/access_token?code=' + req.query.code +'&grant_type=authorization_code&client_id=' + appkey + '&forcelogon=true&client_secret=' + secret + '&redirect_uri=http://www.lifemall.com',
+							          method: 'POST'
+							    };
+								
+								var body = '';
+								//Now we're going to set up the request and the callbacks to handle the data
+								var request = http.request(opt, function(response) {
+								    //When we receive data, we want to store it in a string
+								    response.on('data', function (chunk) {
+								        body += chunk;
+								    });
+								    //On end of the request, run what we need to
+								    response.on('end',function() {
+								        res.send(body);
+								    });
+								});
+
+								request.on('error', function(e) {
+								  console.log('problem with request: ' + e.message);
+								});
+
+
+								request.end();		
+
+
+							} else{
+								res.send({error:"weiboappkey was not defined yet"});
+							}
+
+
+						}
+			        });
+
+
 
 
 				} else{
 					res.send({error:"client_secret was not defined yet"});
 				}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 			}
@@ -227,7 +251,7 @@ module.exports = function(app,express){
 
 					res.json({
 						success: true,
-						message:'User has been created!',
+						message:'User has been updated!',
 						token: token
 					});
 				});

@@ -15,7 +15,7 @@
                 
                 $location.path('/');
                 if ( ($rootScope.showItems === true || $location.$$path === '/') &&
-                    ($rootScope.stories === undefined || $rootScope.stories.length === 0 || $rootScope.filtertext !== '')
+                    ($rootScope.stories === undefined || $rootScope.stories.length === 0 || $scope.filtertext !== '')
                     )
                 {
                     lazyGetData();
@@ -24,7 +24,7 @@
                 {
                     $rootScope.showList = true;
                 }
-                $rootScope.filtertext = '';
+                $scope.filtertext = '';
             };
 
             vm.getData = function () {
