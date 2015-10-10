@@ -387,6 +387,7 @@
             if (id !== null) {
                 persistenceService.getById(id).then(
                     function (item) {
+                        sessionStorage.setItem('isModified', item._id);
                         $scope.item._id = item._id;
                         $scope.item.title = $sce.trustAsHtml(item.title);
                         $scope.item.introduction = $sce.trustAsHtml(item.introduction);

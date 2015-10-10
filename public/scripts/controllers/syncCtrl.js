@@ -314,7 +314,7 @@
 
             var hasModified = function(){
                 var id = sessionStorage.getItem('isModified');
-                if (id !== null && id !== undefined) {
+                if (id !== null && id !== undefined && id !== '') {
                     return true;
                 } else{
                     return false;

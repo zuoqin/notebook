@@ -5,10 +5,6 @@
     [
         '$scope', '$rootScope', '$location', 'persistenceService',
         function ($scope, $rootScope, $location, persistenceService) {
-            
-
-            //$scope.showSuccessMessage = false;
-            
             $scope.isModified = false;
             $scope.showFillOutFormMessage = false;
             $scope.isOnline = true;
@@ -42,7 +38,7 @@
                     });
                 }, 50);
 
-            }
+            };
 
 
             var parts = $location.absUrl().split('/');
@@ -65,6 +61,7 @@
                         resizeCtrl('#introduction');
                         resizeCtrl('#content');
                         $scope.item = item;
+                        sessionStorage.setItem('isModified', item._id);
                         if ($scope.item.images !== undefined && $scope.item.images.length > 0) {
                             //var newImage = document.createElement('img');
                             //newImage.src = $scope.item.images[0].data;
@@ -88,8 +85,7 @@
                 $scope.item.topic = topic;
             }
 
-            $scope.cancel = function() {
-                sessionStorage.setItem('isModified', null);
+            $scope.cancel = function() {                
                 window.location = '/';
             };
 
@@ -177,7 +173,6 @@
                  
                     persistenceService.action.save(item).then(
                         function(result) {
-                            sessionStorage.setItem('isModified', item._id);
                             //$scope.showSuccessMessage = true;
                             $scope.showErrorMessage = false;
                             $scope.isModified = false;
