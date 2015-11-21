@@ -179,7 +179,7 @@ module.exports = function(app,express){
 								var http = require("https");
 							    var opt = {
 							          hostname: 'api.weibo.com',
-							          path: '/oauth2/access_token?code=' + req.query.code +'&grant_type=authorization_code&client_id=' + appkey + '&forcelogon=true&client_secret=' + secret + '&redirect_uri=http://www.lifemall.com',
+							          path: '/oauth2/access_token?code=' + req.query.code +'&grant_type=authorization_code&client_id=' + appkey + '&forcelogon=true&client_secret=' + secret + '&redirect_uri=http://dev.t5p.hk',
 							          method: 'POST'
 							    };
 								
