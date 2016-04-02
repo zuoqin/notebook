@@ -12,8 +12,8 @@
 				return $http.post('/api', storyData);
 			},
 
-			allStory:  function(){
-				return $http.get('/api');
+			getbyid:  function(id){
+				return $http.get('/api?id=' + id);
 			},
 			StoryFromTime:  function(datetime){
 				if (datetime.datetime === null || datetime.datetime === undefined) {

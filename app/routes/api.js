@@ -702,7 +702,9 @@ module.exports = function(app,express){
 		})
 
 		.post(function(req,res){
-			//console('inside auth post');
+			console.log('inside auth post');
+			console.log('body:');
+			console.log(req.body);
 			if (req.body.title !== undefined && req.body.title.length > 0) {
 				var story = new Story({
 					creator: req.decoded._id,
@@ -734,29 +736,38 @@ module.exports = function(app,express){
 				//console.log(fromDate);
 
 
-				var ObjectId = require('mongoose').Types.ObjectId; 
+				var ObjectId = require('mongoose').Types.ObjectId;
 				var query = { creator: new ObjectId(req.decoded._id),
 					modified: {$gte:inputDate} };
 
-				
+				var newStories = [];
 				Story.find(query, function(err, stories){
 					if (err) {
 						res.send(err);
 						return;
 					}
-					res.json(stories);
+
+					for( var index = 0; index < stories.length; ++index){
+						newStories.push(stories[index].id);
+					}
+					var data = { data : newStories, result : "success" };
+					res.json(data);
 					//console.log("Total found stories:");
 					//console.log(stories.length);
-				});				
+				});
 			}
-
 		})
 	
 		.get(function(req,res){
-			var ObjectId = require('mongoose').Types.ObjectId; 
+			var ObjectId = require('mongoose').Types.ObjectId;
 			var query = { creator: new ObjectId(req.decoded._id) };
-
-			
+			if( req.query !== undefined && req.query !== null )
+			{
+				if(req.query.id !== undefined && req.query.id !== null)
+				{
+					query._id = req.query.id;
+				}
+			}
 			Story.find(query, function(err, stories){
 				if (err) {
 					res.send(err);

@@ -57,7 +57,7 @@
                                                         modified: new Date(item.modified),
                                                         topic: item.topic,
                                                         creator: item.creator,
-                                                        content: $sce.trustAsHtml(item.Content)
+                                                        content: $sce.trustAsHtml(item.content)
                                                     });
 
                                                 });
@@ -364,9 +364,6 @@
                 {
                     //var stories = data;
                     persistenceService.setAction(1);
-                    var curDate = new Date();
-                    $window.localStorage.setItem('lastdownload', curDate);
-                    //persistenceService.ClearLocalDB().then(function() {
 
                     
                     var type = 'warning';
@@ -383,39 +380,51 @@
 
                     setTimeout(function () {
                         $rootScope.$apply(function () {
-                            data.forEach(function (item) {
-                                persistenceService.action.save(item).then(function() {
-                                    var found = false;
-                                    for(var index = 0; index < $rootScope.stories.length; index++) {
-                                        if ($rootScope.stories[index]._id === item._id) {
-                                            found = true;
-                                            break;
-                                        }
-                                    }
-                                    if (found === false) {
-                                        $rootScope.stories.push({
-                                            _id: item._id,
-                                            title: $sce.trustAsHtml(item.title),
-                                            introduction: $sce.trustAsHtml(item.introduction),
-                                            modified: new Date(item.modified),
-                                            created: new Date(item.created),
-                                            topic: item.topic,
-                                            creator: item.creator,
-                                            content: $sce.trustAsHtml(item.content)
-                                        });                                        
-                                    } else{
-                                        setHtmlItem(index, item);
-                                    }
+                            data.data.forEach(function (item_id) {
 
-                                    $rootScope.stories.sort(function(a, b) {
-                                        return new Date(b.modified) - new Date(a.modified);
-                                    });
-                                    $rootScope.alert.show = false;
-                                    
-                                    $rootScope.showList = true;
+                                Story.getbyid(item_id).success(function(list)
+                                {
+                                    if(list !== null && list !== undefined && list.length > 0 )
+                                    {
+                                        var item = list[0];
+                                        persistenceService.action.save(item).then(function() {
+                                            var found = false;
+                                            for(var index = 0; index < $rootScope.stories.length; index++) {
+                                                if ($rootScope.stories[index]._id === item._id) {
+                                                    found = true;
+                                                    break;
+                                                }
+                                            }
+                                            if (found === false) {
+                                                $rootScope.stories.push({
+                                                    _id: item._id,
+                                                    title: $sce.trustAsHtml(item.title),
+                                                    introduction: $sce.trustAsHtml(item.introduction),
+                                                    modified: new Date(item.modified),
+                                                    created: new Date(item.created),
+                                                    topic: item.topic,
+                                                    creator: item.creator,
+                                                    content: $sce.trustAsHtml(item.content)
+                                                });
+                                            } else{
+                                                setHtmlItem(index, item);
+                                            }
 
+                                            $rootScope.stories.sort(function(a, b) {
+                                                return new Date(b.modified) - new Date(a.modified);
+                                            });
+                                            $rootScope.alert.show = false;
+
+                                            $rootScope.showList = true;
+
+                                        });
+                                    }
                                 });
+
                             });
+                            var curDate = new Date();
+                            $window.localStorage.setItem('lastdownload', curDate);
+                            //persistenceService.ClearLocalDB().then(function() {
 
                         if (data.length === 0) {
                             $rootScope.stories.sort(function(a, b) {
