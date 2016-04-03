@@ -1,2 +1,6 @@
 node_modules
 public/test
+.idea
+*.js
+app/app.component.js
+
