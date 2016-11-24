@@ -1,19 +1,26 @@
-import {bootstrap} from '@angular/platform-browser-dynamic';
-import 'rxjs/Rx';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http';
+import { RouterModule } from '@angular/router';
 
-import { appRouterProviders } from './app.routes';
+import { AppComponent }  from './app.component';
 
-//import {Component} from '@angular/core';
-//import {StoryService} from './Services/storyService';
-//import {HTTP_PROVIDERS} from 'angular2/http';
+/* Feature Modules */
+import { StoryModule } from './stories/story.module';
 
-
-//import {RouteConfig, RouterOutlet} from 'angular2/router';
-//import {StoryComponent} from './story.component';
-import {HomeComponent} from './homepage/homepage.component';
-//import {LocalService} from "./Services/localService";
-
-
-bootstrap(HomeComponent, [
-  appRouterProviders
-]);
+@NgModule({
+  imports: [
+    BrowserModule,
+    HttpModule,
+    RouterModule.forRoot([
+      { path: '', redirectTo: 'stories', pathMatch: 'full' },
+      { path: '**', redirectTo: 'stories', pathMatch: 'full' }
+    ]),
+    StoryModule
+  ],
+  declarations: [
+    AppComponent
+  ],
+  bootstrap: [ AppComponent ]
+})
+export class AppModule { }

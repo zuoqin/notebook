@@ -1,0 +1,38 @@
+<div class='panel panel-primary'>
+    <div class='panel-heading'>
+        {{pageTitle}}
+    </div>
+
+    <!-- Filter the Products   -->
+    <div class='panel-body'>
+        <div class='row'>
+            <div class='col-md-2'>Filter by:</div>
+            <div class='col-md-4'>
+                <input type='text' [(ngModel)]='listFilter' />
+            </div>
+        </div>
+        <div class='row' *ngIf='listFilter'>
+            <div class='col-md-6'>
+                <h3>Filtered by: {{listFilter}} </h3>
+            </div>
+        </div>
+
+        <div class='has-error' *ngIf='errorMessage'>{{errorMessage}}</div>
+
+        <div class="col-md-12">
+                <div *ngFor='let story of stories | storyFilter:listFilter' class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <a href="../story/%2Fnews%2F2016-11-21%2Ftrump-exploded-media-execs-during-record-meeting-it-was-f-king-firing-squad">{{story.title}}</a>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        {{story.content}}
+                        <p>
+                        {{story.updated}}
+                        </p>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
