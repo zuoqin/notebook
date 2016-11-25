@@ -12,9 +12,16 @@ var core_1 = require('@angular/core');
 var platform_browser_1 = require('@angular/platform-browser');
 var http_1 = require('@angular/http');
 var router_1 = require('@angular/router');
+var forms_1 = require('@angular/forms');
 var app_component_1 = require('./app.component');
+var angular_2_local_storage_1 = require('../components/angular-2-local-storage/angular-2-local-storage');
 /* Feature Modules */
 var story_module_1 = require('./stories/story.module');
+// Create config options (see ILocalStorageServiceConfigOptions) for deets:
+var localStorageServiceConfig = {
+    prefix: 'my-app',
+    storageType: 'localStorage'
+};
 var AppModule = (function () {
     function AppModule() {
     }
@@ -27,10 +34,17 @@ var AppModule = (function () {
                     { path: '', redirectTo: 'stories', pathMatch: 'full' },
                     { path: '**', redirectTo: 'stories', pathMatch: 'full' }
                 ]),
-                story_module_1.StoryModule
+                story_module_1.StoryModule,
+                forms_1.FormsModule,
             ],
             declarations: [
                 app_component_1.AppComponent
+            ],
+            providers: [
+                angular_2_local_storage_1.LocalStorageService,
+                {
+                    provide: angular_2_local_storage_1.LOCAL_STORAGE_SERVICE_CONFIG, useValue: localStorageServiceConfig
+                }
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 

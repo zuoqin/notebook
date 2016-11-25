@@ -8,8 +8,8 @@ export class StoryDetailGuard implements CanActivate {
     }
 
     canActivate(route: ActivatedRouteSnapshot): boolean {
-        let id = +route.url[1].path;
-        if (isNaN(id) || id < 1) {
+        let id = route.url[1].path;
+        if ( id.length < 1) {
             alert('Invalid story Id');
             // start a new navigation to redirect to list page
             this._router.navigate(['/stories']);

@@ -23,7 +23,7 @@ export class StoryDetailComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.sub = this._route.params.subscribe(
             params => {
-                let id = +params['id'];
+                let id = params['id'];
                 this.getStory(id);
         });
     }
@@ -32,7 +32,7 @@ export class StoryDetailComponent implements OnInit, OnDestroy {
         this.sub.unsubscribe();
     }
 
-    getStory(id: number) {
+    getStory(id: string) {
         this._storyService.getStory(id).subscribe(
             story => this.story = story,
             error => this.errorMessage = <any>error);

@@ -21,7 +21,7 @@ var StoryDetailComponent = (function () {
     StoryDetailComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.sub = this._route.params.subscribe(function (params) {
-            var id = +params['id'];
+            var id = params['id'];
             _this.getStory(id);
         });
     };

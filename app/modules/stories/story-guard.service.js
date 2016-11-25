@@ -15,8 +15,8 @@ var StoryDetailGuard = (function () {
         this._router = _router;
     }
     StoryDetailGuard.prototype.canActivate = function (route) {
-        var id = +route.url[1].path;
-        if (isNaN(id) || id < 1) {
+        var id = route.url[1].path;
+        if (id.length < 1) {
             alert('Invalid story Id');
             // start a new navigation to redirect to list page
             this._router.navigate(['/stories']);
