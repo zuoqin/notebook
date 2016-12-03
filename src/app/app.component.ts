@@ -22,8 +22,8 @@ import { StoryService } from './stories/story.service';
             <div class='container-fluid'>
                 <a class='navbar-brand'>{{pageTitle}}</a>
                 <ul class='nav navbar-nav'>
-                    <li><a [routerLink]="['/welcome']">Home</a></li>
-                    <li><a [routerLink]="['/products']">Product List</a></li>
+                    <li><a [routerLink]="['/stories']">Home</a></li>
+                    <li><a [routerLink]="['/stories']">Product List</a></li>
                 </ul>
 
                 <div role="navigation" class="pull-right">

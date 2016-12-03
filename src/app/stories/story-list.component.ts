@@ -4,6 +4,8 @@ import { IStory } from './story';
 import { StoryService } from './story.service';
 
 import { LocalStorageService } from 'angular-2-local-storage';
+import {AngularIndexedDB} from '../components/angular2-indexeddb';
+
 
 @Component({
     templateUrl: './story-list.component.html',
@@ -14,10 +16,10 @@ export class StoryListComponent implements OnInit {
     imageWidth: number = 50;
     imageMargin: number = 2;
     showImage: boolean = false;
-    //listFilter: string;
+    db: AngularIndexedDB;
     errorMessage: string;
 
-    
+    objectStore : any;
 
     constructor(private _storyService: StoryService, private localStorageService: LocalStorageService) {
 
@@ -32,19 +34,40 @@ export class StoryListComponent implements OnInit {
         this._storyService.stories = stories;
         var i = 0;
         for (var story of stories) {            
-          this.localStorageService.set('item' + i, story);
-          i = i + 1;
+            //this.localStorageService.set('item' + i, story);
+
+            this.db.add( 'stories', story, 'item' + i).then(() => {
+            // Do something after the value was added
+
+
+         
+            }, (error) => {
+                console.log(error);
+            });
+            i = i + 1;
         }
-    }   
+    };
 
     ngOnInit(): void {
-        this._storyService.getStories()
-                .subscribe(stories => this.setNewStories(stories),
-                           error => this.errorMessage = <any>error);
+        this.db = new AngularIndexedDB('myDb', 1);
+        this.objectStore = this.db.createStore(1, (evt) => {
+            let objectStore = evt.currentTarget.result.createObjectStore(
+                'stories', {autoIncrement: false} )
+        })
+        .then( () =>
+        {
+
+            console.log('kjhkhkjhkj');
+            //this.objectStore.createIndex("name", "name", { unique: false });
+            //this.objectStore.createIndex("email", "email", { unique: true });
 
 
-
-    }
+            this._storyService.getStories(this.db)
+                    .subscribe(stories => this.setNewStories(stories),
+                               error => this.errorMessage = <any>error);
+        }
+        );
+    };
 
     onRatingClicked(message: string): void {
         this.pageTitle = 'Stories List: ' + message;
